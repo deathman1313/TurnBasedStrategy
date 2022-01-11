@@ -16,7 +16,10 @@ void AMyGameManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	CreateGameBoard(Rows, Cols);
+	if (bGenerateTiles)
+	{
+		CreateGameBoard(Rows, Cols);
+	}
 }
 
 // Called every frame
@@ -26,19 +29,29 @@ void AMyGameManager::Tick(float DeltaTime)
 
 }
 
-void AMyGameManager::CreateGameBoard(int i, int j)
+void AMyGameManager::CreateGameBoard(int c, int r)
 {
-	Rows = i;
-	Cols = j;
+	Rows = c;
+	Cols = r;
 
-	if (TileClass != nullptr)
+	if (TileClass)
 	{
-		
+		//float x;
+		//float y;
+		for (int i = 0; i < Rows; i++)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Row"));
+			for (int j = 0; j < Cols; j++)
+			{
+				//AMyTile* newTile = GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(x, y, 20.f), FRotator(0.f, 90.f, 0.f));
+				//Tiles.Push(newTile);
+			}
+		}
 	}
 
 	// Test
-	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(0.f, 0.f, 0.f), FRotator(0.f, 90.f, 0.f));
-	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(0.f, 100.f, 0.f), FRotator(0.f, 90.f, 0.f));
-	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(-86.5f, 50.f, 0.f), FRotator(0.f, 90.f, 0.f));
+	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(0.f, 0.f, 20.f), FRotator(0.f, 90.f, 0.f));
+	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(0.f, 100.f, 20.f), FRotator(0.f, 90.f, 0.f));
+	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(-86.5f, 50.f, 20.f), FRotator(0.f, 90.f, 0.f));
 
 }
