@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "MyTile.h"
 #include "MyGameManager.generated.h"
 
 UCLASS()
@@ -17,6 +18,24 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyPathfindingManager* Pathfinding;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AMyTile* TileRef;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UClass* TileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Rows = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Cols = 7;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<AMyTile*> Tiles;
+
+	UFUNCTION(BlueprintCallable)
+		void CreateGameBoard(int i, int j);
 
 protected:
 	// Called when the game starts or when spawned

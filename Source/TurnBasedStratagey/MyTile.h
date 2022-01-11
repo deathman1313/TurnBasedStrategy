@@ -15,8 +15,11 @@ public:
 	// Sets default values for this actor's properties
 	AMyTile();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Mesh")
 		class UStaticMeshComponent* Base;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
+		TArray<AMyTile*> Neighbours;
 
 protected:
 	// Called when the game starts or when spawned
