@@ -34,8 +34,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bGenerateTiles = true;
 
+	/*
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bTopHeavy = true;
+	*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<AMyTile*> Tiles;

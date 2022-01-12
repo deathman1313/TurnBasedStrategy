@@ -15,8 +15,28 @@ public:
 	// Sets default values for this actor's properties
 	AMyTile();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Mesh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 		class UStaticMeshComponent* Base;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
+		// Row index
+		int I;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
+		// Collumn index
+		int J;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
+		int F = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
+		int G = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
+		float H = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
+		AMyTile* PreviousTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
 		TArray<AMyTile*> Neighbours;

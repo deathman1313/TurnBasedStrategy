@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MyTile.h"
 #include "MyGameManager.h"
+#include "MyTile.h"
+#include "MyPathfindingManager.h"
 
 // Sets default values
 AMyGameManager::AMyGameManager()
@@ -20,6 +21,9 @@ void AMyGameManager::BeginPlay()
 	{
 		CreateGameBoard(Rows, Cols);
 	}
+	// Would make sense to have option here to locate tiles if none are provided
+
+	Pathfinding->Setup(Tiles, Rows, Cols);
 }
 
 // Called every frame
