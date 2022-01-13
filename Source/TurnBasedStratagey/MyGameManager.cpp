@@ -24,6 +24,11 @@ void AMyGameManager::BeginPlay()
 	// Would make sense to have option here to locate tiles if none are provided
 
 	Pathfinding->Setup(Tiles, Rows, Cols);
+	TArray<AMyTile*> TestPath = Pathfinding->FindPath(Tiles[12], Tiles[30]);
+	for (AMyTile* Tile : TestPath)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *Tile->GetName());
+	}
 }
 
 // Called every frame

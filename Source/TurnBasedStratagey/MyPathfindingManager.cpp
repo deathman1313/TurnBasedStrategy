@@ -52,8 +52,80 @@ void AMyPathfindingManager::Setup(TArray<AMyTile*> Tiles, int R, int C)
 
 TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 {
-	TArray<AMyTile*> test;
-	return(test);
+	TArray<AMyTile*> OpenSet;
+	TArray<AMyTile*> ClosedSet;
+
+	OpenSet.Push(Start);
+
+	//Check to make sure positions are valid, this may not be necessary
+	if (Start && End)
+	{
+		// The currently selected tile to check against
+		AMyTile* Current;
+		while (OpenSet.Num() > 0)
+		{
+			Current = OpenSet[0];
+			for (AMyTile* Tile : OpenSet)
+			{
+				if (Tile->F < Current->F)
+				{
+					Current = Tile;
+				}
+			}
+
+			if (Current)
+			{
+				if (Current == End)
+				{
+					TArray<AMyTile*> Path;
+					Path.Push(Current);
+					while (Current->PreviousTile)
+					{
+						// This may be backwards
+						Path.Push(Current->PreviousTile);
+						Current = Current->PreviousTile;
+					}
+					return(Path);
+				}
+			}
+
+			OpenSet.Remove(Current);
+			ClosedSet.Push(Current);
+
+			for (AMyTile* Neighbour : Current->Neighbours)
+			{
+				if (!ClosedSet.Contains(Neighbour))
+				{
+					// This might be where cost is calculated?
+					int TempG = Current->G + FVector::Dist(Current->GetActorLocation(), Neighbour->GetActorLocation());
+
+					if (OpenSet.Contains(Neighbour))
+					{
+						// Update G
+						if (TempG < Neighbour->G)
+						{
+							Neighbour->G = TempG;
+						}
+					}
+					else
+					{
+						Neighbour->G = TempG;
+						OpenSet.Push(Neighbour);
+					}
+
+					// Update H
+					Neighbour->H = FVector::Dist(Neighbour->GetActorLocation(), End->GetActorLocation());
+					// Update F
+					Neighbour->F = Neighbour->G + Neighbour->H;
+					// Update Previous
+					Neighbour->PreviousTile = Current;
+				}
+			}
+		}
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Failed Pathfind"));
+	TArray<AMyTile*> InvalidArray;
+	return(InvalidArray);
 }
 
 TArray<AMyTile*> AMyPathfindingManager::GetNeighbours(AMyTile* Tile)
