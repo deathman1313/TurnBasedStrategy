@@ -27,7 +27,7 @@ public:
 		int J;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
-		int F = 0;
+		float F = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
 		int G = 0;

@@ -41,6 +41,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		TArray<AMyTile*> GetNeighbours(AMyTile* Tile);
 
+	UFUNCTION(BlueprintCallable)
+		float GetTileDistance(AMyTile* Start, AMyTile* End);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

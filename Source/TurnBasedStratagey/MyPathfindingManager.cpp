@@ -81,7 +81,6 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 					Path.Push(Current);
 					while (Current->PreviousTile)
 					{
-						// This may be backwards
 						Path.Push(Current->PreviousTile);
 						Current = Current->PreviousTile;
 					}
@@ -97,7 +96,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 				if (!ClosedSet.Contains(Neighbour))
 				{
 					// This might be where cost is calculated?
-					int TempG = Current->G + FVector::Dist(Current->GetActorLocation(), Neighbour->GetActorLocation());
+					int TempG = Current->G + 1;
 
 					if (OpenSet.Contains(Neighbour))
 					{
@@ -114,7 +113,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 					}
 
 					// Update H
-					Neighbour->H = FVector::Dist(Neighbour->GetActorLocation(), End->GetActorLocation());
+					Neighbour->H = GetTileDistance(Neighbour, End);
 					// Update F
 					Neighbour->F = Neighbour->G + Neighbour->H;
 					// Update Previous
@@ -163,6 +162,13 @@ TArray<AMyTile*> AMyPathfindingManager::GetNeighbours(AMyTile* Tile)
 	}
 	//UE_LOG(LogTemp, Warning, TEXT("%d"), Neighbors.Num());
 	return(Neighbors);
+}
+
+float AMyPathfindingManager::GetTileDistance(AMyTile* Start, AMyTile* End)
+{
+	float xDif = FMath::Abs((Start->J - End->J) * 0.5f);
+	int yDif = FMath::Abs(Start->I - End->I);
+	return(xDif + yDif);
 }
 
 int AMyPathfindingManager::FindArrayIndex(int i, int j)
