@@ -27,15 +27,6 @@ public:
 		int J;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
-		float F = 0;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
-		int G = 0;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
-		float H = 0;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
 		AMyTile* PreviousTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")

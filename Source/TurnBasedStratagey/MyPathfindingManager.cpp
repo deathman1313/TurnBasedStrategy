@@ -55,7 +55,14 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 	TArray<AMyTile*> OpenSet;
 	TArray<AMyTile*> ClosedSet;
 
+	TMap<AMyTile*, int> G;
+	TMap<AMyTile*, float> F;
+	TMap<AMyTile*, float> H;
+
 	OpenSet.Push(Start);
+	G.Add(Start, 0);
+	F.Add(Start, 0);
+	H.Add(Start, 0);
 
 	//Check to make sure positions are valid, this may not be necessary
 	if (Start && End)
@@ -67,7 +74,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 			Current = OpenSet[0];
 			for (AMyTile* Tile : OpenSet)
 			{
-				if (Tile->F < Current->F)
+				if (F[Tile] < F[Current])
 				{
 					Current = Tile;
 				}
@@ -96,26 +103,26 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 				if (!ClosedSet.Contains(Neighbour))
 				{
 					// This might be where cost is calculated?
-					int TempG = Current->G + 1;
+					int TempG = G[Current] + 1;
 
 					if (OpenSet.Contains(Neighbour))
 					{
 						// Update G
-						if (TempG < Neighbour->G)
+						if (TempG < G[Neighbour])
 						{
-							Neighbour->G = TempG;
+							G[Neighbour] = TempG;
 						}
 					}
 					else
 					{
-						Neighbour->G = TempG;
+						G.Add(Neighbour, TempG);
 						OpenSet.Push(Neighbour);
 					}
 
 					// Update H
-					Neighbour->H = GetTileDistance(Neighbour, End);
+					H.Add(Neighbour, GetTileDistance(Neighbour, End));
 					// Update F
-					Neighbour->F = Neighbour->G + Neighbour->H;
+					F.Add(Neighbour, G[Neighbour] + H[Neighbour]);
 					// Update Previous
 					Neighbour->PreviousTile = Current;
 				}
