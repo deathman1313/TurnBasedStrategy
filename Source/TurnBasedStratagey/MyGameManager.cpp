@@ -30,6 +30,7 @@ void AMyGameManager::BeginPlay()
 		if (Tile)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *Tile->GetName());
+			Tile->Base->SetMaterial(1, TempMat);
 		}
 		else 
 		{

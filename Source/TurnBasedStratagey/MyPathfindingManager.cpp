@@ -100,31 +100,37 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 
 			for (AMyTile* Neighbour : Current->Neighbours)
 			{
-				if (!ClosedSet.Contains(Neighbour))
+				if (!ClosedSet.Contains(Neighbour) && Neighbour->Traversable)
 				{
 					// This might be where cost is calculated?
-					int TempG = G[Current] + 1;
+					int TempG = G[Current] + Neighbour->MoveCost;
 
+					bool newPath = false;
 					if (OpenSet.Contains(Neighbour))
 					{
 						// Update G
 						if (TempG < G[Neighbour])
 						{
 							G[Neighbour] = TempG;
+							newPath = true;
 						}
 					}
 					else
 					{
 						G.Add(Neighbour, TempG);
+						newPath = true;
 						OpenSet.Push(Neighbour);
 					}
 
-					// Update H
-					H.Add(Neighbour, GetTileDistance(Neighbour, End));
-					// Update F
-					F.Add(Neighbour, G[Neighbour] + H[Neighbour]);
-					// Update Previous
-					Neighbour->PreviousTile = Current;
+					if (newPath)
+					{
+						// Update H
+						H.Add(Neighbour, GetTileDistance(Neighbour, End));
+						// Update F
+						F.Add(Neighbour, G[Neighbour] + H[Neighbour]);
+						// Update Previous
+						Neighbour->PreviousTile = Current;
+					}
 				}
 			}
 		}

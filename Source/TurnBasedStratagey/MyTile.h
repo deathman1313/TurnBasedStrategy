@@ -18,6 +18,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 		class UStaticMeshComponent* Base;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
+		bool Traversable = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
+		float MoveCost = 1.f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
 		// Row index
 		int I;

@@ -10,7 +10,7 @@ AMyTile::AMyTile()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	Base = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base"));
-	Base->SetupAttachment(RootComponent);
+	SetRootComponent(Base);
 	Base->SetWorldScale3D(FVector(10.f, 10.f, 10.f));
 }
 

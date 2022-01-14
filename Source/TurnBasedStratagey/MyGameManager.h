@@ -42,6 +42,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<AMyTile*> Tiles;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		UMaterial* TempMat;
+
 	UFUNCTION(BlueprintCallable)
 		void CreateGameBoard(int i, int j);
 
