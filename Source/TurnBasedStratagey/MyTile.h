@@ -19,7 +19,7 @@ public:
 		class UStaticMeshComponent* Base;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
-		bool Traversable = true;
+		bool bTraversable = true;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
 		float MoveCost = 1.f;
