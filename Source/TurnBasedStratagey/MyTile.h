@@ -18,6 +18,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 		class UStaticMeshComponent* Base;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+		class USceneComponent* TileCenter;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
 		bool bTraversable = true;
 
