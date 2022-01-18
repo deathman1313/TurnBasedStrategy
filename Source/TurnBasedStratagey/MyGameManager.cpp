@@ -3,6 +3,7 @@
 #include "MyGameManager.h"
 #include "MyTile.h"
 #include "MyPathfindingManager.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMyGameManager::AMyGameManager()
@@ -23,20 +24,10 @@ void AMyGameManager::BeginPlay()
 	}
 	// Would make sense to have option here to locate tiles if none are provided
 
+	// Show the mouse cursor
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
+
 	Pathfinding->Setup(Tiles, Rows, Cols);
-	TArray<AMyTile*> TestPath = Pathfinding->FindPath(Tiles[12], Tiles[51]);
-	for (AMyTile* Tile : TestPath)
-	{
-		if (Tile)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *Tile->GetName());
-			Tile->Base->SetMaterial(1, TempMat);
-		}
-		else 
-		{
-			UE_LOG(LogTemp, Warning, TEXT("null"));
-		}
-	}
 }
 
 // Called every frame

@@ -2,6 +2,7 @@
 
 #include "MyPathfindingManager.h"
 #include "MyGameManager.h"
+#include "Algo/Reverse.h"
 
 // Sets default values
 AMyPathfindingManager::AMyPathfindingManager()
@@ -88,6 +89,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 						Path.Push(Current->PreviousTile);
 						Current = Current->PreviousTile;
 					}
+					Algo::Reverse(Path);
 					return(Path);
 				}
 			}

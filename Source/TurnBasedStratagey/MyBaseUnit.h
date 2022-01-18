@@ -15,6 +15,30 @@ public:
 	// Sets default values for this pawn's properties
 	AMyBaseUnit();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		class AMyTile* OnTile;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		int MaxMovement = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		int CurrentMovement = 5;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		TArray<class AMyTile*> MovementQueue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		bool Moving = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		FVector MovementLocation;
+
+	UFUNCTION(BlueprintCallable)
+		bool ProcessMovement();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

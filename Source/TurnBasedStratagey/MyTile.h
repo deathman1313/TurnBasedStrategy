@@ -27,6 +27,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
 		float MoveCost = 1.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
+		class AMyBaseUnit* OccupyingUnit;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
 		// Row index
 		int I;

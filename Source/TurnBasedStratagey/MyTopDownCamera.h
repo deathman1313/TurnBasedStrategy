@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "MyTile.h"
 #include "MyTopDownCamera.generated.h"
 
 UCLASS()
@@ -23,6 +24,39 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class UFloatingPawnMovement* Movement;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float MaxArmLength = 300.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float MinArmLength = 100.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AMyGameManager* GameManager;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AMyTile* SelectedTile;
+
+	UFUNCTION(BlueprintCallable)
+		void MoveVert(float Value);
+
+	UFUNCTION(BlueprintCallable)
+		void MoveHor(float Value);
+
+	UFUNCTION(BlueprintCallable)
+		void Zoom(float Value);
+
+	UFUNCTION(BlueprintCallable)
+		void Select();
+
+	UFUNCTION(BlueprintCallable)
+		void MoveUnit();
+
+	UFUNCTION(BlueprintCallable)
+		AMyTile* GetClickedTile(FVector2D MouseLocation, APlayerController* PlayerController);
 
 protected:
 	// Called when the game starts or when spawned
