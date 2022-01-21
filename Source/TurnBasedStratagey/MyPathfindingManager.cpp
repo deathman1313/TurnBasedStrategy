@@ -62,6 +62,8 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 	G.Add(Start, 0);
 	F.Add(Start, 0);
 
+	Start->PreviousTile = nullptr;
+
 	if (Start->bTraversable && End->bTraversable)
 	{
 		// The currently selected tile to check against

@@ -16,7 +16,10 @@ public:
 	AMyBaseUnit();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class UStaticMeshComponent* Mesh;
+		class UCapsuleComponent* Capsule;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class USkeletalMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		class AMyTile* OnTile;
@@ -28,10 +31,13 @@ public:
 		int CurrentMovement = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+		float Speed = 3.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		TArray<class AMyTile*> MovementQueue;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		bool Moving = false;
+		bool bMoving = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		FVector MovementLocation;
