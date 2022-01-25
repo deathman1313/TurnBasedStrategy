@@ -12,7 +12,10 @@ AMyTile::AMyTile()
 	Base = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base"));
 	SetRootComponent(Base);
 	Base->SetWorldScale3D(FVector(10.f, 10.f, 10.f));
+	Base->SetMobility(EComponentMobility::Stationary);
+
 	TileCenter = CreateDefaultSubobject<USceneComponent>(TEXT("TileCenter"));
+	TileCenter->SetMobility(EComponentMobility::Stationary);
 }
 
 // Called when the game starts or when spawned

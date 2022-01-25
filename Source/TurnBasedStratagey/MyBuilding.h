@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "MyTurnObject.h"
 #include "MyBuilding.generated.h"
 
 UCLASS()
-class TURNBASEDSTRATAGEY_API AMyBuilding : public AActor
+class TURNBASEDSTRATAGEY_API AMyBuilding : public AMyTurnObject
 {
 	GENERATED_BODY()
 	
@@ -23,6 +23,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AController* OwningPlayer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AMyTile* OnTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bBlocking = false;

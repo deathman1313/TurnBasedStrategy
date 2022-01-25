@@ -108,13 +108,16 @@ void AMyTopDownCamera::Select()
 		float X, Y;
 		PlayerController->GetMousePosition(X, Y);
 		SelectedTile = GetClickedTile(FVector2D(X, Y), PlayerController);
-		// Set the SelectedUnit
-		SelectedUnit = nullptr;
-		if (SelectedTile->OccupyingUnit)
+		if (SelectedTile)
 		{
-			if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
+			// Set the SelectedUnit
+			SelectedUnit = nullptr;
+			if (SelectedTile->OccupyingUnit)
 			{
-				SelectedUnit = SelectedTile->OccupyingUnit;
+				if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
+				{
+					SelectedUnit = SelectedTile->OccupyingUnit;
+				}
 			}
 		}
 	}

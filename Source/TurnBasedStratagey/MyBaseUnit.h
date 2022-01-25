@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "MyTurnObject.h"
 #include "MyBaseUnit.generated.h"
 
 UCLASS()
-class TURNBASEDSTRATAGEY_API AMyBaseUnit : public APawn
+class TURNBASEDSTRATAGEY_API AMyBaseUnit : public AMyTurnObject
 {
 	GENERATED_BODY()
 
@@ -29,6 +29,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AController* OwningPlayer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int UnitLayer = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		class AMyTile* OnTile;

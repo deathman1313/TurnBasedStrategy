@@ -11,10 +11,12 @@ AMyBuilding::AMyBuilding()
 
 	Center = CreateDefaultSubobject<USceneComponent>(TEXT("Center"));
 	SetRootComponent(Center);
+	Center->SetMobility(EComponentMobility::Stationary);
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Center);
 	Mesh->SetWorldScale3D(FVector(10.f, 10.f, 10.f));
+	Mesh->SetMobility(EComponentMobility::Stationary);
 }
 
 // Called when the game starts or when spawned

@@ -37,6 +37,22 @@ void AMyGameManager::Tick(float DeltaTime)
 
 }
 
+void AMyGameManager::NextTurn()
+{
+	OnRoundStart.Broadcast();
+}
+
+void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
+{
+	TurnObjects.Remove(TurnObject);
+	if (TurnObjects.Num() <= 0)
+	{
+		// Start Next Turn
+		Turn++;
+		UE_LOG(LogTemp, Warning, TEXT("StartNextTurn"));
+	}
+}
+
 void AMyGameManager::CreateGameBoard(int c, int r)
 {
 	Rows = c;

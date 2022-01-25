@@ -7,6 +7,21 @@
 #include "MyTile.h"
 #include "MyGameManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundStart);
+
+USTRUCT(BlueprintType)
+struct FConstructions
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TSubclassOf<AMyBaseUnit> Unit;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int ConstructionCost;
+};
+
 UCLASS()
 class TURNBASEDSTRATAGEY_API AMyGameManager : public AActor
 {
@@ -16,6 +31,12 @@ public:
 	// Sets default values for this actor's properties
 	AMyGameManager();
 
+	UPROPERTY(BlueprintAssignable)
+		FOnRoundStart OnRoundStart;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<class AMyTurnObject*> TurnObjects;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyPathfindingManager* Pathfinding;
 
@@ -24,6 +45,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		UClass* TileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Turn = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Rows = 5;
@@ -41,6 +65,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<AMyTile*> Tiles;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<FConstructions> PossibleConstrutions;
+
+	UFUNCTION(BlueprintCallable)
+		void NextTurn();
+
+	UFUNCTION()
+		void CheckTurn(class AMyTurnObject* TurnObject);
 
 	UFUNCTION(BlueprintCallable)
 		void CreateGameBoard(int i, int j);
