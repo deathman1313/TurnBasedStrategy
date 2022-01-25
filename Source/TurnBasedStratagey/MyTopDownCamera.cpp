@@ -108,6 +108,15 @@ void AMyTopDownCamera::Select()
 		float X, Y;
 		PlayerController->GetMousePosition(X, Y);
 		SelectedTile = GetClickedTile(FVector2D(X, Y), PlayerController);
+		// Set the SelectedUnit
+		SelectedUnit = nullptr;
+		if (SelectedTile->OccupyingUnit)
+		{
+			if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
+			{
+				SelectedUnit = SelectedTile->OccupyingUnit;
+			}
+		}
 	}
 }
 
@@ -119,14 +128,11 @@ void AMyTopDownCamera::MoveUnit()
 		float X, Y;
 		PlayerController->GetMousePosition(X, Y);
 		AMyTile* Tile = GetClickedTile(FVector2D(X, Y), PlayerController);
-		if (Tile && SelectedTile)
+		if (Tile && SelectedUnit)
 		{
-			if (SelectedTile->OccupyingUnit)
-			{
-				// Set Movement for selected unit
-				SelectedTile->OccupyingUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedTile, Tile);
-				SelectedTile->OccupyingUnit->ProcessMovement();
-			}
+			// Set Movement for selected unit
+			SelectedUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedTile, Tile);
+			SelectedUnit->ProcessMovement();
 		}
 	}
 }

@@ -17,7 +17,7 @@ AMyBaseUnit::AMyBaseUnit()
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Capsule);
-	Mesh->SetWorldScale3D(FVector(0.5f, 0.5f, 0.5f));
+	Mesh->SetWorldScale3D(FVector(0.25f, 0.25f, 0.25f));
 	Mesh->SetWorldRotation(FRotator(0.f, -90.f, 0.f));
 
 }
@@ -27,6 +27,8 @@ void AMyBaseUnit::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// FOR TESTING ONLY SHOULD BE REMOVED
+	OwningPlayer = GetWorld()->GetFirstPlayerController();
 }
 
 // Called every frame

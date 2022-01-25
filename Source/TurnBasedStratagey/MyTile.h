@@ -21,6 +21,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 		class USceneComponent* TileCenter;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+		TArray<class UStaticMesh*> BaseTypes;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
 		bool bTraversable = true;
 
@@ -29,6 +32,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
 		class AMyBaseUnit* OccupyingUnit;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
+		class AMyBuilding* Building;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
 		// Row index

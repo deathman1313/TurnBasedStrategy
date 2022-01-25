@@ -40,6 +40,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AMyTile* SelectedTile;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AMyBaseUnit* SelectedUnit;
+
 	UFUNCTION(BlueprintCallable)
 		void MoveVert(float Value);
 

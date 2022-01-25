@@ -21,6 +21,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USkeletalMeshComponent* Mesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxHealth = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Health = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AController* OwningPlayer;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		class AMyTile* OnTile;
 
