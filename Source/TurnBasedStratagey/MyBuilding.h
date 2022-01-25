@@ -22,9 +22,6 @@ public:
 		class UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class AController* OwningPlayer;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyTile* OnTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -44,5 +41,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void TurnAction() override;
 
 };

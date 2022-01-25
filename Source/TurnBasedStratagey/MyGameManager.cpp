@@ -44,12 +44,14 @@ void AMyGameManager::NextTurn()
 
 void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 {
-	TurnObjects.Remove(TurnObject);
-	if (TurnObjects.Num() <= 0)
+	WaitingFor.Remove(TurnObject);
+	if (WaitingFor.Num() <= 0)
 	{
 		// Start Next Turn
 		Turn++;
 		UE_LOG(LogTemp, Warning, TEXT("StartNextTurn"));
+		// Set waiting for (should be more complicated)
+		WaitingFor = TurnObjects;
 	}
 }
 

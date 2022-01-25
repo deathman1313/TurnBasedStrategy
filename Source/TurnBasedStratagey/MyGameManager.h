@@ -38,6 +38,9 @@ public:
 		TArray<class AMyTurnObject*> TurnObjects;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<class AMyTurnObject*> WaitingFor;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyPathfindingManager* Pathfinding;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -17,12 +17,13 @@ void AMyTurnObject::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	AMyGameManager* Test = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(this, AMyGameManager::StaticClass()));
-	Test->OnRoundStart.AddDynamic(this, &AMyTurnObject::TurnAction);
-	Test->TurnObjects.Add(this);
+	// Bind listener to game manager start round
+	AMyGameManager* GManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(this, AMyGameManager::StaticClass()));
+	GManager->OnRoundStart.AddDynamic(this, &AMyTurnObject::TurnAction);
+	GManager->TurnObjects.Add(this);
 
-	// Bind listener in game manager to OnFinishAction
-	OnFinishAction.AddDynamic(Test, &AMyGameManager::CheckTurn);
+	// Bind listeners in game manager
+	OnFinishAction.AddDynamic(GManager, &AMyGameManager::CheckTurn);
 }
 
 // Called every frame
@@ -34,6 +35,8 @@ void AMyTurnObject::Tick(float DeltaTime)
 
 void AMyTurnObject::TurnAction()
 {
+	// Override this
+	// Do action
 	// Finished TurnAction
 	OnFinishAction.Broadcast(this);
 }

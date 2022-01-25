@@ -33,3 +33,7 @@ void AMyBuilding::Tick(float DeltaTime)
 
 }
 
+void AMyBuilding::TurnAction()
+{
+	OnFinishAction.Broadcast(this);
+}

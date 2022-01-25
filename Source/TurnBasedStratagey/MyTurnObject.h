@@ -20,6 +20,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		FOnFinishAction OnFinishAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AController* OwningPlayer;
+
 	UFUNCTION(BlueprintCallable)
 		void TurnAction();
 

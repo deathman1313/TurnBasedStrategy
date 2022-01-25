@@ -28,9 +28,6 @@ public:
 		int Health = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class AController* OwningPlayer;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int UnitLayer = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
