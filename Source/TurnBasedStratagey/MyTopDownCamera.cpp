@@ -60,7 +60,6 @@ void AMyTopDownCamera::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	// Setup Action Mapping
 	PlayerInputComponent->BindAction("Select", IE_Pressed, this, &AMyTopDownCamera::Select);
-	PlayerInputComponent->BindAction("MoveUnit", IE_Pressed, this, &AMyTopDownCamera::MoveUnit);
 
 }
 
@@ -110,32 +109,32 @@ void AMyTopDownCamera::Select()
 		SelectedTile = GetClickedTile(FVector2D(X, Y), PlayerController);
 		if (SelectedTile)
 		{
-			// Set the SelectedUnit
-			SelectedUnit = nullptr;
-			if (SelectedTile->OccupyingUnit)
+			if (SelectType == ESelectTypes::Select)
 			{
-				if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
+				// Set the SelectedUnit
+				SelectedUnit = nullptr;
+				if (SelectedTile->OccupyingUnit)
 				{
-					SelectedUnit = SelectedTile->OccupyingUnit;
+					if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
+					{
+						SelectedUnit = SelectedTile->OccupyingUnit;
+					}
 				}
 			}
+			else if (SelectType == ESelectTypes::Move)
+			{
+				if (SelectedUnit)
+				{
+					// Set Movement for selected unit
+					SelectedUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedUnit->OnTile, SelectedTile, SelectedUnit->UnitLayer);
+				}
+				SelectType = ESelectTypes::Select;
+			}
 		}
-	}
-}
-
-void AMyTopDownCamera::MoveUnit()
-{
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
-	if (PlayerController)
-	{
-		float X, Y;
-		PlayerController->GetMousePosition(X, Y);
-		AMyTile* Tile = GetClickedTile(FVector2D(X, Y), PlayerController);
-		if (Tile && SelectedUnit)
+		else
 		{
-			// Set Movement for selected unit
-			SelectedUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedTile, Tile);
-			SelectedUnit->ProcessMovement();
+			// No tile selected
+			SelectedUnit = nullptr;
 		}
 	}
 }

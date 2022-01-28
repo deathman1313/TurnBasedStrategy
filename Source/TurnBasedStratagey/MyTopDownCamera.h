@@ -7,6 +7,14 @@
 #include "MyTile.h"
 #include "MyTopDownCamera.generated.h"
 
+UENUM(BlueprintType)
+enum class ESelectTypes : uint8
+{
+	Select,
+	Move,
+	Attack
+};
+
 UCLASS()
 class TURNBASEDSTRATAGEY_API AMyTopDownCamera : public APawn
 {
@@ -43,6 +51,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyBaseUnit* SelectedUnit;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		ESelectTypes SelectType = ESelectTypes::Select;
+
 	UFUNCTION(BlueprintCallable)
 		void MoveVert(float Value);
 
@@ -54,9 +65,6 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void Select();
-
-	UFUNCTION(BlueprintCallable)
-		void MoveUnit();
 
 	UFUNCTION(BlueprintCallable)
 		AMyTile* GetClickedTile(FVector2D MouseLocation, APlayerController* PlayerController);

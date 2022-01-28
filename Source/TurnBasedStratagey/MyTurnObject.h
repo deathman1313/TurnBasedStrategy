@@ -24,7 +24,7 @@ public:
 		class AController* OwningPlayer;
 
 	UFUNCTION(BlueprintCallable)
-		void TurnAction();
+		virtual void TurnAction();
 
 protected:
 	// Called when the game starts or when spawned

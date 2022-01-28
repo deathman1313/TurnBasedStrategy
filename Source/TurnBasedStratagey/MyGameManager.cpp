@@ -28,6 +28,8 @@ void AMyGameManager::BeginPlay()
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
 
 	Pathfinding->Setup(Tiles, Rows, Cols);
+
+	PlayerColours.Add(GetWorld()->GetFirstPlayerController(), FColor::Blue);
 }
 
 // Called every frame
@@ -39,6 +41,7 @@ void AMyGameManager::Tick(float DeltaTime)
 
 void AMyGameManager::NextTurn()
 {
+	WaitingFor = TurnObjects;
 	OnRoundStart.Broadcast();
 }
 
@@ -50,8 +53,6 @@ void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 		// Start Next Turn
 		Turn++;
 		UE_LOG(LogTemp, Warning, TEXT("StartNextTurn"));
-		// Set waiting for (should be more complicated)
-		WaitingFor = TurnObjects;
 	}
 }
 

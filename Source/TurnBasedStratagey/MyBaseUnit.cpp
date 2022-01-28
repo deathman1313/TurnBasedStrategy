@@ -86,5 +86,13 @@ bool AMyBaseUnit::ProcessMovement()
 	{
 		MovementQueue.Empty();
 	}
+	// End Turn
+	OnFinishAction.Broadcast(this);
+	CurrentMovement = MaxMovement;
 	return(false);
+}
+
+void AMyBaseUnit::TurnAction() 
+{
+	ProcessMovement();
 }

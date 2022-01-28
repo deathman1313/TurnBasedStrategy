@@ -36,13 +36,16 @@ public:
 		void Setup(TArray<AMyTile*> Tiles, int R, int C);
 
 	UFUNCTION(BlueprintCallable)
-		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End);
+		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End, int UnitLayer);
 
 	UFUNCTION(BlueprintCallable)
 		TArray<AMyTile*> GetNeighbours(AMyTile* Tile);
 
 	UFUNCTION(BlueprintCallable)
 		float GetTileDistance(AMyTile* Start, AMyTile* End);
+
+	UFUNCTION(BlueprintCallable)
+		bool IsTileOccupied(AMyTile* Tile, int UnitLayer);
 
 protected:
 	// Called when the game starts or when spawned

@@ -26,9 +26,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ConstructionProgress = 0;
 
+	UFUNCTION(BlueprintCallable)
+		void UpdateOwner(AController* NewOwner);
+
 protected:
 	virtual void BeginPlay() override;
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void TurnAction() override;
 };

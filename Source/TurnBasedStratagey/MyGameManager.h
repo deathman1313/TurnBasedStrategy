@@ -70,6 +70,9 @@ public:
 		TArray<AMyTile*> Tiles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TMap<AController*, FColor> PlayerColours;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FConstructions> PossibleConstrutions;
 
 	UFUNCTION(BlueprintCallable)

@@ -2,6 +2,7 @@
 
 #include "MyPathfindingManager.h"
 #include "MyGameManager.h"
+#include "MyBaseUnit.h"
 #include "Algo/Reverse.h"
 
 // Sets default values
@@ -51,7 +52,7 @@ void AMyPathfindingManager::Setup(TArray<AMyTile*> Tiles, int R, int C)
 	}
 }
 
-TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
+TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, int UnitLayer = -1)
 {
 	TArray<AMyTile*> OpenSet;
 
@@ -64,7 +65,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 
 	Start->PreviousTile = nullptr;
 
-	if (Start->bTraversable && End->bTraversable)
+	if (Start->bTraversable && End->bTraversable && !IsTileOccupied(End, UnitLayer))
 	{
 		// The currently selected tile to check against
 		AMyTile* Current;
@@ -100,7 +101,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End)
 
 			for (AMyTile* Neighbour : Current->Neighbours)
 			{
-				if (Neighbour->bTraversable)
+				if (Neighbour->bTraversable && !IsTileOccupied(Neighbour, UnitLayer))
 				{
 					float TempG = G[Current] + Neighbour->MoveCost;
 
@@ -171,4 +172,16 @@ float AMyPathfindingManager::GetTileDistance(AMyTile* Start, AMyTile* End)
 int AMyPathfindingManager::FindArrayIndex(int i, int j)
 {
 	return((((Cols * 2) - 1) * i) + j);
+}
+
+bool AMyPathfindingManager::IsTileOccupied(AMyTile* Tile, int UnitLayer)
+{
+	if (Tile->OccupyingUnit)
+	{
+		if (UnitLayer == Tile->OccupyingUnit->UnitLayer && UnitLayer != -1)
+		{
+			return(true);
+		}
+	}
+	return(false);
 }

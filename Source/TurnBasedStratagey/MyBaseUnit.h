@@ -22,6 +22,9 @@ public:
 		class USkeletalMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString Name = "Base Unit";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MaxHealth = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -64,5 +67,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void TurnAction() override;
 
 };
