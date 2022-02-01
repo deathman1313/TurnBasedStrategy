@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "MyTile.h"
+#include "MyGameManager.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -60,6 +61,8 @@ void AMyBaseUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 bool AMyBaseUnit::ProcessMovement()
 {
+	GameManager->CreatePath(MovementQueue);
+	GameManager->CreateSelector(OnTile);
 	if (MovementQueue.Num() >= 2)
 	{
 		if (MovementQueue[0] == OnTile)

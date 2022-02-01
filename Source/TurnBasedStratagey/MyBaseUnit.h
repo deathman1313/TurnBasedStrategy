@@ -30,8 +30,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int UnitLayer = 1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		class AMyTile* OnTile;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AMyGameManager* GameManager;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		int MaxMovement = 5;

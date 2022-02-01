@@ -40,7 +40,7 @@ void AMyTopDownCamera::BeginPlay()
 		GameManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AMyGameManager::StaticClass()));
 	}
 }
-
+ 
 // Called every frame
 void AMyTopDownCamera::Tick(float DeltaTime)
 {
@@ -104,38 +104,53 @@ void AMyTopDownCamera::Select()
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	if (PlayerController)
 	{
+		// Get Clicked Tile
 		float X, Y;
 		PlayerController->GetMousePosition(X, Y);
 		SelectedTile = GetClickedTile(FVector2D(X, Y), PlayerController);
-		if (SelectedTile)
+		SelectTile(PlayerController);
+	}
+}
+
+void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
+{
+	// Remove Path
+	TArray<AMyTile*> TempArray;
+	GameManager->CreatePath(TempArray);
+	if (SelectedTile)
+	{
+		if (SelectType == ESelectTypes::Select)
 		{
-			if (SelectType == ESelectTypes::Select)
-			{
-				// Set the SelectedUnit
-				SelectedUnit = nullptr;
-				if (SelectedTile->OccupyingUnit)
-				{
-					if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
-					{
-						SelectedUnit = SelectedTile->OccupyingUnit;
-					}
-				}
-			}
-			else if (SelectType == ESelectTypes::Move)
-			{
-				if (SelectedUnit)
-				{
-					// Set Movement for selected unit
-					SelectedUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedUnit->OnTile, SelectedTile, SelectedUnit->UnitLayer);
-				}
-				SelectType = ESelectTypes::Select;
-			}
-		}
-		else
-		{
-			// No tile selected
+			// Create Selector
+			GameManager->CreateSelector(SelectedTile);
+			// Set the SelectedUnit
 			SelectedUnit = nullptr;
+			if (SelectedTile->OccupyingUnit)
+			{
+				if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
+				{
+					SelectedUnit = SelectedTile->OccupyingUnit;
+					GameManager->CreatePath(SelectedUnit->MovementQueue);
+				}
+			}
 		}
+		else if (SelectType == ESelectTypes::Move)
+		{
+			if (SelectedUnit)
+			{
+				// Set Movement for selected unit
+				SelectedUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedUnit->OnTile, SelectedTile, SelectedUnit->UnitLayer);
+				GameManager->CreatePath(SelectedUnit->MovementQueue);
+			}
+			SelectType = ESelectTypes::Select;
+		}
+	}
+	else
+	{
+		// No tile selected
+		SelectedUnit = nullptr;
+		// Remove Selector
+		GameManager->CreateSelector(nullptr);
 	}
 }
 

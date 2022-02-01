@@ -70,6 +70,9 @@ public:
 		void Select();
 
 	UFUNCTION(BlueprintCallable)
+		void SelectTile(APlayerController* PlayerController);
+
+	UFUNCTION(BlueprintCallable)
 		AMyTile* GetClickedTile(FVector2D MouseLocation, APlayerController* PlayerController);
 
 protected:

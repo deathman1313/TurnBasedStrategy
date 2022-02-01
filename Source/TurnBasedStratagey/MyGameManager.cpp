@@ -4,6 +4,9 @@
 #include "MyTile.h"
 #include "MyPathfindingManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/InstancedStaticMeshComponent.h"
+
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AMyGameManager::AMyGameManager()
@@ -11,13 +14,21 @@ AMyGameManager::AMyGameManager()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	//PrimaryActorTick.bCanEverTick = true;
 
+	Selector = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Selector"));
+	Selector->SetupAttachment(GetRootComponent());
+
+	VisualPath = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Path"));
+	VisualPath->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
 void AMyGameManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Selector->SetStaticMesh(SelectorMesh);
+	VisualPath->SetStaticMesh(ArrowMesh);
+
 	if (bGenerateTiles)
 	{
 		CreateGameBoard(Rows, Cols);
@@ -83,4 +94,26 @@ void AMyGameManager::CreateGameBoard(int c, int r)
 	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(0.f, 100.f, 20.f), FRotator(0.f, 90.f, 0.f));
 	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(-86.5f, 50.f, 20.f), FRotator(0.f, 90.f, 0.f));
 
+}
+
+void AMyGameManager::CreateSelector(AMyTile* Tile)
+{
+	Selector->ClearInstances();
+	if (Tile)
+	{
+		Selector->AddInstance(FTransform(FRotator(0.f, 0.f, 0.f), Tile->GetActorLocation() + Tile->TileCenter->GetComponentLocation()));
+	}
+}
+
+void AMyGameManager::CreatePath(TArray<AMyTile*> Path)
+{
+	VisualPath->ClearInstances();
+	if (Path.Num() > 1)
+	{
+		for (int i = 0; i < Path.Num() - 1; i++)
+		{
+			FRotator ArrowRotation = (Path[i]->GetActorLocation() - Path[i+1]->GetActorLocation()).Rotation() + FRotator(0.f, 90.f, 0.f);
+			VisualPath->AddInstance(FTransform(ArrowRotation, Path[i]->GetActorLocation() + Path[i]->TileCenter->GetComponentLocation()));
+		}
+	}
 }

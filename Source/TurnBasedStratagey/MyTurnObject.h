@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AController* OwningPlayer;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AMyTile* OnTile;
+
 	UFUNCTION(BlueprintCallable)
 		virtual void TurnAction();
 

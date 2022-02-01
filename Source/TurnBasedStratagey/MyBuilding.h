@@ -22,9 +22,6 @@ public:
 		class UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class AMyTile* OnTile;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bBlocking = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
