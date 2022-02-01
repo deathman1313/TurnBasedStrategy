@@ -41,12 +41,9 @@ void AMyGameManager::Tick(float DeltaTime)
 
 void AMyGameManager::NextTurn()
 {
-	if (!bMidTurn)
-	{
-		bMidTurn = true;
-		WaitingFor = TurnObjects;
-		OnTryProgressTurn.Broadcast();
-	}
+	bMidTurn = true;
+	WaitingFor = TurnObjects;
+	OnTryProgressTurn.Broadcast();
 }
 
 void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)

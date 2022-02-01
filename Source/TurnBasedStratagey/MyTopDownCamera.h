@@ -52,6 +52,9 @@ public:
 		class AMyBaseUnit* SelectedUnit;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AMyBuilding* SelectedBuilding;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		ESelectTypes SelectType = ESelectTypes::Select;
 
 	UFUNCTION(BlueprintCallable)
