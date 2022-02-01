@@ -6,7 +6,7 @@
 AMyBase::AMyBase()
 {
 	//PrimaryActorTick.bCanEverTick = true;
-
+	Name = "Base";
 }
 
 void AMyBase::BeginPlay()
@@ -38,5 +38,10 @@ void AMyBase::UpdateOwner(AController* NewOwner)
 
 void AMyBase::TurnAction()
 {
-	OnFinishAction.Broadcast(this);
+	Super::TurnAction();
+}
+
+void AMyBase::Reset()
+{
+	Super::Reset();
 }

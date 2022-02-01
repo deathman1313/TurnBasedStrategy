@@ -44,4 +44,6 @@ public:
 
 	virtual void TurnAction() override;
 
+	virtual void Reset() override;
+
 };

@@ -22,4 +22,8 @@ protected:
 
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void TurnAction() override;
+
+	virtual void Reset() override;
 };

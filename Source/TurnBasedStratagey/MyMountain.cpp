@@ -4,7 +4,7 @@
 
 AMyMountain::AMyMountain()
 {
-
+	Name = "Mountain";
 }
 
 void AMyMountain::BeginPlay()
@@ -17,4 +17,15 @@ void AMyMountain::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AMyMountain::TurnAction()
+{
+	bPerformedAction = true;
+	Super::TurnAction();
+}
+
+void AMyMountain::Reset()
+{
+	Super::Reset();
 }

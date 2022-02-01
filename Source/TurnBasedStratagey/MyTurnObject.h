@@ -21,10 +21,25 @@ public:
 		FOnFinishAction OnFinishAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bPerformedAction = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString Name = "Turn Object";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bLocked = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AController* OwningPlayer;
 
 	UFUNCTION(BlueprintCallable)
 		virtual void TurnAction();
+
+	UFUNCTION(BlueprintCallable)
+		virtual void Reset();
+
+	UFUNCTION(BlueprintCallable)
+		void DoNothing();
 
 protected:
 	// Called when the game starts or when spawned

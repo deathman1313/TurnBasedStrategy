@@ -19,7 +19,8 @@ void AMyTurnObject::BeginPlay()
 	
 	// Bind listener to game manager start round
 	AMyGameManager* GManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(this, AMyGameManager::StaticClass()));
-	GManager->OnRoundStart.AddDynamic(this, &AMyTurnObject::TurnAction);
+	GManager->OnTryProgressTurn.AddDynamic(this, &AMyTurnObject::TurnAction);
+	GManager->OnRoundStart.AddDynamic(this, &AMyTurnObject::Reset);
 	GManager->TurnObjects.Add(this);
 
 	// Bind listeners in game manager
@@ -38,5 +39,22 @@ void AMyTurnObject::TurnAction()
 	// Override this
 	// Do action
 	// Finished TurnAction
-	OnFinishAction.Broadcast(this);
+	if (bPerformedAction)
+	{
+		bLocked = true;
+		OnFinishAction.Broadcast(this);
+	}
+}
+
+void AMyTurnObject::Reset()
+{
+	// Override this
+	// TriggerReset
+	bPerformedAction = false;
+	bLocked = false;
+}
+
+void AMyTurnObject::DoNothing()
+{
+	bPerformedAction = true;
 }

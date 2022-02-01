@@ -41,8 +41,12 @@ void AMyGameManager::Tick(float DeltaTime)
 
 void AMyGameManager::NextTurn()
 {
-	WaitingFor = TurnObjects;
-	OnRoundStart.Broadcast();
+	if (!bMidTurn)
+	{
+		bMidTurn = true;
+		WaitingFor = TurnObjects;
+		OnTryProgressTurn.Broadcast();
+	}
 }
 
 void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
@@ -52,6 +56,7 @@ void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 	{
 		// Start Next Turn
 		Turn++;
+		bMidTurn = false;
 		UE_LOG(LogTemp, Warning, TEXT("StartNextTurn"));
 	}
 }

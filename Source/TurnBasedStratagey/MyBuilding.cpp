@@ -17,6 +17,8 @@ AMyBuilding::AMyBuilding()
 	Mesh->SetupAttachment(Center);
 	Mesh->SetWorldScale3D(FVector(10.f, 10.f, 10.f));
 	Mesh->SetMobility(EComponentMobility::Stationary);
+
+	Name = "Building";
 }
 
 // Called when the game starts or when spawned
@@ -35,5 +37,10 @@ void AMyBuilding::Tick(float DeltaTime)
 
 void AMyBuilding::TurnAction()
 {
-	OnFinishAction.Broadcast(this);
+	Super::TurnAction();
+}
+
+void AMyBuilding::Reset()
+{
+	Super::Reset();
 }

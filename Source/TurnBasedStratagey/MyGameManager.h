@@ -7,6 +7,7 @@
 #include "MyTile.h"
 #include "MyGameManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTryProgressTurn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundStart);
 
 USTRUCT(BlueprintType)
@@ -32,7 +33,13 @@ public:
 	AMyGameManager();
 
 	UPROPERTY(BlueprintAssignable)
+		FOnTryProgressTurn OnTryProgressTurn;
+
+	UPROPERTY(BlueprintAssignable)
 		FOnRoundStart OnRoundStart;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bMidTurn = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<class AMyTurnObject*> TurnObjects;

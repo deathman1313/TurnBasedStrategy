@@ -20,6 +20,7 @@ AMyBaseUnit::AMyBaseUnit()
 	Mesh->SetWorldScale3D(FVector(0.25f, 0.25f, 0.25f));
 	Mesh->SetWorldRotation(FRotator(0.f, -90.f, 0.f));
 
+	Name = "Base Unit";
 }
 
 // Called when the game starts or when spawned
@@ -86,13 +87,17 @@ bool AMyBaseUnit::ProcessMovement()
 	{
 		MovementQueue.Empty();
 	}
-	// End Turn
-	OnFinishAction.Broadcast(this);
-	CurrentMovement = MaxMovement;
+	bPerformedAction = true;
 	return(false);
 }
 
 void AMyBaseUnit::TurnAction() 
 {
-	ProcessMovement();
+	Super::TurnAction();
+}
+
+void AMyBaseUnit::Reset()
+{
+	CurrentMovement = MaxMovement;
+	Super::Reset();
 }
