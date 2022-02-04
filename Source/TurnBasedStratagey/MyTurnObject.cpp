@@ -52,6 +52,7 @@ void AMyTurnObject::Reset()
 	// TriggerReset
 	bPerformedAction = false;
 	bLocked = false;
+	UKismetSystemLibrary::PrintString(this, FString("Test"));
 }
 
 void AMyTurnObject::DoNothing()

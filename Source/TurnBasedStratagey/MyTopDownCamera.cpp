@@ -10,6 +10,7 @@
 #include "MyPathfindingManager.h"
 #include "MyTile.h"
 #include "MyBaseUnit.h"
+#include "MyBuilding.h"
 
 // Sets default values
 AMyTopDownCamera::AMyTopDownCamera()
@@ -130,7 +131,17 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 				if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
 				{
 					SelectedUnit = SelectedTile->OccupyingUnit;
+					// Show MovementQueue for character
 					GameManager->CreatePath(SelectedUnit->MovementQueue);
+				}
+			}
+			// Set the SelectedBuilding
+			SelectedBuilding = nullptr;
+			if (SelectedTile->Building)
+			{
+				if (SelectedTile->Building->OwningPlayer == PlayerController)
+				{
+					SelectedBuilding = SelectedTile->Building;
 				}
 			}
 		}
@@ -149,6 +160,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 	{
 		// No tile selected
 		SelectedUnit = nullptr;
+		SelectedBuilding = nullptr;
 		// Remove Selector
 		GameManager->CreateSelector(nullptr);
 	}

@@ -102,5 +102,6 @@ void AMyBaseUnit::TurnAction()
 void AMyBaseUnit::Reset()
 {
 	CurrentMovement = MaxMovement;
+	// This doesnt work
 	Super::Reset();
 }
