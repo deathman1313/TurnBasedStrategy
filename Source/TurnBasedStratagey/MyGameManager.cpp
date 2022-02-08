@@ -5,7 +5,6 @@
 #include "MyPathfindingManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InstancedStaticMeshComponent.h"
-
 #include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
@@ -19,15 +18,13 @@ AMyGameManager::AMyGameManager()
 
 	VisualPath = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Path"));
 	VisualPath->SetupAttachment(GetRootComponent());
+
 }
 
 // Called when the game starts or when spawned
 void AMyGameManager::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Selector->SetStaticMesh(SelectorMesh);
-	VisualPath->SetStaticMesh(ArrowMesh);
 
 	if (bGenerateTiles)
 	{

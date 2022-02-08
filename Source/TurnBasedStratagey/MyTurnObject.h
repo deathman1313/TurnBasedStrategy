@@ -39,6 +39,15 @@ public:
 		int Health = 100;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Range = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AMyTile* Targeting;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<class AMyTile*> ValidTargets;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AController* OwningPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

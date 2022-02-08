@@ -24,6 +24,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 		TArray<class UStaticMesh*> BaseTypes;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+		TArray<class UMaterialInterface*> DefaultMaterials;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+		class UMaterialInterface* SelectMaterial;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
 		bool bTraversable = true;
 
@@ -49,6 +55,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
 		TArray<AMyTile*> Neighbours;
+
+	UFUNCTION(BlueprintCallable)
+		void SelectTile(bool Select);
 
 protected:
 	// Called when the game starts or when spawned

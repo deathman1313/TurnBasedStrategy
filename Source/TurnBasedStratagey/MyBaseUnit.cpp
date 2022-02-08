@@ -102,6 +102,35 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass = true)
 	}
 }
 
+TArray<AMyTile*> AMyBaseUnit::FindTargets()
+{
+	TArray<AMyTile*> Targets;
+	TArray<AMyTile*> CheckingTargets;
+	CheckingTargets.Add(OnTile);
+	TArray<AMyTile*> TempTargets;
+	for (int i = 0; i < Range; i++)
+	{
+		for (AMyTile* Tile : CheckingTargets)
+		{
+			for (AMyTile* Target : Tile->Neighbours)
+			{
+				// Check if valid target
+				if ((Target->OccupyingUnit || Target->Building) && Target != OnTile)
+				{
+					Targets.Add(Target);
+				}
+				if (!Targets.Contains(Target) && !CheckingTargets.Contains(Target))
+				{
+					TempTargets.AddUnique(Target);
+				}
+			}
+		}
+		CheckingTargets = TempTargets;
+		TempTargets.Empty();
+	}
+	return(Targets);
+}
+
 void AMyBaseUnit::TurnAction() 
 {
 	Super::TurnAction();
@@ -110,6 +139,5 @@ void AMyBaseUnit::TurnAction()
 void AMyBaseUnit::Reset()
 {
 	CurrentMovement = MaxMovement;
-	// This doesnt work
 	Super::Reset();
 }

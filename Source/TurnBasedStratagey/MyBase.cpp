@@ -65,7 +65,7 @@ void AMyBase::TurnAction()
 
 bool AMyBase::SpawnUnit()
 {
-	AMyBaseUnit* SpawnedUnit = GetWorld()->SpawnActor<AMyBaseUnit>(GManager->PossibleConstrutions[CurrentConstruction].Unit, FVector(OnTile->GetActorLocation().X, OnTile->GetActorLocation().Y, 65.f), FRotator(0.f, 180.f, 0.f));
+	AMyBaseUnit* SpawnedUnit = GetWorld()->SpawnActor<AMyBaseUnit>(GManager->PossibleConstrutions[CurrentConstruction].Unit, FVector(OnTile->GetActorLocation().X, OnTile->GetActorLocation().Y, 62.f), FRotator(0.f, 180.f, 0.f));
 	SpawnedUnit->OwningPlayer = OwningPlayer;
 	SpawnedUnit->OnTile = OnTile;
 	OnTile->OccupyingUnit = SpawnedUnit;

@@ -42,13 +42,7 @@ public:
 		class UInstancedStaticMeshComponent* Selector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class UStaticMesh* SelectorMesh;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class UInstancedStaticMeshComponent* VisualPath;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class UStaticMesh* ArrowMesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bMidTurn = false;

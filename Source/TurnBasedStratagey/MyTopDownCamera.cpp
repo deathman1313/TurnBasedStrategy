@@ -118,6 +118,14 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 	// Remove Path
 	TArray<AMyTile*> TempArray;
 	GameManager->CreatePath(TempArray);
+	// Remove visual targeting
+	if (SelectedUnit)
+	{
+		for (AMyTile* Tile : SelectedUnit->ValidTargets)
+		{
+			Tile->SelectTile(false);
+		}
+	}
 	if (SelectedTile)
 	{
 		if (SelectType == ESelectTypes::Select)
@@ -155,12 +163,24 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 			}
 			SelectType = ESelectTypes::Select;
 		}
+		else if (SelectType == ESelectTypes::UnitAttack)
+		{
+			if (SelectedUnit)
+			{
+				if (SelectedUnit->ValidTargets.Contains(SelectedTile))
+				{
+					// Attack selection
+				}
+			}
+			SelectType = ESelectTypes::Select;
+		}
 	}
 	else
 	{
 		// No tile selected
 		SelectedUnit = nullptr;
 		SelectedBuilding = nullptr;
+		SelectType = ESelectTypes::Select;
 		// Remove Selector
 		GameManager->CreateSelector(nullptr);
 	}

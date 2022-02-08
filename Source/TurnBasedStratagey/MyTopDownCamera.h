@@ -12,7 +12,8 @@ enum class ESelectTypes : uint8
 {
 	Select,
 	Move,
-	Attack
+	UnitAttack,
+	BuildingAttack
 };
 
 UCLASS()

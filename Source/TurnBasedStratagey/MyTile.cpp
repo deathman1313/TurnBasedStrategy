@@ -2,6 +2,7 @@
 
 #include "MyTile.h"
 #include "Components/SceneComponent.h"
+#include "Materials/Material.h"
 
 // Sets default values
 AMyTile::AMyTile()
@@ -23,6 +24,8 @@ void AMyTile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	DefaultMaterials = Base->GetMaterials();
+
 }
 
 // Called every frame
@@ -32,3 +35,20 @@ void AMyTile::Tick(float DeltaTime)
 
 }
 
+void AMyTile::SelectTile(bool Select)
+{
+	if (Select)
+	{
+		for (int i = 0; i < DefaultMaterials.Num(); i++)
+		{
+			Base->SetMaterial(i, SelectMaterial);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < DefaultMaterials.Num(); i++)
+		{
+			Base->SetMaterial(i, DefaultMaterials[i]);
+		}
+	}
+}
