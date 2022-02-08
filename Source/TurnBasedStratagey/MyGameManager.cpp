@@ -66,6 +66,7 @@ void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 		Turn++;
 		bMidTurn = false;
 		UE_LOG(LogTemp, Warning, TEXT("StartNextTurn"));
+		OnRoundStart.Broadcast();
 	}
 }
 

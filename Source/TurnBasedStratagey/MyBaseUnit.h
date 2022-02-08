@@ -30,9 +30,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int UnitLayer = 1;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class AMyGameManager* GameManager;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		int MaxMovement = 5;
 
@@ -40,7 +37,7 @@ public:
 		int CurrentMovement = 5;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-		float Speed = 3.f;
+		float Speed = 500.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		TArray<class AMyTile*> MovementQueue;
@@ -65,7 +62,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	virtual void TurnAction() override;
+		virtual void TurnAction() override;
 
-	virtual void Reset() override;
+		virtual void Reset() override;
 };

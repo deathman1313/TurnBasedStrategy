@@ -28,7 +28,7 @@ AMyBaseUnit::AMyBaseUnit()
 void AMyBaseUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	// FOR TESTING ONLY SHOULD BE REMOVED
 	OwningPlayer = GetWorld()->GetFirstPlayerController();
 }
@@ -61,8 +61,8 @@ void AMyBaseUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 bool AMyBaseUnit::ProcessMovement(bool bFirstPass = true)
 {
-	GameManager->CreatePath(MovementQueue);
-	GameManager->CreateSelector(OnTile);
+	GManager->CreatePath(MovementQueue);
+	GManager->CreateSelector(OnTile);
 	if (MovementQueue.Num() >= 2)
 	{
 		if (MovementQueue[0] == OnTile)

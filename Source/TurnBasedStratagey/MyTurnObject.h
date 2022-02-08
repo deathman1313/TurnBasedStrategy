@@ -17,6 +17,9 @@ public:
 	// Sets default values for this actor's properties
 	AMyTurnObject();
 
+	UPROPERTY()
+		class AMyGameManager* GManager;
+
 	UPROPERTY(BlueprintAssignable)
 		FOnFinishAction OnFinishAction;
 

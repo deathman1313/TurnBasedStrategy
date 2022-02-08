@@ -18,9 +18,9 @@ void AMyTurnObject::BeginPlay()
 	Super::BeginPlay();
 	
 	// Bind listener to game manager start round
-	AMyGameManager* GManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(this, AMyGameManager::StaticClass()));
-	GManager->OnTryProgressTurn.AddDynamic(this, &AMyTurnObject::TurnAction);
-	GManager->OnRoundStart.AddDynamic(this, &AMyTurnObject::Reset);
+	GManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(this, AMyGameManager::StaticClass()));
+	GManager->OnTryProgressTurn.AddUniqueDynamic(this, &AMyTurnObject::TurnAction);
+	GManager->OnRoundStart.AddUniqueDynamic(this, &AMyTurnObject::Reset);
 	GManager->TurnObjects.Add(this);
 
 	// Bind listeners in game manager
@@ -52,7 +52,6 @@ void AMyTurnObject::Reset()
 	// TriggerReset
 	bPerformedAction = false;
 	bLocked = false;
-	UKismetSystemLibrary::PrintString(this, FString("Test"));
 }
 
 void AMyTurnObject::DoNothing()

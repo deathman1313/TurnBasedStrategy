@@ -18,9 +18,6 @@ public:
 	AMyBase();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class AMyGameManager* GameManager;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int CurrentConstruction = -1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -28,6 +25,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void UpdateOwner(AController* NewOwner);
+
+	UFUNCTION(BlueprintCallable)
+		bool SpawnUnit();
 
 protected:
 	virtual void BeginPlay() override;
