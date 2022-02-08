@@ -33,6 +33,12 @@ public:
 		bool bLocked = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MaxHealth = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Health = 100;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AController* OwningPlayer;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

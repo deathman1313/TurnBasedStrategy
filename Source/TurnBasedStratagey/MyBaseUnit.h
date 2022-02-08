@@ -22,12 +22,6 @@ public:
 		class USkeletalMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int MaxHealth = 100;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int Health = 100;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int UnitLayer = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
