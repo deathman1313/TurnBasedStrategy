@@ -47,6 +47,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool IsTileOccupied(AMyTile* Tile, int UnitLayer);
 
+	UFUNCTION(BlueprintCallable)
+		TArray<AMyTile*> ValidatePath(TArray<AMyTile*> Path, int UnitLayer);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

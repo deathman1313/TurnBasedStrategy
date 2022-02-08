@@ -52,7 +52,7 @@ public:
 		FVector MovementLocation;
 
 	UFUNCTION(BlueprintCallable)
-		bool ProcessMovement();
+		bool ProcessMovement(bool bFirstPass);
 
 protected:
 	// Called when the game starts or when spawned

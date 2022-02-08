@@ -47,7 +47,7 @@ void AMyBaseUnit::Tick(float DeltaTime)
 			UE_LOG(LogTemp, Warning, TEXT("EndMove"));
 			SetActorLocation(FVector(MovementLocation.X, MovementLocation.Y, GetActorLocation().Z));
 			bMoving = false;
-			ProcessMovement();
+			ProcessMovement(false);
 		}
 	}
 }
@@ -59,7 +59,7 @@ void AMyBaseUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
-bool AMyBaseUnit::ProcessMovement()
+bool AMyBaseUnit::ProcessMovement(bool bFirstPass = true)
 {
 	GameManager->CreatePath(MovementQueue);
 	GameManager->CreateSelector(OnTile);
@@ -90,8 +90,16 @@ bool AMyBaseUnit::ProcessMovement()
 	{
 		MovementQueue.Empty();
 	}
-	bPerformedAction = true;
-	return(false);
+	// Check if movement occurred
+	if (bFirstPass)
+	{
+		return(false);
+	}
+	else
+	{
+		bPerformedAction = true;
+		return(true);
+	}
 }
 
 void AMyBaseUnit::TurnAction() 

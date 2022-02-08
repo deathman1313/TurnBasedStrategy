@@ -185,3 +185,25 @@ bool AMyPathfindingManager::IsTileOccupied(AMyTile* Tile, int UnitLayer)
 	}
 	return(false);
 }
+
+TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int UnitLayer = -1)
+{
+	bool bIsPathValid = true;
+	for (AMyTile* Tile : Path)
+	{
+		// Check if tile is valid
+		if (!Tile->bTraversable || IsTileOccupied(Tile, UnitLayer)) 
+		{
+			bIsPathValid = false;
+			break;
+		}
+	}
+	if (bIsPathValid)
+	{
+		return(Path);
+	}
+	else
+	{
+		return(FindPath(Path[0], Path[Path.Num() - 1], UnitLayer));
+	}
+}
