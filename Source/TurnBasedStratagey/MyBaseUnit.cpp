@@ -38,13 +38,17 @@ void AMyBaseUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Move unit
 	if (bMoving)
 	{
+		// Interp between start and end location and set location
 		FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), MovementLocation, DeltaTime, Speed);
 		SetActorLocation(FVector(NewLocation.X, NewLocation.Y, GetActorLocation().Z));
+		// If close to final destination
 		if (GetActorLocation().Equals(FVector(MovementLocation.X, MovementLocation.Y, GetActorLocation().Z), 5.f))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("EndMove"));
+			// Move to final location
 			SetActorLocation(FVector(MovementLocation.X, MovementLocation.Y, GetActorLocation().Z));
 			bMoving = false;
 			ProcessMovement(false);
@@ -61,12 +65,16 @@ void AMyBaseUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 bool AMyBaseUnit::ProcessMovement(bool bFirstPass = true)
 {
+	// Update location and path meshes
+	// May need to check if unit is still selected
 	GManager->CreatePath(MovementQueue);
 	GManager->CreateSelector(OnTile);
+	// Make sure path is valid
 	if (MovementQueue.Num() >= 2)
 	{
 		if (MovementQueue[0] == OnTile)
 		{
+			// Check available movement
 			if (CurrentMovement > 0)
 			{
 				// Set location to move to
@@ -104,6 +112,7 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass = true)
 
 TArray<AMyTile*> AMyBaseUnit::FindTargets()
 {
+	// Define temp arrays
 	TArray<AMyTile*> Targets;
 	TArray<AMyTile*> CheckingTargets;
 	CheckingTargets.Add(OnTile);

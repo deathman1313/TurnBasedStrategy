@@ -45,8 +45,10 @@ void AMyBase::TurnAction()
 		{
 			ConstructionProgress++;
 		}
+		// Check if completed construction
 		if (ConstructionProgress >= GManager->PossibleConstrutions[CurrentConstruction].ConstructionCost)
 		{
+			// Check if tile occupied
 			if (!OnTile->OccupyingUnit)
 			{
 				ConstructionProgress -= GManager->PossibleConstrutions[CurrentConstruction].ConstructionCost;
@@ -65,7 +67,9 @@ void AMyBase::TurnAction()
 
 bool AMyBase::SpawnUnit()
 {
+	// Spawn new unit on tile
 	AMyBaseUnit* SpawnedUnit = GetWorld()->SpawnActor<AMyBaseUnit>(GManager->PossibleConstrutions[CurrentConstruction].Unit, FVector(OnTile->GetActorLocation().X, OnTile->GetActorLocation().Y, 62.f), FRotator(0.f, 180.f, 0.f));
+	// Set default values
 	SpawnedUnit->OwningPlayer = OwningPlayer;
 	SpawnedUnit->OnTile = OnTile;
 	OnTile->OccupyingUnit = SpawnedUnit;

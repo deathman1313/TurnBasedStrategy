@@ -37,6 +37,7 @@ void AMyGameManager::BeginPlay()
 
 	Pathfinding->Setup(Tiles, Rows, Cols);
 
+	// Assign Player Colours
 	PlayerColours.Add(GetWorld()->GetFirstPlayerController(), FColor::Blue);
 }
 
@@ -49,6 +50,7 @@ void AMyGameManager::Tick(float DeltaTime)
 
 void AMyGameManager::NextTurn()
 {
+	// Try to progress to new turn
 	bMidTurn = true;
 	WaitingFor = TurnObjects;
 	OnTryProgressTurn.Broadcast();
@@ -56,6 +58,7 @@ void AMyGameManager::NextTurn()
 
 void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 {
+	// Check if all objects are ready to start next turn
 	WaitingFor.Remove(TurnObject);
 	if (WaitingFor.Num() <= 0)
 	{
@@ -69,6 +72,7 @@ void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 
 void AMyGameManager::CreateGameBoard(int c, int r)
 {
+	// WIP
 	Rows = c;
 	Cols = r;
 
@@ -96,21 +100,27 @@ void AMyGameManager::CreateGameBoard(int c, int r)
 
 void AMyGameManager::CreateSelector(AMyTile* Tile)
 {
+	// Remove all existing selectors
 	Selector->ClearInstances();
 	if (Tile)
 	{
+		// Create at given location
 		Selector->AddInstance(FTransform(FRotator(0.f, 0.f, 0.f), Tile->GetActorLocation() + Tile->TileCenter->GetComponentLocation()));
 	}
 }
 
 void AMyGameManager::CreatePath(TArray<AMyTile*> Path)
 {
+	// Remove all existing paths
 	VisualPath->ClearInstances();
 	if (Path.Num() > 1)
 	{
+		// For all tiles in array, except the last
 		for (int i = 0; i < Path.Num() - 1; i++)
 		{
+			// Find rotation between this and next tile
 			FRotator ArrowRotation = (Path[i]->GetActorLocation() - Path[i+1]->GetActorLocation()).Rotation() + FRotator(0.f, 90.f, 0.f);
+			// Create at given location, with calculated rotation
 			VisualPath->AddInstance(FTransform(ArrowRotation, Path[i]->GetActorLocation() + Path[i]->TileCenter->GetComponentLocation()));
 		}
 	}

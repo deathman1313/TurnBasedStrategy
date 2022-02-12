@@ -115,7 +115,7 @@ void AMyTopDownCamera::Select()
 
 void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 {
-	// Remove Path
+	// Remove visual path
 	TArray<AMyTile*> TempArray;
 	GameManager->CreatePath(TempArray);
 	// Remove visual targeting
@@ -128,8 +128,9 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 	}
 	if (SelectedTile)
 	{
-		if (SelectType == ESelectTypes::Select)
+		switch (SelectType)
 		{
+		case ESelectTypes::Select:
 			// Create Selector
 			GameManager->CreateSelector(SelectedTile);
 			// Set the SelectedUnit
@@ -152,9 +153,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 					SelectedBuilding = SelectedTile->Building;
 				}
 			}
-		}
-		else if (SelectType == ESelectTypes::Move)
-		{
+		case ESelectTypes::Move:
 			if (SelectedUnit)
 			{
 				// Set Movement for selected unit
@@ -162,14 +161,20 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 				GameManager->CreatePath(SelectedUnit->MovementQueue);
 			}
 			SelectType = ESelectTypes::Select;
-		}
-		else if (SelectType == ESelectTypes::UnitAttack)
-		{
+		case ESelectTypes::UnitAttack:
 			if (SelectedUnit)
 			{
+				// If valid attack target
 				if (SelectedUnit->ValidTargets.Contains(SelectedTile))
 				{
 					// Attack selection
+
+					// Lock unit
+
+					// Deselect unit
+
+					// Remove selector
+
 				}
 			}
 			SelectType = ESelectTypes::Select;
@@ -193,6 +198,7 @@ AMyTile* AMyTopDownCamera::GetClickedTile(FVector2D MouseLocation, APlayerContro
 	UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseLocation, WorldLocation, WorldRotation);
 
 	FHitResult Hit;
+	// Trace to find clicked tile
 	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, WorldLocation, (WorldRotation * 1000) + WorldLocation, ECC_GameTraceChannel1);
 	if (bSuccess)
 	{
