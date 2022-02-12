@@ -35,7 +35,7 @@ void AMyGameManager::BeginPlay()
 	// Show the mouse cursor
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
 
-	Pathfinding->Setup(Tiles, Rows, Cols);
+	//Pathfinding->Setup(Tiles, Rows, Cols);
 
 	// Assign Player Colours
 	PlayerColours.Add(GetWorld()->GetFirstPlayerController(), FColor::Blue);
@@ -70,32 +70,34 @@ void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 	}
 }
 
-void AMyGameManager::CreateGameBoard(int c, int r)
+void AMyGameManager::CreateGameBoard(int HalfWidth, int HalfHeight)
 {
 	// WIP
-	Rows = c;
-	Cols = r;
+	Rows = (HalfWidth * 2) + 1;
+	Cols = (HalfHeight * 2) + 1;
 
 	if (TileClass)
 	{
-		//float x;
-		//float y;
-		for (int i = 0; i < Rows; i++)
+		for (int q = -HalfHeight; q <= HalfHeight; q++)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Row"));
-			for (int j = 0; j < Cols; j++)
+			for (int r = -HalfWidth; r <= HalfWidth; r++)
 			{
-				//AMyTile* newTile = GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(x, y, 20.f), FRotator(0.f, 90.f, 0.f));
-				//Tiles.Push(newTile);
+				int s = -q - r;
+				AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(q, r)), FRotator(0.f, 90.f, 0.f));
+				Tiles.Add(FVector(q, r, s), NewTile);
 			}
 		}
 	}
+}
 
-	// Test
-	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(0.f, 0.f, 20.f), FRotator(0.f, 90.f, 0.f));
-	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(0.f, 100.f, 20.f), FRotator(0.f, 90.f, 0.f));
-	GetWorld()->SpawnActor<AMyTile>(TileClass, FVector(-86.5f, 50.f, 20.f), FRotator(0.f, 90.f, 0.f));
-
+FVector AMyGameManager::GridToWorld(FVector2D GridLocation)
+{
+	FVector WorldLocation = GetActorLocation();
+	WorldLocation.X = WorldLocation.X + (100 * (FMath::Sqrt(3) * GridLocation.X + FMath::Sqrt(3) * 0.5 * GridLocation.Y));
+	WorldLocation.Y = WorldLocation.Y + (43.25f * (3 * 0.5 * GridLocation.Y));
+	//WorldLocation.X = WorldLocation.X + (GridLocation.X * 100);
+	//WorldLocation.Y = WorldLocation.Y + (GridLocation.Y * 100);
+	return(WorldLocation);
 }
 
 void AMyGameManager::CreateSelector(AMyTile* Tile)

@@ -80,7 +80,7 @@ public:
 	*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<AMyTile*> Tiles;
+		TMap<FVector, AMyTile*> Tiles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TMap<AController*, FColor> PlayerColours;
@@ -95,7 +95,10 @@ public:
 		void CheckTurn(class AMyTurnObject* TurnObject);
 
 	UFUNCTION(BlueprintCallable)
-		void CreateGameBoard(int i, int j);
+		void CreateGameBoard(int HalfWidth, int HalfHeight);
+
+	UFUNCTION(BlueprintCallable)
+		FVector GridToWorld(FVector2D GridLocation);
 
 	UFUNCTION(BlueprintCallable)
 		void CreateSelector(AMyTile* Tile);
