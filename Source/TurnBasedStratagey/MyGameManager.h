@@ -95,7 +95,7 @@ public:
 		void CheckTurn(class AMyTurnObject* TurnObject);
 
 	UFUNCTION(BlueprintCallable)
-		void CreateGameBoard(int HalfWidth, int HalfHeight);
+		void CreateGameBoard(int NewRows, int NewCols);
 
 	UFUNCTION(BlueprintCallable)
 		FVector GridToWorld(FVector2D GridLocation);

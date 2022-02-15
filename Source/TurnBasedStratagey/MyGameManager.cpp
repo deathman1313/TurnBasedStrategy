@@ -70,14 +70,17 @@ void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 	}
 }
 
-void AMyGameManager::CreateGameBoard(int HalfWidth, int HalfHeight)
+void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 {
-	// WIP
-	Rows = (HalfWidth * 2) + 1;
-	Cols = (HalfHeight * 2) + 1;
+	// Make sure variables are valid
+	Rows = (FMath::FloorToInt(NewRows * 0.5f) * 2) + 1;
+	int HalfWidth = (Rows - 1) * 0.5f;
+	Cols = (FMath::FloorToInt(NewCols * 0.5f) * 2) + 1;
+	int HalfHeight = (Cols - 1) * 0.5f;
 
 	if (TileClass)
 	{
+		/*
 		for (int q = -HalfHeight; q <= HalfHeight; q++)
 		{
 			for (int r = -HalfWidth; r <= HalfWidth; r++)
@@ -87,16 +90,24 @@ void AMyGameManager::CreateGameBoard(int HalfWidth, int HalfHeight)
 				Tiles.Add(FVector(q, r, s), NewTile);
 			}
 		}
+		*/
+		for (int r = -HalfHeight; r <= HalfHeight; r++)
+		{
+			for (int q = -HalfWidth + FMath::CeilToInt(r * 0.5f); q <= (-HalfWidth + FMath::CeilToInt(r * 0.5f)) + (((Rows - 1) - (r % 2 != 0))); q++)
+			{
+				int s = -q - r;
+				AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(r, q)), FRotator(0.f, 90.f, 0.f));
+				Tiles.Add(FVector(q, r, s), NewTile);
+			}
+		}
 	}
 }
 
 FVector AMyGameManager::GridToWorld(FVector2D GridLocation)
 {
 	FVector WorldLocation = GetActorLocation();
-	WorldLocation.X = WorldLocation.X + (100 * (FMath::Sqrt(3) * GridLocation.X + FMath::Sqrt(3) * 0.5 * GridLocation.Y));
-	WorldLocation.Y = WorldLocation.Y + (43.25f * (3 * 0.5 * GridLocation.Y));
-	//WorldLocation.X = WorldLocation.X + (GridLocation.X * 100);
-	//WorldLocation.Y = WorldLocation.Y + (GridLocation.Y * 100);
+	WorldLocation.X = WorldLocation.X + (100 * GridLocation.X);
+	WorldLocation.Y = WorldLocation.Y + (100 * GridLocation.Y);
 	return(WorldLocation);
 }
 
