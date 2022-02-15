@@ -39,6 +39,9 @@ public:
 		FOnRoundStart OnRoundStart;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class USceneComponent* ActorRoot;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class UInstancedStaticMeshComponent* Selector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -106,6 +109,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void CreatePath(TArray<AMyTile*> Path);
 
+	UFUNCTION(BlueprintCallable)
+		void SpawnBase(AMyTile* Tile);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -113,5 +119,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void OnConstruction(const FTransform& Transform) override;
 
 };

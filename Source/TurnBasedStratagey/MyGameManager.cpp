@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Components/ChildActorComponent.h"
 
 // Sets default values
 AMyGameManager::AMyGameManager()
@@ -13,12 +14,26 @@ AMyGameManager::AMyGameManager()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	//PrimaryActorTick.bCanEverTick = true;
 
+	ActorRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	SetRootComponent(ActorRoot);
+
 	Selector = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Selector"));
-	Selector->SetupAttachment(GetRootComponent());
+	Selector->SetupAttachment(ActorRoot);
 
 	VisualPath = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("Path"));
-	VisualPath->SetupAttachment(GetRootComponent());
+	VisualPath->SetupAttachment(ActorRoot);
 
+}
+
+void AMyGameManager::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	if (bGenerateTiles)
+	{
+		CreateGameBoard(Rows, Cols);
+		bGenerateTiles = false;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -26,10 +41,13 @@ void AMyGameManager::BeginPlay()
 {
 	Super::BeginPlay();
 
+	/*
 	if (bGenerateTiles)
 	{
 		CreateGameBoard(Rows, Cols);
 	}
+	*/
+
 	// Would make sense to have option here to locate tiles if none are provided
 
 	// Show the mouse cursor
@@ -80,35 +98,40 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 
 	if (TileClass)
 	{
-		/*
-		for (int q = -HalfHeight; q <= HalfHeight; q++)
-		{
-			for (int r = -HalfWidth; r <= HalfWidth; r++)
-			{
-				int s = -q - r;
-				AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(q, r)), FRotator(0.f, 90.f, 0.f));
-				Tiles.Add(FVector(q, r, s), NewTile);
-			}
-		}
-		*/
 		for (int r = -HalfHeight; r <= HalfHeight; r++)
 		{
 			for (int q = -HalfWidth + FMath::CeilToInt(r * 0.5f); q <= (-HalfWidth + FMath::CeilToInt(r * 0.5f)) + (((Rows - 1) - (r % 2 != 0))); q++)
 			{
 				int s = -q - r;
-				AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(r, q)), FRotator(0.f, 90.f, 0.f));
-				Tiles.Add(FVector(q, r, s), NewTile);
+				//AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(r, q)), FRotator(0.f, 90.f, 0.f));
+				UChildActorComponent* NewTile = NewObject<UChildActorComponent>(this);
+				NewTile->RegisterComponent();
+				NewTile->bEditableWhenInherited = true;
+				NewTile->SetWorldTransform(FTransform(FRotator(0.f, 90.f, 0.f), GridToWorld(FVector2D(r, q))));
+				NewTile->SetChildActorClass(TileClass);
+				NewTile->CreateChildActor();
+				NewTile->CreationMethod = EComponentCreationMethod::UserConstructionScript;
+				Tiles.Add(FVector(q, r, s), Cast<AMyTile>(NewTile->GetChildActor()));
 			}
 		}
+		TArray<FVector> TileKeys;
+		Tiles.GenerateKeyArray(TileKeys);
+		SpawnBase(Tiles[TileKeys[0]]);
+		//SpawnBase(Tiles[TileKeys[TileKeys.Num() - 1]]);
 	}
 }
 
 FVector AMyGameManager::GridToWorld(FVector2D GridLocation)
 {
 	FVector WorldLocation = GetActorLocation();
-	WorldLocation.X = WorldLocation.X + (100 * GridLocation.X);
-	WorldLocation.Y = WorldLocation.Y + (100 * GridLocation.Y);
+	WorldLocation.X = WorldLocation.X + (86.5f * GridLocation.X);
+	WorldLocation.Y = WorldLocation.Y + (100 * GridLocation.Y) - (50 * GridLocation.X);
 	return(WorldLocation);
+}
+
+void AMyGameManager::SpawnBase(AMyTile* Tile)
+{
+
 }
 
 void AMyGameManager::CreateSelector(AMyTile* Tile)
