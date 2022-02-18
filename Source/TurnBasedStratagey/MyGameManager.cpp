@@ -26,18 +26,6 @@ AMyGameManager::AMyGameManager()
 
 }
 
-void AMyGameManager::OnConstruction(const FTransform& Transform)
-{
-	Super::OnConstruction(Transform);
-
-	if (bGenerateTiles)
-	{
-		CreateGameBoard(Rows, Cols);
-		bGenerateTiles = false;
-		Pathfinding->Setup(Tiles);
-	}
-}
-
 // Called when the game starts or when spawned
 void AMyGameManager::BeginPlay()
 {
@@ -46,19 +34,17 @@ void AMyGameManager::BeginPlay()
 	// Assign Player Colours
 	PlayerColours.Add(GetWorld()->GetFirstPlayerController(), FColor::Blue);
 
-	/*
 	if (bGenerateTiles)
 	{
 		CreateGameBoard(Rows, Cols);
 	}
-	*/
 
 	// Would make sense to have option here to locate tiles if none are provided
 
 	// Show the mouse cursor
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
 
-	//Pathfinding->Setup(Tiles);
+	Pathfinding->Setup(Tiles);
 
 }
 
@@ -106,15 +92,8 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 			for (int q = -HalfWidth + FMath::CeilToInt(r * 0.5f); q <= (-HalfWidth + FMath::CeilToInt(r * 0.5f)) + (((Rows - 1) - (r % 2 != 0))); q++)
 			{
 				int s = -q - r;
-				//AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(r, q)), FRotator(0.f, 90.f, 0.f));
-				UChildActorComponent* NewTile = NewObject<UChildActorComponent>(this);
-				NewTile->RegisterComponent();
-				NewTile->bEditableWhenInherited = true;
-				NewTile->SetWorldTransform(FTransform(FRotator(0.f, 90.f, 0.f), GridToWorld(FVector2D(r, q))));
-				NewTile->SetChildActorClass(TileClass);
-				NewTile->CreateChildActor();
-				NewTile->CreationMethod = EComponentCreationMethod::UserConstructionScript;
-				Tiles.Add(FVector(q, r, s), Cast<AMyTile>(NewTile->GetChildActor()));
+				AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(r, q)), FRotator(0.f, 90.f, 0.f));
+				Tiles.Add(FVector(q, r, s), NewTile);
 			}
 		}
 		TArray<FVector> TileKeys;
@@ -137,15 +116,14 @@ void AMyGameManager::SpawnBase(AMyTile* Tile)
 {
 	if (Tile)
 	{
-		UChildActorComponent* NewBase = NewObject<UChildActorComponent>(Tile);
-		NewBase->RegisterComponent();
-		NewBase->bEditableWhenInherited = true;
-		NewBase->SetWorldTransform(FTransform(FRotator(0.f, 90.f, 0.f), Tile->GetActorLocation() + Tile->TileCenter->GetComponentLocation()));
-		NewBase->SetChildActorClass(PossibleBuildings[1]);
-		NewBase->CreateChildActor();
-		NewBase->CreationMethod = EComponentCreationMethod::UserConstructionScript;
-		Cast<AMyBase>(NewBase->GetChildActor())->OnTile = Tile;
-		Tile->Building = Cast<AMyBase>(NewBase->GetChildActor());
+		FActorSpawnParameters TempSpawnParams;
+		TempSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AMyBase* NewBase = GetWorld()->SpawnActor<AMyBase>(PossibleBuildings[1], Tile->GetActorLocation() + Tile->TileCenter->GetComponentLocation(), FRotator(0.f, 90.f, 0.f), TempSpawnParams);
+		if (NewBase)
+		{
+			NewBase->OnTile = Tile;
+			Tile->Building = NewBase;
+		}
 	}
 }
 

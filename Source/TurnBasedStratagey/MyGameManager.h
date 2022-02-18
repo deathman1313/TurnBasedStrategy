@@ -97,7 +97,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void NextTurn();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 		void CheckTurn(class AMyTurnObject* TurnObject);
 
 	UFUNCTION(BlueprintCallable)
@@ -122,7 +122,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	virtual void OnConstruction(const FTransform& Transform) override;
 
 };
