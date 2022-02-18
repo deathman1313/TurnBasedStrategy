@@ -2,6 +2,7 @@
 
 #include "MyGameManager.h"
 #include "MyTile.h"
+#include "MyBase.h"
 #include "MyPathfindingManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -33,6 +34,7 @@ void AMyGameManager::OnConstruction(const FTransform& Transform)
 	{
 		CreateGameBoard(Rows, Cols);
 		bGenerateTiles = false;
+		Pathfinding->Setup(Tiles);
 	}
 }
 
@@ -40,6 +42,9 @@ void AMyGameManager::OnConstruction(const FTransform& Transform)
 void AMyGameManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// Assign Player Colours
+	PlayerColours.Add(GetWorld()->GetFirstPlayerController(), FColor::Blue);
 
 	/*
 	if (bGenerateTiles)
@@ -53,10 +58,8 @@ void AMyGameManager::BeginPlay()
 	// Show the mouse cursor
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
 
-	//Pathfinding->Setup(Tiles, Rows, Cols);
+	//Pathfinding->Setup(Tiles);
 
-	// Assign Player Colours
-	PlayerColours.Add(GetWorld()->GetFirstPlayerController(), FColor::Blue);
 }
 
 // Called every frame
@@ -115,6 +118,7 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 			}
 		}
 		TArray<FVector> TileKeys;
+		TileKeys.Empty();
 		Tiles.GenerateKeyArray(TileKeys);
 		SpawnBase(Tiles[TileKeys[0]]);
 		//SpawnBase(Tiles[TileKeys[TileKeys.Num() - 1]]);
@@ -131,7 +135,18 @@ FVector AMyGameManager::GridToWorld(FVector2D GridLocation)
 
 void AMyGameManager::SpawnBase(AMyTile* Tile)
 {
-
+	if (Tile)
+	{
+		UChildActorComponent* NewBase = NewObject<UChildActorComponent>(Tile);
+		NewBase->RegisterComponent();
+		NewBase->bEditableWhenInherited = true;
+		NewBase->SetWorldTransform(FTransform(FRotator(0.f, 90.f, 0.f), Tile->GetActorLocation() + Tile->TileCenter->GetComponentLocation()));
+		NewBase->SetChildActorClass(PossibleBuildings[1]);
+		NewBase->CreateChildActor();
+		NewBase->CreationMethod = EComponentCreationMethod::UserConstructionScript;
+		Cast<AMyBase>(NewBase->GetChildActor())->OnTile = Tile;
+		Tile->Building = Cast<AMyBase>(NewBase->GetChildActor());
+	}
 }
 
 void AMyGameManager::CreateSelector(AMyTile* Tile)

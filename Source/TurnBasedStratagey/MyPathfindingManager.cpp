@@ -27,28 +27,17 @@ void AMyPathfindingManager::Tick(float DeltaTime)
 
 }
 
-void AMyPathfindingManager::Setup(TArray<AMyTile*> Tiles, int R, int C)
+void AMyPathfindingManager::Setup(TMap<FVector, AMyTile*> Tiles)
 {
-	Rows = R;
-	Cols = C;
-	TilesInRow = (Cols * 2) - 1;
-	// Add all tiles to spaced array
-	for (int i = 0; i < Tiles.Num(); i++)
-	{
-		int NewPos = i * 2;
-
-		Tiles[i]->I = FMath::FloorToInt(NewPos / TilesInRow);
-		Tiles[i]->J = FMath::FloorToInt(NewPos % TilesInRow);
-
-		Grid.Add(Tiles[i]);
-		Grid.Add(nullptr);
-	}
-	Grid.Pop();
+	Grid = Tiles;
 
 	// Assign tile neighbors
-	for (int i = 0; i < Grid.Num() - 1; i = i + 2)
+	TArray<FVector> Keys;
+	Keys.Empty();
+	Grid.GenerateKeyArray(Keys);
+	for (int i = 0; i < Keys.Num(); i++)
 	{
-		Grid[i]->Neighbours = GetNeighbours(Grid[i]);
+		Grid[Keys[i]]->Neighbours = GetNeighbours(Keys[i]);
 	}
 }
 
@@ -124,39 +113,40 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, i
 	return(InvalidArray);
 }
 
-TArray<AMyTile*> AMyPathfindingManager::GetNeighbours(AMyTile* Tile)
+TArray<AMyTile*> AMyPathfindingManager::GetNeighbours(FVector TileKey)
 {
 	TArray<AMyTile*> Neighbors;
 	// Check for neighbour on right
-	if (Tile->J + 2 < TilesInRow)
+	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
 	{
-		Neighbors.Push(Grid[FindArrayIndex(Tile->I, Tile->J + 2)]);
+		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
 	}
 	// Check for neighbour on bottom right
-	if (Tile->I + 1 < Rows && Tile->J + 1 < TilesInRow)
+	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
 	{
-		Neighbors.Push(Grid[FindArrayIndex(Tile->I + 1, Tile->J + 1)]);
+		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
 	}
 	// Check for neighbour on bottom left
-	if (Tile->I + 1 < Rows && Tile->J - 1 >= 0)
+	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
 	{
-		Neighbors.Push(Grid[FindArrayIndex(Tile->I + 1, Tile->J - 1)]);
+		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
 	}
 	// Check for neighbour on left
-	if (Tile->J - 2 >= 0)
+	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
 	{
-		Neighbors.Push(Grid[FindArrayIndex(Tile->I, Tile->J - 2)]);
+		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
 	}
 	// Check for neighbour on top left
-	if (Tile->I - 1 >= 0 && Tile->J - 1 >= 0)
+	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
 	{
-		Neighbors.Push(Grid[FindArrayIndex(Tile->I - 1, Tile->J - 1)]);
+		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
 	}
 	// Check for neighbour on top right
-	if (Tile->I - 1 >= 0 && Tile->J + 1 < TilesInRow)
+	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
 	{
-		Neighbors.Push(Grid[FindArrayIndex(Tile->I - 1, Tile->J + 1)]);
+		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
 	}
+
 	//UE_LOG(LogTemp, Warning, TEXT("%d"), Neighbors.Num());
 	return(Neighbors);
 }
@@ -167,11 +157,6 @@ float AMyPathfindingManager::GetTileDistance(AMyTile* Start, AMyTile* End)
 	int yDif = FMath::Abs(Start->I - End->I);
 	float xDif = FMath::Abs(((Start->J - End->J) * 0.5f) - (yDif * 0.5f));
 	return((xDif + yDif) * 0.5);
-}
-
-int AMyPathfindingManager::FindArrayIndex(int i, int j)
-{
-	return((((Cols * 2) - 1) * i) + j);
 }
 
 bool AMyPathfindingManager::IsTileOccupied(AMyTile* Tile, int UnitLayer)

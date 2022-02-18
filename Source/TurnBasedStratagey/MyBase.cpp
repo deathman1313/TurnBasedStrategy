@@ -15,6 +15,7 @@ void AMyBase::BeginPlay()
 	Super::BeginPlay();
 
 	// Replace with something else
+
 	if (!OwningPlayer)
 	{
 		UpdateOwner(GetWorld()->GetFirstPlayerController());

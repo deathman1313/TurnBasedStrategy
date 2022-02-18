@@ -17,7 +17,7 @@ public:
 	AMyPathfindingManager();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<AMyTile*> Grid;
+		TMap<FVector, AMyTile*> Grid;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Rows;
@@ -29,17 +29,13 @@ public:
 		int TilesInRow;
 
 	UFUNCTION(BlueprintCallable)
-		//Converts 2D array index into correct 1D array index. Column position is spaced with empty indexs, to find correct j index double it and subtract 1 if it is on an odd row
-		int FindArrayIndex(int i, int j);
-
-	UFUNCTION(BlueprintCallable)
-		void Setup(TArray<AMyTile*> Tiles, int R, int C);
+		void Setup(TMap<FVector, AMyTile*> Tiles);
 
 	UFUNCTION(BlueprintCallable)
 		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End, int UnitLayer);
 
 	UFUNCTION(BlueprintCallable)
-		TArray<AMyTile*> GetNeighbours(AMyTile* Tile);
+		TArray<AMyTile*> GetNeighbours(FVector TileKey);
 
 	UFUNCTION(BlueprintCallable)
 		float GetTileDistance(AMyTile* Start, AMyTile* End);

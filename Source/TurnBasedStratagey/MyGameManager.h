@@ -91,6 +91,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FConstructions> PossibleConstrutions;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<TSubclassOf<AActor>> PossibleBuildings;
+
 	UFUNCTION(BlueprintCallable)
 		void NextTurn();
 
