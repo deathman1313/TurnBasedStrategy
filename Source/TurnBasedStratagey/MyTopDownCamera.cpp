@@ -137,7 +137,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 			SelectedUnit = nullptr;
 			if (SelectedTile->OccupyingUnit)
 			{
-				if (SelectedTile->OccupyingUnit->OwningPlayer == PlayerController)
+				if (GameManager->Players[SelectedTile->OccupyingUnit->OwningPlayerIndex].PlayerController == PlayerController)
 				{
 					SelectedUnit = SelectedTile->OccupyingUnit;
 					// Show MovementQueue for character
@@ -148,7 +148,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 			SelectedBuilding = nullptr;
 			if (SelectedTile->Building)
 			{
-				if (SelectedTile->Building->OwningPlayer == PlayerController)
+				if (GameManager->Players[SelectedTile->Building->OwningPlayerIndex].PlayerController == PlayerController)
 				{
 					SelectedBuilding = SelectedTile->Building;
 				}
@@ -168,13 +168,21 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 				if (SelectedUnit->ValidTargets.Contains(SelectedTile))
 				{
 					// Attack selection
+					if (SelectedTile->Building)
+					{
+						SelectedTile->Building->TakeDamage();
+					}
+					else if (SelectedTile->OccupyingUnit)
+					{
 
+					}
 					// Lock unit
-
+					SelectedUnit->bPerformedAction = true;
+					SelectedUnit->bLocked = true;
 					// Deselect unit
-
+					SelectedUnit = nullptr;
 					// Remove selector
-
+					GameManager->CreateSelector(nullptr);
 				}
 			}
 			SelectType = ESelectTypes::Select;

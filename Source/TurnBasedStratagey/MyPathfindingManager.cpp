@@ -117,34 +117,34 @@ TArray<AMyTile*> AMyPathfindingManager::GetNeighbours(FVector TileKey)
 {
 	TArray<AMyTile*> Neighbors;
 	// Check for neighbour on right
-	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
+	if (Grid.Contains(TileKey + FVector(1, 0, -1)))
 	{
-		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
+		Neighbors.Add(*Grid.Find(TileKey + FVector(1, 0, -1)));
 	}
 	// Check for neighbour on bottom right
-	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
+	if (Grid.Contains(TileKey + FVector(0, -1, -1)))
 	{
-		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
+		Neighbors.Add(*Grid.Find(TileKey + FVector(0, -1, -1)));
 	}
 	// Check for neighbour on bottom left
-	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
+	if (Grid.Contains(TileKey + FVector(-1, -1, 0)))
 	{
-		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
+		Neighbors.Add(*Grid.Find(TileKey + FVector(-1, -1, 0)));
 	}
 	// Check for neighbour on left
-	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
+	if (Grid.Contains(TileKey + FVector(-1, 0, 1)))
 	{
-		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
+		Neighbors.Add(*Grid.Find(TileKey + FVector(-1, 0, 1)));
 	}
 	// Check for neighbour on top left
-	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
+	if (Grid.Contains(TileKey + FVector(0, 1, 1)))
 	{
-		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
+		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 1, 1)));
 	}
 	// Check for neighbour on top right
-	if (Grid.Contains(TileKey + FVector(0, 0, 0)))
+	if (Grid.Contains(TileKey + FVector(1, 1, 0)))
 	{
-		Neighbors.Add(*Grid.Find(TileKey + FVector(0, 0, 0)));
+		Neighbors.Add(*Grid.Find(TileKey + FVector(1, 1, 0)));
 	}
 
 	//UE_LOG(LogTemp, Warning, TEXT("%d"), Neighbors.Num());

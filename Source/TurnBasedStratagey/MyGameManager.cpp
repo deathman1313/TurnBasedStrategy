@@ -31,8 +31,12 @@ void AMyGameManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Assign Player Colours
-	PlayerColours.Add(GetWorld()->GetFirstPlayerController(), FColor::Blue);
+	// Assign Players
+	FPlayerInfo NewPlayer;
+	NewPlayer.PlayerController = GetWorld()->GetFirstPlayerController();
+	NewPlayer.PlayerName = "Player 1";
+	NewPlayer.PlayerColour = FColor::Blue;
+	Players.Add(NewPlayer);
 
 	if (bGenerateTiles)
 	{
@@ -91,7 +95,7 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 		{
 			for (int q = -HalfWidth + FMath::CeilToInt(r * 0.5f); q <= (-HalfWidth + FMath::CeilToInt(r * 0.5f)) + (((Rows - 1) - (r % 2 != 0))); q++)
 			{
-				int s = -q - r;
+				int s = r - q;
 				AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(r, q)), FRotator(0.f, 90.f, 0.f));
 				Tiles.Add(FVector(q, r, s), NewTile);
 			}
@@ -99,7 +103,7 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 		TArray<FVector> TileKeys;
 		TileKeys.Empty();
 		Tiles.GenerateKeyArray(TileKeys);
-		SpawnBase(Tiles[TileKeys[0]]);
+		SpawnBase(Tiles[TileKeys[0]], 0);
 		//SpawnBase(Tiles[TileKeys[TileKeys.Num() - 1]]);
 	}
 }
@@ -112,7 +116,7 @@ FVector AMyGameManager::GridToWorld(FVector2D GridLocation)
 	return(WorldLocation);
 }
 
-void AMyGameManager::SpawnBase(AMyTile* Tile)
+void AMyGameManager::SpawnBase(AMyTile* Tile, int PlayerIndex)
 {
 	if (Tile)
 	{
@@ -123,6 +127,7 @@ void AMyGameManager::SpawnBase(AMyTile* Tile)
 		{
 			NewBase->OnTile = Tile;
 			Tile->Building = NewBase;
+			NewBase->UpdateOwner(PlayerIndex);
 		}
 	}
 }

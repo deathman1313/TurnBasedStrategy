@@ -23,6 +23,22 @@ public:
 		int ConstructionCost;
 };
 
+USTRUCT(BlueprintType)
+struct FPlayerInfo
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AController* PlayerController;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString PlayerName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FColor PlayerColour;
+};
+
 UCLASS()
 class TURNBASEDSTRATAGEY_API AMyGameManager : public AActor
 {
@@ -57,6 +73,9 @@ public:
 		TArray<class AMyTurnObject*> WaitingFor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<FPlayerInfo> Players;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyPathfindingManager* Pathfinding;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -86,9 +105,6 @@ public:
 		TMap<FVector, AMyTile*> Tiles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TMap<AController*, FColor> PlayerColours;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FConstructions> PossibleConstrutions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -113,7 +129,7 @@ public:
 		void CreatePath(TArray<AMyTile*> Path);
 
 	UFUNCTION(BlueprintCallable)
-		void SpawnBase(AMyTile* Tile);
+		void SpawnBase(AMyTile* Tile, int PlayerIndex);
 
 protected:
 	// Called when the game starts or when spawned

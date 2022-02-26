@@ -30,7 +30,7 @@ void AMyBaseUnit::BeginPlay()
 	Super::BeginPlay();
 
 	// FOR TESTING ONLY SHOULD BE REMOVED
-	OwningPlayer = GetWorld()->GetFirstPlayerController();
+	OwningPlayerIndex = 0;
 }
 
 // Called every frame

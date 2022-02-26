@@ -48,7 +48,7 @@ public:
 		TArray<class AMyTile*> ValidTargets;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class AController* OwningPlayer;
+		int OwningPlayerIndex = -1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyTile* OnTile;

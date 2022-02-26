@@ -14,12 +14,6 @@ void AMyBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Replace with something else
-
-	if (!OwningPlayer)
-	{
-		UpdateOwner(GetWorld()->GetFirstPlayerController());
-	}
 }
 
 void AMyBase::Tick(float DeltaTime)
@@ -28,13 +22,16 @@ void AMyBase::Tick(float DeltaTime)
 
 }
 
-void AMyBase::UpdateOwner(AController* NewOwner)
+void AMyBase::UpdateOwner(int NewOwnerIndex)
 {
-	OwningPlayer = NewOwner;
+	OwningPlayerIndex = NewOwnerIndex;
 	//Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", FLinearColor::Blue);
-	if (GManager->PlayerColours.Contains(NewOwner))
+	for (FPlayerInfo Player : GManager->Players)
 	{
-		Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", GManager->PlayerColours[NewOwner]);
+		if (Player.PlayerController == GManager->Players[NewOwnerIndex].PlayerController)
+		{
+			Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", Player.PlayerColour);
+		}
 	}
 }
 
@@ -71,7 +68,7 @@ bool AMyBase::SpawnUnit()
 	// Spawn new unit on tile
 	AMyBaseUnit* SpawnedUnit = GetWorld()->SpawnActor<AMyBaseUnit>(GManager->PossibleConstrutions[CurrentConstruction].Unit, FVector(OnTile->GetActorLocation().X, OnTile->GetActorLocation().Y, 62.f), FRotator(0.f, 180.f, 0.f));
 	// Set default values
-	SpawnedUnit->OwningPlayer = OwningPlayer;
+	SpawnedUnit->OwningPlayerIndex = OwningPlayerIndex;
 	SpawnedUnit->OnTile = OnTile;
 	OnTile->OccupyingUnit = SpawnedUnit;
 	SpawnedUnit->CurrentMovement = 0;

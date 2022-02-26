@@ -24,7 +24,7 @@ public:
 		int ConstructionProgress = 0;
 
 	UFUNCTION(BlueprintCallable)
-		void UpdateOwner(AController* NewOwner);
+		void UpdateOwner(int NewOwnerIndex);
 
 	UFUNCTION(BlueprintCallable)
 		bool SpawnUnit();
