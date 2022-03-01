@@ -74,9 +74,10 @@ void AMyBase::TurnAction()
 bool AMyBase::SpawnUnit()
 {
 	// Spawn new unit on tile
-	AMyBaseUnit* SpawnedUnit = GetWorld()->SpawnActor<AMyBaseUnit>(GManager->PossibleConstrutions[CurrentConstruction].Unit, FVector(OnTile->GetActorLocation().X, OnTile->GetActorLocation().Y, 62.f), FRotator(0.f, 180.f, 0.f));
+	AMyBaseUnit* SpawnedUnit = GetWorld()->SpawnActor<AMyBaseUnit>(GManager->PossibleConstrutions[CurrentConstruction].Unit, FVector(OnTile->GetActorLocation().X, OnTile->GetActorLocation().Y, 42.f), FRotator(0.f, 180.f, 0.f));
 	// Set default values
 	SpawnedUnit->OwningPlayerIndex = OwningPlayerIndex;
+	SpawnedUnit->Setup();
 	SpawnedUnit->OnTile = OnTile;
 	OnTile->OccupyingUnit = SpawnedUnit;
 	SpawnedUnit->CurrentMovement = 0;

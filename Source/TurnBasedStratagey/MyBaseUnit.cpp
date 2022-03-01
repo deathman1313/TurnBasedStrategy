@@ -29,8 +29,6 @@ void AMyBaseUnit::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// FOR TESTING ONLY SHOULD BE REMOVED
-	OwningPlayerIndex = 0;
 }
 
 // Called every frame
@@ -131,33 +129,6 @@ TArray<AMyTile*> AMyBaseUnit::FindTargets()
 			}
 		}
 	}
-	/*
-	// Define temp arrays
-	TArray<AMyTile*> Targets;
-	TArray<AMyTile*> CheckingTargets;
-	CheckingTargets.Add(OnTile);
-	TArray<AMyTile*> TempTargets;
-	for (int i = 0; i < Range; i++)
-	{
-		for (AMyTile* Tile : CheckingTargets)
-		{
-			for (AMyTile* Target : Tile->Neighbours)
-			{
-				// Check if valid target
-				if ((Target->OccupyingUnit || Target->Building) && Target != OnTile)
-				{
-					Targets.Add(Target);
-				}
-				if (!Targets.Contains(Target) && !CheckingTargets.Contains(Target))
-				{
-					TempTargets.AddUnique(Target);
-				}
-			}
-		}
-		CheckingTargets = TempTargets;
-		TempTargets.Empty();
-	}
-	*/
 	return(Targets);
 }
 

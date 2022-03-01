@@ -37,6 +37,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FColor PlayerColour;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<AMyTurnObject*> OwningObjects;
 };
 
 USTRUCT(BlueprintType)
@@ -59,10 +62,10 @@ public:
 	AMyGameManager();
 
 	UPROPERTY(BlueprintAssignable)
-		FOnTryProgressTurn OnTryProgressTurn;
+		TArray<FOnTryProgressTurn> OnTryProgressTurn;
 
 	UPROPERTY(BlueprintAssignable)
-		FOnRoundStart OnRoundStart;
+		TArray<FOnRoundStart> OnRoundStart;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USceneComponent* ActorRoot;
@@ -76,6 +79,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bMidTurn = false;
 
+	// Probably unnecessary
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<class AMyTurnObject*> TurnObjects;
 
@@ -97,6 +101,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Turn = 1;
 
+	UPROPERTY()
+		int ActivePlayer = 0;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Rows = 5;
 
@@ -108,11 +115,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FGenerationSettings GenerationSettings;
-
-	/*
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool bTopHeavy = true;
-	*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TMap<FVector, AMyTile*> Tiles;

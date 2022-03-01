@@ -174,13 +174,17 @@ bool AMyPathfindingManager::IsTileOccupied(AMyTile* Tile, int UnitLayer)
 TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int UnitLayer = -1)
 {
 	bool bIsPathValid = true;
+	AMyTile* StartTile = Path[0];
 	for (AMyTile* Tile : Path)
 	{
-		// Check if tile is valid
-		if (!Tile->bTraversable || IsTileOccupied(Tile, UnitLayer)) 
+		if (Tile != StartTile)
 		{
-			bIsPathValid = false;
-			break;
+			// Check if tile is valid
+			if (!Tile->bTraversable || IsTileOccupied(Tile, UnitLayer))
+			{
+				bIsPathValid = false;
+				break;
+			}
 		}
 	}
 	if (bIsPathValid)

@@ -19,12 +19,6 @@ void AMyTurnObject::BeginPlay()
 	
 	// Bind listener to game manager start round
 	GManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(this, AMyGameManager::StaticClass()));
-	GManager->OnTryProgressTurn.AddUniqueDynamic(this, &AMyTurnObject::TurnAction);
-	GManager->OnRoundStart.AddUniqueDynamic(this, &AMyTurnObject::Reset);
-	GManager->TurnObjects.Add(this);
-
-	// Bind listeners in game manager
-	OnFinishAction.AddDynamic(GManager, &AMyGameManager::CheckTurn);
 }
 
 // Called every frame
@@ -32,6 +26,20 @@ void AMyTurnObject::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AMyTurnObject::Setup()
+{
+	if (OwningPlayerIndex > -1 && OwningPlayerIndex < GManager->Players.Num())
+	{
+		GManager->OnTryProgressTurn[OwningPlayerIndex].AddUniqueDynamic(this, &AMyTurnObject::TurnAction);
+		GManager->OnRoundStart[OwningPlayerIndex].AddUniqueDynamic(this, &AMyTurnObject::Reset);
+		GManager->Players[OwningPlayerIndex].OwningObjects.Add(this);
+	}
+	GManager->TurnObjects.Add(this);
+
+	// Bind listeners in game manager
+	OnFinishAction.AddDynamic(GManager, &AMyGameManager::CheckTurn);
 }
 
 void AMyTurnObject::TurnAction()

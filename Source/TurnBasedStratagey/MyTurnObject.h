@@ -54,6 +54,9 @@ public:
 		class AMyTile* OnTile;
 
 	UFUNCTION(BlueprintCallable)
+		void Setup();
+
+	UFUNCTION(BlueprintCallable)
 		virtual void TurnAction();
 
 	UFUNCTION(BlueprintCallable)

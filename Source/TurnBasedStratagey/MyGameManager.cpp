@@ -38,13 +38,20 @@ void AMyGameManager::BeginPlay()
 	NewPlayer.PlayerName = "Player 1";
 	NewPlayer.PlayerColour = FColor::Blue;
 	Players.Add(NewPlayer);
+	for (FPlayerInfo Player : Players)
+	{
+		FOnTryProgressTurn TempProgressTurn;
+		OnTryProgressTurn.Add(TempProgressTurn);
+		FOnRoundStart TempRoundStart;
+		OnRoundStart.Add(TempRoundStart);
+	}
 
 	if (bGenerateTiles)
 	{
 		CreateGameBoard(Rows, Cols);
 	}
 
-	// Would make sense to have option here to locate tiles if none are provided
+	// Would make sense to have option here to locate tiles if none are provided or generated
 
 	// Show the mouse cursor
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
@@ -64,8 +71,8 @@ void AMyGameManager::NextTurn()
 {
 	// Try to progress to new turn
 	bMidTurn = true;
-	WaitingFor = TurnObjects;
-	OnTryProgressTurn.Broadcast();
+	WaitingFor = Players[ActivePlayer].OwningObjects;
+	OnTryProgressTurn[ActivePlayer].Broadcast();
 }
 
 void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
@@ -75,10 +82,15 @@ void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 	if (WaitingFor.Num() <= 0)
 	{
 		// Start Next Turn
-		Turn++;
+		ActivePlayer++;
+		if (ActivePlayer >= Players.Num())
+		{
+			ActivePlayer = 0;
+			Turn++;
+		}
 		bMidTurn = false;
 		UE_LOG(LogTemp, Warning, TEXT("StartNextTurn"));
-		OnRoundStart.Broadcast();
+		OnRoundStart[ActivePlayer].Broadcast();
 	}
 }
 
@@ -156,6 +168,7 @@ void AMyGameManager::SpawnBase(AMyTile* Tile, int PlayerIndex)
 			NewBase->OnTile = Tile;
 			Tile->Building = NewBase;
 			NewBase->UpdateOwner(PlayerIndex);
+			NewBase->Setup();
 		}
 	}
 }
@@ -172,6 +185,7 @@ void AMyGameManager::SpawnMountain(AMyTile* Tile)
 			NewMountain->OnTile = Tile;
 			Tile->Building = NewMountain;
 			Tile->bTraversable = false;
+			NewMountain->Setup();
 		}
 	}
 }

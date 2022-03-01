@@ -128,11 +128,9 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 	}
 	if (SelectedTile)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SelectedTile"));
 		switch (SelectType)
 		{
 		case ESelectTypes::Select:
-			UE_LOG(LogTemp, Warning, TEXT("Select"));
 			// Create Selector
 			GameManager->CreateSelector(SelectedTile);
 			// Set the SelectedUnit
@@ -143,7 +141,6 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 				{
 					if (GameManager->Players[SelectedTile->OccupyingUnit->OwningPlayerIndex].PlayerController == PlayerController)
 					{
-						UE_LOG(LogTemp, Warning, TEXT("Unit"));
 						SelectedUnit = SelectedTile->OccupyingUnit;
 						// Show MovementQueue for character
 						GameManager->CreatePath(SelectedUnit->MovementQueue);
@@ -162,6 +159,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 					}
 				}
 			}
+			break;
 		case ESelectTypes::Move:
 			if (SelectedUnit)
 			{
@@ -170,6 +168,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 				GameManager->CreatePath(SelectedUnit->MovementQueue);
 			}
 			SelectType = ESelectTypes::Select;
+			break;
 		case ESelectTypes::UnitAttack:
 			if (SelectedUnit)
 			{
@@ -195,6 +194,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 				}
 			}
 			SelectType = ESelectTypes::Select;
+			break;
 		}
 	}
 	else
