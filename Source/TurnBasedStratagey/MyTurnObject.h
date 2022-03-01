@@ -42,6 +42,10 @@ public:
 		int Range = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int AttackDamage = 10;
+
+	// Probably unnecessary
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyTile* Targeting;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -55,6 +59,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void Setup();
+
+	UFUNCTION(BlueprintCallable)
+		void ApplyDamage(int Damage);
+
+	UFUNCTION(BlueprintCallable)
+		virtual void DestroySelf();
 
 	UFUNCTION(BlueprintCallable)
 		virtual void TurnAction();

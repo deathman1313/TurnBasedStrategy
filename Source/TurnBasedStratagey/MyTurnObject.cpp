@@ -2,6 +2,7 @@
 
 #include "MyTurnObject.h"
 #include "MyGameManager.h"
+#include "MyBase.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -40,6 +41,28 @@ void AMyTurnObject::Setup()
 
 	// Bind listeners in game manager
 	OnFinishAction.AddDynamic(GManager, &AMyGameManager::CheckTurn);
+}
+
+void AMyTurnObject::ApplyDamage(int Damage)
+{
+	Health -= FMath::Abs(Damage);
+	if (Health <= 0)
+	{
+		Health = 0;
+		DestroySelf();
+	}
+}
+
+void AMyTurnObject::DestroySelf()
+{
+	// Override this
+	UE_LOG(LogTemp, Warning, TEXT("Destroy"));
+	if (OwningPlayerIndex > -1 && OwningPlayerIndex < GManager->Players.Num())
+	{
+		GManager->Players[OwningPlayerIndex].OwningObjects.Remove(this);
+	}
+	GManager->TurnObjects.Remove(this);
+	Destroy();
 }
 
 void AMyTurnObject::TurnAction()

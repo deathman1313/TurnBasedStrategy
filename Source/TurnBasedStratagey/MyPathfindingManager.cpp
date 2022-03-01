@@ -3,6 +3,7 @@
 #include "MyPathfindingManager.h"
 #include "MyGameManager.h"
 #include "MyBaseUnit.h"
+#include "MyBase.h"
 #include "Algo/Reverse.h"
 
 // Sets default values
@@ -41,7 +42,7 @@ void AMyPathfindingManager::Setup(TMap<FVector, AMyTile*> Tiles)
 	}
 }
 
-TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, int UnitLayer = -1)
+TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, int UnitLayer = -1, int OwningPlayerIndex = -1)
 {
 	TArray<AMyTile*> OpenSet;
 
@@ -54,7 +55,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, i
 
 	Start->PreviousTile = nullptr;
 
-	if (Start->bTraversable && End->bTraversable && !IsTileOccupied(End, UnitLayer))
+	if (Start->bTraversable && End->bTraversable && !IsTileOccupied(End, UnitLayer) && !IsBlockingBase(End, OwningPlayerIndex))
 	{
 		// The currently selected tile to check against
 		AMyTile* Current;
@@ -90,7 +91,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, i
 
 			for (AMyTile* Neighbour : Current->Neighbours)
 			{
-				if (Neighbour->bTraversable && !IsTileOccupied(Neighbour, UnitLayer))
+				if (Neighbour->bTraversable && !IsTileOccupied(Neighbour, UnitLayer) && !IsBlockingBase(End, OwningPlayerIndex))
 				{
 					float TempG = G[Current] + Neighbour->MoveCost;
 
@@ -171,7 +172,29 @@ bool AMyPathfindingManager::IsTileOccupied(AMyTile* Tile, int UnitLayer)
 	return(false);
 }
 
-TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int UnitLayer = -1)
+bool AMyPathfindingManager::IsBlockingBase(AMyTile* Tile, int OwningPlayerIndex)
+{
+	// Has building
+	if (Tile->Building)
+	{
+		// Is base
+		if (Cast<AMyBase>(Tile->Building))
+		{
+			// Not owned by current player
+			if (Tile->Building->OwningPlayerIndex != OwningPlayerIndex)
+			{
+				// Has health
+				if (Tile->Building->Health > 0)
+				{
+					return(true);
+				}
+			}
+		}
+	}
+	return(false);
+}
+
+TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int UnitLayer = -1, int OwningPlayerIndex = -1)
 {
 	// Is path valid (basic)
 	if (Path.Num() > 1)
@@ -183,7 +206,7 @@ TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int 
 			if (Tile != StartTile)
 			{
 				// Check if tile is valid
-				if (!Tile->bTraversable || IsTileOccupied(Tile, UnitLayer))
+				if (!Tile->bTraversable || IsTileOccupied(Tile, UnitLayer) || IsBlockingBase(Tile, OwningPlayerIndex))
 				{
 					bIsPathValid = false;
 					break;
@@ -196,7 +219,7 @@ TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int 
 		}
 		else
 		{
-			return(FindPath(Path[0], Path[Path.Num() - 1], UnitLayer));
+			return(FindPath(Path[0], Path[Path.Num() - 1], UnitLayer, OwningPlayerIndex));
 		}
 	}
 	else

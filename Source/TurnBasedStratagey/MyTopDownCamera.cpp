@@ -165,7 +165,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 			if (SelectedUnit)
 			{
 				// Set Movement for selected unit
-				SelectedUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedUnit->OnTile, SelectedTile, SelectedUnit->UnitLayer);
+				SelectedUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedUnit->OnTile, SelectedTile, SelectedUnit->UnitLayer, SelectedUnit->OwningPlayerIndex);
 				GameManager->CreatePath(SelectedUnit->MovementQueue);
 			}
 			break;
@@ -179,11 +179,11 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 					// Attack selection
 					if (SelectedTile->Building)
 					{
-						//SelectedTile->Building->TakeDamage();
+						SelectedTile->Building->ApplyDamage(SelectedUnit->AttackDamage);
 					}
 					else if (SelectedTile->OccupyingUnit)
 					{
-						//SelectedTile->OccupyingUnit->TakeDamage();
+						SelectedTile->OccupyingUnit->ApplyDamage(SelectedBuilding->AttackDamage);
 					}
 					// Lock unit
 					SelectedUnit->bPerformedAction = true;

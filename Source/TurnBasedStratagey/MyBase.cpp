@@ -43,8 +43,22 @@ void AMyBase::UpdateOwner(int NewOwnerIndex)
 	}
 }
 
+void AMyBase::DestroySelf()
+{
+	//Do not destroy
+}
+
 void AMyBase::TurnAction()
 {
+	// Heal Base
+	if (Health < MaxHealth)
+	{
+		Health = Health + (MaxHealth * 0.1);
+		if (Health > MaxHealth)
+		{
+			Health = MaxHealth;
+		}
+	}
 	if (!bLocked && CurrentConstruction > 0)
 	{
 		if (ConstructionProgress < GManager->PossibleConstrutions[CurrentConstruction].ConstructionCost)

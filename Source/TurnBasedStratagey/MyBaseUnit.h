@@ -59,7 +59,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-		virtual void TurnAction() override;
+	virtual void DestroySelf() override;
 
-		virtual void Reset() override;
+	virtual void TurnAction() override;
+
+	virtual void Reset() override;
 };

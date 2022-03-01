@@ -32,7 +32,7 @@ public:
 		void Setup(TMap<FVector, AMyTile*> Tiles);
 
 	UFUNCTION(BlueprintCallable)
-		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End, int UnitLayer);
+		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End, int UnitLayer, int OwningPlayerIndex);
 
 	UFUNCTION(BlueprintCallable)
 		TArray<AMyTile*> GetNeighbours(FVector TileKey);
@@ -44,7 +44,10 @@ public:
 		bool IsTileOccupied(AMyTile* Tile, int UnitLayer);
 
 	UFUNCTION(BlueprintCallable)
-		TArray<AMyTile*> ValidatePath(TArray<AMyTile*> Path, int UnitLayer);
+		bool IsBlockingBase(AMyTile* Tile, int OwningPlayerIndex);
+
+	UFUNCTION(BlueprintCallable)
+		TArray<AMyTile*> ValidatePath(TArray<AMyTile*> Path, int UnitLayer, int OwningPlayerIndex);
 
 protected:
 	// Called when the game starts or when spawned

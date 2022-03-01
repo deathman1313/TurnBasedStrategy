@@ -88,6 +88,8 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass = true)
 				// Start Movement
 				CurrentMovement -= 1;
 				MovementQueue.RemoveAt(0);
+				// Attempt to take base
+				OnTile->TakeBase(OwningPlayerIndex);
 				bMoving = true;
 				return(true);
 			}
@@ -143,6 +145,15 @@ TArray<AMyTile*> AMyBaseUnit::FindTargets()
 		}
 	}
 	return(Targets);
+}
+
+void AMyBaseUnit::DestroySelf()
+{
+	if (OnTile)
+	{
+		OnTile->OccupyingUnit = nullptr;
+	}
+	Super::DestroySelf();
 }
 
 void AMyBaseUnit::TurnAction() 

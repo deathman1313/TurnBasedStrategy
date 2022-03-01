@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyTile.h"
+#include "MyBase.h"
 #include "Components/SceneComponent.h"
 #include "Materials/Material.h"
 
@@ -51,4 +52,24 @@ void AMyTile::SelectTile(bool Select)
 			Base->SetMaterial(i, DefaultMaterials[i]);
 		}
 	}
+}
+
+bool AMyTile::TakeBase(int RivalPlayerIndex)
+{
+	if (Building)
+	{
+		if (Building->OwningPlayerIndex != RivalPlayerIndex)
+		{
+			if (Building->Health <= 0)
+			{
+				AMyBase* OccupyingBase = Cast<AMyBase>(Building);
+				if (Base)
+				{
+					OccupyingBase->UpdateOwner(RivalPlayerIndex);
+					return(true);
+				}
+			}
+		}
+	}
+	return(false);
 }

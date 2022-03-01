@@ -59,6 +59,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SelectTile(bool Select);
 
+	UFUNCTION(BlueprintCallable)
+		bool TakeBase(int RivalPlayerIndex);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

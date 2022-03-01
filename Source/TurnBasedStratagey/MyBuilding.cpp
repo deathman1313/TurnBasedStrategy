@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyBuilding.h"
+#include "MyTile.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -33,6 +34,16 @@ void AMyBuilding::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AMyBuilding::DestroySelf()
+{
+	if (OnTile)
+	{
+		OnTile->Building = nullptr;
+		OnTile->bTraversable = true;
+	}
+	Super::DestroySelf();
 }
 
 void AMyBuilding::TurnAction()
