@@ -24,14 +24,22 @@ void AMyBase::Tick(float DeltaTime)
 
 void AMyBase::UpdateOwner(int NewOwnerIndex)
 {
-	OwningPlayerIndex = NewOwnerIndex;
 	//Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", FLinearColor::Blue);
-	for (FPlayerInfo Player : GManager->Players)
+	if (NewOwnerIndex > -1 && NewOwnerIndex < GManager->Players.Num())
 	{
-		if (Player.PlayerController == GManager->Players[NewOwnerIndex].PlayerController)
+		OwningPlayerIndex = NewOwnerIndex;
+		for (FPlayerInfo Player : GManager->Players)
 		{
-			Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", Player.PlayerColour);
+			if (Player.PlayerController == GManager->Players[NewOwnerIndex].PlayerController)
+			{
+				Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", Player.PlayerColour);
+			}
 		}
+	}
+	else
+	{
+		OwningPlayerIndex = -1;
+		Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", FColor::Transparent);
 	}
 }
 

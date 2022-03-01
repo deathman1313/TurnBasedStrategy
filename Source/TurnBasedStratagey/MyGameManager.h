@@ -39,6 +39,16 @@ public:
 		FColor PlayerColour;
 };
 
+USTRUCT(BlueprintType)
+struct FGenerationSettings
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int MountainNum;
+};
+
 UCLASS()
 class TURNBASEDSTRATAGEY_API AMyGameManager : public AActor
 {
@@ -96,6 +106,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bGenerateTiles = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FGenerationSettings GenerationSettings;
+
 	/*
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bTopHeavy = true;
@@ -130,6 +143,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SpawnBase(AMyTile* Tile, int PlayerIndex);
+
+	UFUNCTION(BlueprintCallable)
+		void SpawnMountain(AMyTile* Tile);
 
 protected:
 	// Called when the game starts or when spawned

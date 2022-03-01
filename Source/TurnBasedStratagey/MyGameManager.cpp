@@ -3,6 +3,7 @@
 #include "MyGameManager.h"
 #include "MyTile.h"
 #include "MyBase.h"
+#include "MyMountain.h"
 #include "MyPathfindingManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -104,7 +105,34 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 		TileKeys.Empty();
 		Tiles.GenerateKeyArray(TileKeys);
 		SpawnBase(Tiles[TileKeys[0]], 0);
-		//SpawnBase(Tiles[TileKeys[TileKeys.Num() - 1]]);
+		SpawnBase(Tiles[FVector(0, 0, 0)], -1);
+		// Spawn mountains
+		for (int i = 0; i < GenerationSettings.MountainNum; i++)
+		{
+			int RandTileIndex;
+			int ErrHandling = 0;
+			bool Spawned = false;
+			while (!Spawned)
+			{
+				RandTileIndex = FMath::RandRange(0, TileKeys.Num() - 1);
+				if (Tiles[TileKeys[RandTileIndex]]->Building)
+				{
+					// Prevent infinate loop
+					ErrHandling++;
+					if (ErrHandling > 50)
+					{
+						break;
+					}
+				}
+				else
+				{
+					// Should check for valid paths here
+					// Spawn mountain
+					Spawned = true;
+					SpawnMountain(Tiles[TileKeys[RandTileIndex]]);
+				}
+			}
+		}
 	}
 }
 
@@ -128,6 +156,22 @@ void AMyGameManager::SpawnBase(AMyTile* Tile, int PlayerIndex)
 			NewBase->OnTile = Tile;
 			Tile->Building = NewBase;
 			NewBase->UpdateOwner(PlayerIndex);
+		}
+	}
+}
+
+void AMyGameManager::SpawnMountain(AMyTile* Tile)
+{
+	if (Tile)
+	{
+		FActorSpawnParameters TempSpawnParams;
+		TempSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AMyMountain* NewMountain = GetWorld()->SpawnActor<AMyMountain>(PossibleBuildings[0], Tile->GetActorLocation() + Tile->TileCenter->GetComponentLocation(), FRotator(0.f, 90.f, 0.f), TempSpawnParams);
+		if (NewMountain)
+		{
+			NewMountain->OnTile = Tile;
+			Tile->Building = NewMountain;
+			Tile->bTraversable = false;
 		}
 	}
 }

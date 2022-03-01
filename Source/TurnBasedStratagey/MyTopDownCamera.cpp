@@ -128,29 +128,38 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 	}
 	if (SelectedTile)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("SelectedTile"));
 		switch (SelectType)
 		{
 		case ESelectTypes::Select:
+			UE_LOG(LogTemp, Warning, TEXT("Select"));
 			// Create Selector
 			GameManager->CreateSelector(SelectedTile);
 			// Set the SelectedUnit
 			SelectedUnit = nullptr;
 			if (SelectedTile->OccupyingUnit)
 			{
-				if (GameManager->Players[SelectedTile->OccupyingUnit->OwningPlayerIndex].PlayerController == PlayerController)
+				if (SelectedTile->OccupyingUnit->OwningPlayerIndex > -1 && SelectedTile->OccupyingUnit->OwningPlayerIndex < GameManager->Players.Num())
 				{
-					SelectedUnit = SelectedTile->OccupyingUnit;
-					// Show MovementQueue for character
-					GameManager->CreatePath(SelectedUnit->MovementQueue);
+					if (GameManager->Players[SelectedTile->OccupyingUnit->OwningPlayerIndex].PlayerController == PlayerController)
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Unit"));
+						SelectedUnit = SelectedTile->OccupyingUnit;
+						// Show MovementQueue for character
+						GameManager->CreatePath(SelectedUnit->MovementQueue);
+					}
 				}
 			}
 			// Set the SelectedBuilding
 			SelectedBuilding = nullptr;
 			if (SelectedTile->Building)
 			{
-				if (GameManager->Players[SelectedTile->Building->OwningPlayerIndex].PlayerController == PlayerController)
+				if (SelectedTile->Building->OwningPlayerIndex > -1 && SelectedTile->Building->OwningPlayerIndex < GameManager->Players.Num())
 				{
-					SelectedBuilding = SelectedTile->Building;
+					if (GameManager->Players[SelectedTile->Building->OwningPlayerIndex].PlayerController == PlayerController)
+					{
+						SelectedBuilding = SelectedTile->Building;
+					}
 				}
 			}
 		case ESelectTypes::Move:
@@ -170,11 +179,11 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 					// Attack selection
 					if (SelectedTile->Building)
 					{
-						SelectedTile->Building->TakeDamage();
+						//SelectedTile->Building->TakeDamage();
 					}
 					else if (SelectedTile->OccupyingUnit)
 					{
-
+						//SelectedTile->OccupyingUnit->TakeDamage();
 					}
 					// Lock unit
 					SelectedUnit->bPerformedAction = true;

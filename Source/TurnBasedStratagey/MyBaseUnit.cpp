@@ -112,6 +112,26 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass = true)
 
 TArray<AMyTile*> AMyBaseUnit::FindTargets()
 {
+	TArray<AMyTile*> Targets;
+	if (GManager->Tiles.FindKey(OnTile))
+	{
+		FVector TileLocation = *GManager->Tiles.FindKey(OnTile);
+		for (int q = TileLocation.X - Range; q <= TileLocation.X + Range; q++)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%d %d %d %d"), -Range, -q - Range, Range, -q + Range);
+			for (int r = TileLocation.Y + UKismetMathLibrary::Max(-Range, -q-Range); r <= TileLocation.Y + UKismetMathLibrary::Min(Range, -q+Range); r++)
+			{
+				int s = r - q;
+				UE_LOG(LogTemp, Warning, TEXT("%d %d %d"), q, r, s);
+				if (GManager->Tiles.Contains(FVector(q, r, s)))
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Target Valid"));
+					Targets.AddUnique(*GManager->Tiles.Find(FVector(q, r, s)));
+				}
+			}
+		}
+	}
+	/*
 	// Define temp arrays
 	TArray<AMyTile*> Targets;
 	TArray<AMyTile*> CheckingTargets;
@@ -137,6 +157,7 @@ TArray<AMyTile*> AMyBaseUnit::FindTargets()
 		CheckingTargets = TempTargets;
 		TempTargets.Empty();
 	}
+	*/
 	return(Targets);
 }
 
