@@ -61,6 +61,8 @@ void AMyTopDownCamera::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	// Setup Action Mapping
 	PlayerInputComponent->BindAction("Select", IE_Pressed, this, &AMyTopDownCamera::Select);
+	PlayerInputComponent->BindAction("DragCamera", IE_Pressed, this, &AMyTopDownCamera::StartDragCam);
+	PlayerInputComponent->BindAction("DragCamera", IE_Released, this, &AMyTopDownCamera::EndDragCam);
 
 }
 
@@ -98,6 +100,19 @@ void AMyTopDownCamera::Zoom(float Value)
 			SpringArm->TargetArmLength = NewArmLength;
 		}
 	}
+}
+
+void AMyTopDownCamera::StartDragCam()
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	PlayerController->GetMousePosition(MouseStartDragPoint.X, MouseStartDragPoint.Y);
+	bDraggingCam = true;
+}
+
+void AMyTopDownCamera::EndDragCam()
+{
+	MouseStartDragPoint = FVector2D::ZeroVector;
+	bDraggingCam = false;
 }
 
 void AMyTopDownCamera::Select()

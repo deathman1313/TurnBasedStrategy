@@ -47,6 +47,12 @@ public:
 		class AMyGameManager* GameManager;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bDraggingCam = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector2D MouseStartDragPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AMyTile* SelectedTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -66,6 +72,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void Zoom(float Value);
+
+	UFUNCTION(BlueprintCallable)
+		void StartDragCam();
+
+	UFUNCTION(BlueprintCallable)
+		void EndDragCam();
 
 	UFUNCTION(BlueprintCallable)
 		void Select();
