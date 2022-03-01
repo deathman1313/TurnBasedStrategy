@@ -173,26 +173,35 @@ bool AMyPathfindingManager::IsTileOccupied(AMyTile* Tile, int UnitLayer)
 
 TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int UnitLayer = -1)
 {
-	bool bIsPathValid = true;
-	AMyTile* StartTile = Path[0];
-	for (AMyTile* Tile : Path)
+	// Is path valid (basic)
+	if (Path.Num() > 1)
 	{
-		if (Tile != StartTile)
+		bool bIsPathValid = true;
+		AMyTile* StartTile = Path[0];
+		for (AMyTile* Tile : Path)
 		{
-			// Check if tile is valid
-			if (!Tile->bTraversable || IsTileOccupied(Tile, UnitLayer))
+			if (Tile != StartTile)
 			{
-				bIsPathValid = false;
-				break;
+				// Check if tile is valid
+				if (!Tile->bTraversable || IsTileOccupied(Tile, UnitLayer))
+				{
+					bIsPathValid = false;
+					break;
+				}
 			}
 		}
-	}
-	if (bIsPathValid)
-	{
-		return(Path);
+		if (bIsPathValid)
+		{
+			return(Path);
+		}
+		else
+		{
+			return(FindPath(Path[0], Path[Path.Num() - 1], UnitLayer));
+		}
 	}
 	else
 	{
-		return(FindPath(Path[0], Path[Path.Num() - 1], UnitLayer));
+		TArray<AMyTile*> EmptyPath;
+		return(EmptyPath);
 	}
 }

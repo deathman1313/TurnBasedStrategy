@@ -5,6 +5,8 @@
 AMyMountain::AMyMountain()
 {
 	Name = "Mountain";
+	MaxHealth = 9999;
+	Health = MaxHealth;
 }
 
 void AMyMountain::BeginPlay()

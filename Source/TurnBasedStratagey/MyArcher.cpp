@@ -9,7 +9,7 @@ AMyArcher::AMyArcher()
 	//PrimaryActorTick.bCanEverTick = true;
 
 	Name = "Archer";
-	Range = 3;
+	Range = 2;
 }
 
 void AMyArcher::BeginPlay()

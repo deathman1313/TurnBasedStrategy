@@ -161,15 +161,16 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 			}
 			break;
 		case ESelectTypes::Move:
+			SelectType = ESelectTypes::Select;
 			if (SelectedUnit)
 			{
 				// Set Movement for selected unit
 				SelectedUnit->MovementQueue = GameManager->Pathfinding->FindPath(SelectedUnit->OnTile, SelectedTile, SelectedUnit->UnitLayer);
 				GameManager->CreatePath(SelectedUnit->MovementQueue);
 			}
-			SelectType = ESelectTypes::Select;
 			break;
 		case ESelectTypes::UnitAttack:
+			SelectType = ESelectTypes::Select;
 			if (SelectedUnit)
 			{
 				// If valid attack target
@@ -192,8 +193,11 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 					// Remove selector
 					GameManager->CreateSelector(nullptr);
 				}
+				else
+				{
+					SelectTile(PlayerController);
+				}
 			}
-			SelectType = ESelectTypes::Select;
 			break;
 		}
 	}

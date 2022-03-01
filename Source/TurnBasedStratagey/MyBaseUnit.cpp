@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "MyTile.h"
+#include "MyBuilding.h"
 #include "MyGameManager.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -114,17 +115,29 @@ TArray<AMyTile*> AMyBaseUnit::FindTargets()
 	if (GManager->Tiles.FindKey(OnTile))
 	{
 		FVector TileLocation = *GManager->Tiles.FindKey(OnTile);
-		for (int q = TileLocation.X - Range; q <= TileLocation.X + Range; q++)
+		for (int q = -Range; q <= Range; q++)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("%d %d %d %d"), -Range, -q - Range, Range, -q + Range);
-			for (int r = TileLocation.Y + UKismetMathLibrary::Max(-Range, -q-Range); r <= TileLocation.Y + UKismetMathLibrary::Min(Range, -q+Range); r++)
+			for (int r = UKismetMathLibrary::Max(-Range, q-Range); r <= UKismetMathLibrary::Min(Range, q+Range); r++)
 			{
 				int s = r - q;
-				UE_LOG(LogTemp, Warning, TEXT("%d %d %d"), q, r, s);
-				if (GManager->Tiles.Contains(FVector(q, r, s)))
+				if (GManager->Tiles.Contains(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s)))
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Target Valid"));
-					Targets.AddUnique(*GManager->Tiles.Find(FVector(q, r, s)));
+					AMyTile* Tile = *GManager->Tiles.Find(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
+					// Check if it has unit or building
+					if (Tile->OccupyingUnit)
+					{
+						if (Tile->OccupyingUnit->OwningPlayerIndex != OwningPlayerIndex)
+						{
+							Targets.AddUnique(Tile);
+						}
+					}
+					if (Tile->Building)
+					{
+						if (Tile->Building->OwningPlayerIndex != OwningPlayerIndex)
+						{
+							Targets.AddUnique(Tile);
+						}
+					}
 				}
 			}
 		}
