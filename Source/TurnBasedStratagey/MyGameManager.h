@@ -9,6 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTryProgressTurn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRoundStart);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameEnd, TArray<AController*>, WinnerControllers);
 
 USTRUCT(BlueprintType)
 struct FConstructions
@@ -67,6 +68,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 		TArray<FOnRoundStart> OnRoundStart;
 
+	UPROPERTY(BlueprintAssignable)
+		FOnGameEnd OnGameEnd;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USceneComponent* ActorRoot;
 
@@ -79,7 +83,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bMidTurn = false;
 
-	// Probably unnecessary
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int TurnLimit = 15;
+
+	// Probably could be made unnecessary
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<class AMyTurnObject*> TurnObjects;
 
@@ -148,6 +155,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void SpawnMountain(AMyTile* Tile);
+
+	UFUNCTION(BlueprintCallable)
+		void EndGame();
 
 protected:
 	// Called when the game starts or when spawned

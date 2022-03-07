@@ -88,9 +88,16 @@ void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 			ActivePlayer = 0;
 			Turn++;
 		}
-		bMidTurn = false;
-		UE_LOG(LogTemp, Warning, TEXT("StartNextTurn"));
-		OnRoundStart[ActivePlayer].Broadcast();
+		if (Turn >= TurnLimit && TurnLimit != -1)
+		{
+			EndGame();
+		}
+		else
+		{
+			bMidTurn = false;
+			UE_LOG(LogTemp, Warning, TEXT("StartNextTurn"));
+			OnRoundStart[ActivePlayer].Broadcast();
+		}
 	}
 }
 
@@ -215,5 +222,45 @@ void AMyGameManager::CreatePath(TArray<AMyTile*> Path)
 			// Create at given location, with calculated rotation
 			VisualPath->AddInstance(FTransform(ArrowRotation, Path[i]->GetActorLocation() + Path[i]->TileCenter->GetComponentLocation()));
 		}
+	}
+}
+
+void AMyGameManager::EndGame()
+{
+	// Calculate base owners
+	TMap<int, int> MostBasesPerPlayer;
+	for (AMyTurnObject* TurnObject : TurnObjects)
+	{
+		if (Cast<AMyBase>(TurnObject))
+		{
+			MostBasesPerPlayer.FindOrAdd(TurnObject->OwningPlayerIndex, 0);
+			MostBasesPerPlayer[TurnObject->OwningPlayerIndex]++;
+		}
+	}
+	// Calculate who owns the most bases
+	TArray<int> Winners;
+	int MostBases = 0;
+	for (TPair<int, int> BaseInfo : MostBasesPerPlayer)
+	{
+		if (BaseInfo.Value > MostBases)
+		{
+			MostBases = BaseInfo.Value;
+			Winners.Empty();
+			Winners.Add(BaseInfo.Key);
+		}
+		else if (BaseInfo.Value == MostBases)
+		{
+			Winners.Add(BaseInfo.Key);
+		}
+	}
+	for (int PlayerIndex : Winners)
+	{
+		// These are the winners
+		TArray<AController*> WinnerControllers;
+		if (PlayerIndex > -1 && PlayerIndex < Players.Num())
+		{
+			WinnerControllers.Add(Players[PlayerIndex].PlayerController);
+		}
+		OnGameEnd.Broadcast(WinnerControllers);
 	}
 }

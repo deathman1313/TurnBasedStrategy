@@ -47,6 +47,18 @@ void AMyTopDownCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bDraggingCam && WorldStartDragPoint != FVector::ZeroVector)
+	{
+		// Get current mouse position
+		APlayerController* PlayerController = Cast<APlayerController>(GetController());
+		FVector2D CurrentMouseLocation;
+		PlayerController->GetMousePosition(CurrentMouseLocation.X, CurrentMouseLocation.Y);
+		// Find world location
+		FVector NewLocation, NewRotation;
+		UGameplayStatics::DeprojectScreenToWorld(PlayerController, CurrentMouseLocation, NewLocation, NewRotation);
+		NewLocation -= WorldStartDragPoint;
+		SetActorLocation(FVector(ActorStartDragPoint.X - NewLocation.X, ActorStartDragPoint.Y - NewLocation.Y, ActorStartDragPoint.Z));
+	}
 }
 
 // Called to bind functionality to input
@@ -68,7 +80,7 @@ void AMyTopDownCamera::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AMyTopDownCamera::MoveVert(float Value)
 {
-	if (Value != 0)
+	if (Value != 0 && !bDraggingCam)
 	{
 		AddMovementInput(GetActorForwardVector(), Value);
 	}
@@ -76,7 +88,7 @@ void AMyTopDownCamera::MoveVert(float Value)
 
 void AMyTopDownCamera::MoveHor(float Value)
 {
-	if (Value != 0)
+	if (Value != 0 && !bDraggingCam)
 	{
 		AddMovementInput(GetActorRightVector(), Value);
 	}
@@ -105,13 +117,25 @@ void AMyTopDownCamera::Zoom(float Value)
 void AMyTopDownCamera::StartDragCam()
 {
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	// Get screen location
+	FVector2D MouseStartDragPoint;
 	PlayerController->GetMousePosition(MouseStartDragPoint.X, MouseStartDragPoint.Y);
+	// Find world location
+	FVector StartLocation, StartRotation;
+	UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseStartDragPoint, StartLocation, StartRotation);
+	// Testing
+	WorldStartDragPoint = StartLocation;
+	UE_LOG(LogTemp, Warning, TEXT("%f %f %f"), StartLocation.X, StartLocation.Y, StartLocation.Z);
+	// Store actor location
+	ActorStartDragPoint = GetActorLocation();
+	// Set dragging cam
 	bDraggingCam = true;
 }
 
 void AMyTopDownCamera::EndDragCam()
 {
-	MouseStartDragPoint = FVector2D::ZeroVector;
+	WorldStartDragPoint = FVector::ZeroVector;
+	ActorStartDragPoint = FVector::ZeroVector;
 	bDraggingCam = false;
 }
 

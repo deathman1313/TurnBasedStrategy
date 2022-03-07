@@ -50,7 +50,10 @@ public:
 		bool bDraggingCam = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector2D MouseStartDragPoint;
+		FVector WorldStartDragPoint;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector ActorStartDragPoint;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AMyTile* SelectedTile;

@@ -63,7 +63,7 @@ bool AMyTile::TakeBase(int RivalPlayerIndex)
 			if (Building->Health <= 0)
 			{
 				AMyBase* OccupyingBase = Cast<AMyBase>(Building);
-				if (Base)
+				if (OccupyingBase)
 				{
 					OccupyingBase->UpdateOwner(RivalPlayerIndex);
 					return(true);
