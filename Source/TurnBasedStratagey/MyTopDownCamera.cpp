@@ -56,10 +56,33 @@ void AMyTopDownCamera::Tick(float DeltaTime)
 		FVector2D CurrentMouseLocation;
 		PlayerController->GetMousePosition(CurrentMouseLocation.X, CurrentMouseLocation.Y);
 		// Find world location
-		FVector NewLocation, NewRotation;
-		UGameplayStatics::DeprojectScreenToWorld(PlayerController, CurrentMouseLocation, NewLocation, NewRotation);
-		NewLocation -= WorldStartDragPoint;
-		SetActorLocation(FVector(ActorStartDragPoint.X - NewLocation.X, ActorStartDragPoint.Y - NewLocation.Y, ActorStartDragPoint.Z));
+		FVector NewLocation, NewDirection;
+		UGameplayStatics::DeprojectScreenToWorld(PlayerController, CurrentMouseLocation, NewLocation, NewDirection);
+		float t = -NewLocation.Z / NewDirection.Z;
+		FVector WorldEndDragPoint = FVector(NewLocation.X + (t * NewDirection.X), NewLocation.Y + (t * NewDirection.Y), 0.f);
+		WorldEndDragPoint -= WorldStartDragPoint;
+		WorldEndDragPoint = ActorStartDragPoint - WorldEndDragPoint;
+		FVector MovementLocation = FMath::VInterpConstantTo(GetActorLocation(), WorldEndDragPoint, DeltaTime, 1000);
+		// Check to prevent jitter
+		bool Jitter = false;
+		for (FVector Location : PreviousLocations)
+		{
+			if (Location.Equals(MovementLocation))
+			{
+				Jitter = true;
+				break;
+			}
+		}
+		if (!Jitter)
+		{
+			SetActorLocation(MovementLocation);
+		}
+		// Update locations array
+		PreviousLocations.Insert(MovementLocation, 0);
+		for (int i = PreviousLocations.Num() - 1; i >= 3; i--)
+		{
+			PreviousLocations.RemoveAt(i);
+		}
 	}
 }
 
@@ -123,10 +146,10 @@ void AMyTopDownCamera::StartDragCam()
 	FVector2D MouseStartDragPoint;
 	PlayerController->GetMousePosition(MouseStartDragPoint.X, MouseStartDragPoint.Y);
 	// Find world location
-	FVector StartLocation, StartRotation;
-	UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseStartDragPoint, StartLocation, StartRotation);
-	// Testing
-	WorldStartDragPoint = StartLocation;
+	FVector StartLocation, StartDirection;
+	UGameplayStatics::DeprojectScreenToWorld(PlayerController, MouseStartDragPoint, StartLocation, StartDirection);
+	float t = -StartLocation.Z / StartDirection.Z;
+	WorldStartDragPoint = FVector(StartLocation.X + (t * StartDirection.X), StartLocation.Y + (t * StartDirection.Y), 0.f);
 	UE_LOG(LogTemp, Warning, TEXT("%f %f %f"), StartLocation.X, StartLocation.Y, StartLocation.Z);
 	// Store actor location
 	ActorStartDragPoint = GetActorLocation();
@@ -274,7 +297,6 @@ AMyTile* AMyTopDownCamera::GetClickedTile(FVector2D MouseLocation, APlayerContro
 
 void AMyTopDownCamera::GameEnded(TArray<AController*> WinnerControllers)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Help"));
 	if (WinnerControllers.Contains(GetController()))
 	{
 		DisplayEndUI(true);

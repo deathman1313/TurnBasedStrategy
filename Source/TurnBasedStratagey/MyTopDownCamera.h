@@ -67,6 +67,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		ESelectTypes SelectType = ESelectTypes::Select;
 
+	UPROPERTY()
+		TArray<FVector> PreviousLocations;
+
 	UFUNCTION(BlueprintCallable)
 		void MoveVert(float Value);
 
