@@ -40,6 +40,8 @@ void AMyTopDownCamera::BeginPlay()
 	{
 		GameManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AMyGameManager::StaticClass()));
 	}
+
+	GameManager->OnGameEnd.AddUniqueDynamic(this, &AMyTopDownCamera::GameEnded);
 }
  
 // Called every frame
@@ -267,5 +269,18 @@ AMyTile* AMyTopDownCamera::GetClickedTile(FVector2D MouseLocation, APlayerContro
 	else
 	{
 		return(nullptr);
+	}
+}
+
+void AMyTopDownCamera::GameEnded(TArray<AController*> WinnerControllers)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Help"));
+	if (WinnerControllers.Contains(GetController()))
+	{
+		DisplayEndUI(true);
+	}
+	else
+	{
+		DisplayEndUI(false);
 	}
 }

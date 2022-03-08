@@ -91,6 +91,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 		AMyTile* GetClickedTile(FVector2D MouseLocation, APlayerController* PlayerController);
 
+	UFUNCTION(BlueprintCallable)
+		void GameEnded(TArray<AController*> WinnerControllers);
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void DisplayEndUI(bool Winner);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

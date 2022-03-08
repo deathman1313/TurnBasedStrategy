@@ -51,6 +51,9 @@ struct FGenerationSettings
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int MountainNum;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int EmptyBaseNum;
 };
 
 UCLASS()
@@ -149,6 +152,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		void CreatePath(TArray<AMyTile*> Path);
+
+	UFUNCTION(BlueprintCallable)
+		AMyTile* FindEmptyTile();
 
 	UFUNCTION(BlueprintCallable)
 		void SpawnBase(AMyTile* Tile, int PlayerIndex);

@@ -120,37 +120,20 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 				Tiles.Add(FVector(q, r, s), NewTile);
 			}
 		}
-		TArray<FVector> TileKeys;
-		TileKeys.Empty();
-		Tiles.GenerateKeyArray(TileKeys);
-		SpawnBase(Tiles[TileKeys[0]], 0);
-		SpawnBase(Tiles[FVector(0, 0, 0)], -1);
+		// Spawn player bases
+		for (int PlayerIndex = 0; PlayerIndex < Players.Num(); PlayerIndex++)
+		{
+			SpawnBase(FindEmptyTile(), PlayerIndex);
+		}
+		// Spawn enemy bases
+		for (int i = 0; i < GenerationSettings.EmptyBaseNum; i++)
+		{
+			SpawnBase(FindEmptyTile(), -1);
+		}
 		// Spawn mountains
 		for (int i = 0; i < GenerationSettings.MountainNum; i++)
 		{
-			int RandTileIndex;
-			int ErrHandling = 0;
-			bool Spawned = false;
-			while (!Spawned)
-			{
-				RandTileIndex = FMath::RandRange(0, TileKeys.Num() - 1);
-				if (Tiles[TileKeys[RandTileIndex]]->Building)
-				{
-					// Prevent infinate loop
-					ErrHandling++;
-					if (ErrHandling > 50)
-					{
-						break;
-					}
-				}
-				else
-				{
-					// Should check for valid paths here
-					// Spawn mountain
-					Spawned = true;
-					SpawnMountain(Tiles[TileKeys[RandTileIndex]]);
-				}
-			}
+			SpawnMountain(FindEmptyTile());
 		}
 	}
 }
@@ -161,6 +144,25 @@ FVector AMyGameManager::GridToWorld(FVector2D GridLocation)
 	WorldLocation.X = WorldLocation.X + (86.5f * GridLocation.X);
 	WorldLocation.Y = WorldLocation.Y + (100 * GridLocation.Y) - (50 * GridLocation.X);
 	return(WorldLocation);
+}
+
+AMyTile* AMyGameManager::FindEmptyTile()
+{
+	TArray<FVector> TileKeys;
+	TileKeys.Empty();
+	Tiles.GenerateKeyArray(TileKeys);
+
+	int RandTileIndex;
+	for (int Err = 0; Err < 50; Err++)
+	{
+		RandTileIndex = FMath::RandRange(0, TileKeys.Num() - 1);
+		if (!Tiles[TileKeys[RandTileIndex]]->Building)
+		{
+			// Should check for valid paths here
+			return(Tiles[TileKeys[RandTileIndex]]);
+		}
+	}
+	return(nullptr);
 }
 
 void AMyGameManager::SpawnBase(AMyTile* Tile, int PlayerIndex)
@@ -253,14 +255,14 @@ void AMyGameManager::EndGame()
 			Winners.Add(BaseInfo.Key);
 		}
 	}
+	// These are the winners
+	TArray<AController*> WinnerControllers;
 	for (int PlayerIndex : Winners)
 	{
-		// These are the winners
-		TArray<AController*> WinnerControllers;
 		if (PlayerIndex > -1 && PlayerIndex < Players.Num())
 		{
 			WinnerControllers.Add(Players[PlayerIndex].PlayerController);
 		}
-		OnGameEnd.Broadcast(WinnerControllers);
 	}
+	OnGameEnd.Broadcast(WinnerControllers);
 }
