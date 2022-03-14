@@ -24,10 +24,16 @@ void AMyBase::Tick(float DeltaTime)
 
 void AMyBase::UpdateOwner(int NewOwnerIndex)
 {
-	//Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", FLinearColor::Blue);
+	// Remove previous owner
+	if (OwningPlayerIndex > -1 && OwningPlayerIndex < GManager->Players.Num())
+	{
+		GManager->Players[OwningPlayerIndex].OwningBases.Remove(this);
+	}
+	// Add new owner
 	if (NewOwnerIndex > -1 && NewOwnerIndex < GManager->Players.Num())
 	{
 		OwningPlayerIndex = NewOwnerIndex;
+		GManager->Players[OwningPlayerIndex].OwningBases.Add(this);
 		for (FPlayerInfo Player : GManager->Players)
 		{
 			if (Player.PlayerController == GManager->Players[NewOwnerIndex].PlayerController)
@@ -36,6 +42,7 @@ void AMyBase::UpdateOwner(int NewOwnerIndex)
 			}
 		}
 	}
+	// If no new owner
 	else
 	{
 		OwningPlayerIndex = -1;

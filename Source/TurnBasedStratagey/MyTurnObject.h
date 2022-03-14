@@ -58,7 +58,7 @@ public:
 		class AMyTile* OnTile;
 
 	UFUNCTION(BlueprintCallable)
-		void Setup();
+		virtual void Setup();
 
 	UFUNCTION(BlueprintCallable)
 		void ApplyDamage(int Damage);

@@ -39,8 +39,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FColor PlayerColour;
 
+	// Remove this
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<AMyTurnObject*> OwningObjects;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<AMyTurnObject*> OwningUnits;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<AMyTurnObject*> OwningBases;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<AMyTurnObject*> OwningBuildings;
 };
 
 USTRUCT(BlueprintType)
