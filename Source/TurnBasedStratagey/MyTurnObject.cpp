@@ -57,10 +57,6 @@ void AMyTurnObject::DestroySelf()
 {
 	// Override this
 	UE_LOG(LogTemp, Warning, TEXT("Destroy"));
-	if (OwningPlayerIndex > -1 && OwningPlayerIndex < GManager->Players.Num())
-	{
-		GManager->Players[OwningPlayerIndex].OwningObjects.Remove(this);
-	}
 	GManager->TurnObjects.Remove(this);
 	Destroy();
 }

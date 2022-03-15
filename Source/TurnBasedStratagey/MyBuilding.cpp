@@ -2,6 +2,7 @@
 
 #include "MyBuilding.h"
 #include "MyTile.h"
+#include "MyGameManager.h"
 #include "Components/StaticMeshComponent.h"
 
 // Sets default values
@@ -42,6 +43,10 @@ void AMyBuilding::DestroySelf()
 	{
 		OnTile->Building = nullptr;
 		OnTile->bTraversable = true;
+	}
+	if (OwningPlayerIndex > -1 && OwningPlayerIndex < GManager->Players.Num())
+	{
+		GManager->Players[OwningPlayerIndex].OwningBuildings.Remove(this);
 	}
 	Super::DestroySelf();
 }

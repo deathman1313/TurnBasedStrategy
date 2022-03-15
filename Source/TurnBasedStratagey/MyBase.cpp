@@ -28,12 +28,16 @@ void AMyBase::UpdateOwner(int NewOwnerIndex)
 	if (OwningPlayerIndex > -1 && OwningPlayerIndex < GManager->Players.Num())
 	{
 		GManager->Players[OwningPlayerIndex].OwningBases.Remove(this);
+		GManager->OnTryProgressTurn[OwningPlayerIndex].RemoveDynamic(this, &AMyTurnObject::TurnAction);
+		GManager->OnRoundStart[OwningPlayerIndex].RemoveDynamic(this, &AMyTurnObject::Reset);
 	}
 	// Add new owner
 	if (NewOwnerIndex > -1 && NewOwnerIndex < GManager->Players.Num())
 	{
 		OwningPlayerIndex = NewOwnerIndex;
 		GManager->Players[OwningPlayerIndex].OwningBases.Add(this);
+		GManager->OnTryProgressTurn[OwningPlayerIndex].AddUniqueDynamic(this, &AMyTurnObject::TurnAction);
+		GManager->OnRoundStart[OwningPlayerIndex].AddUniqueDynamic(this, &AMyTurnObject::Reset);
 		for (FPlayerInfo Player : GManager->Players)
 		{
 			if (Player.PlayerController == GManager->Players[NewOwnerIndex].PlayerController)
@@ -57,15 +61,6 @@ void AMyBase::DestroySelf()
 
 void AMyBase::TurnAction()
 {
-	// Heal Base
-	if (Health < MaxHealth)
-	{
-		Health = Health + (MaxHealth * 0.1);
-		if (Health > MaxHealth)
-		{
-			Health = MaxHealth;
-		}
-	}
 	if (!bLocked && CurrentConstruction > 0)
 	{
 		if (ConstructionProgress < GManager->PossibleConstrutions[CurrentConstruction].ConstructionCost)
@@ -110,6 +105,15 @@ bool AMyBase::SpawnUnit()
 void AMyBase::Reset()
 {
 	Super::Reset();
+	// Heal Base
+	if (Health < MaxHealth)
+	{
+		Health = Health + (MaxHealth * 0.1);
+		if (Health > MaxHealth)
+		{
+			Health = MaxHealth;
+		}
+	}
 	if (CurrentConstruction != -1)
 	{
 		bPerformedAction = true;

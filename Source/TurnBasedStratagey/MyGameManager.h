@@ -121,7 +121,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Turn = 1;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ActivePlayer = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

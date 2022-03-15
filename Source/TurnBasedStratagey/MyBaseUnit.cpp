@@ -153,6 +153,10 @@ void AMyBaseUnit::DestroySelf()
 	{
 		OnTile->OccupyingUnit = nullptr;
 	}
+	if (OwningPlayerIndex > -1 && OwningPlayerIndex < GManager->Players.Num())
+	{
+		GManager->Players[OwningPlayerIndex].OwningUnits.Remove(this);
+	}
 	Super::DestroySelf();
 }
 

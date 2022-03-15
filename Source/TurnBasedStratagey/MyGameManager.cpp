@@ -71,7 +71,9 @@ void AMyGameManager::NextTurn()
 {
 	// Try to progress to new turn
 	bMidTurn = true;
-	WaitingFor = Players[ActivePlayer].OwningObjects;
+	WaitingFor = Players[ActivePlayer].OwningBases;
+	WaitingFor.Append(Players[ActivePlayer].OwningBuildings);
+	WaitingFor.Append(Players[ActivePlayer].OwningUnits);
 	OnTryProgressTurn[ActivePlayer].Broadcast();
 }
 
