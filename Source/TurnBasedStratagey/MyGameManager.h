@@ -39,10 +39,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FColor PlayerColour;
 
-	// Remove this
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<AMyTurnObject*> OwningObjects;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<AMyTurnObject*> OwningUnits;
 
@@ -64,6 +60,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int EmptyBaseNum;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int HumanNum;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int AINum;
 };
 
 UCLASS()
@@ -165,6 +167,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		AMyTile* FindEmptyTile();
+
+	UFUNCTION(BlueprintCallable)
+		class AMyAIPlayerController* SpawnAI();
 
 	UFUNCTION(BlueprintCallable)
 		void SpawnBase(AMyTile* Tile, int PlayerIndex);

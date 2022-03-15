@@ -5,6 +5,7 @@
 #include "MyBase.h"
 #include "MyMountain.h"
 #include "MyPathfindingManager.h"
+#include "MyAIPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -35,9 +36,23 @@ void AMyGameManager::BeginPlay()
 	// Assign Players
 	FPlayerInfo NewPlayer;
 	NewPlayer.PlayerController = GetWorld()->GetFirstPlayerController();
-	NewPlayer.PlayerName = "Player 1";
-	NewPlayer.PlayerColour = FColor::Blue;
-	Players.Add(NewPlayer);
+	int Endi = 0;
+	for (int i = 0; i < GenerationSettings.HumanNum; i++)
+	{
+		NewPlayer.PlayerName = "Player" + FString::FromInt(i + 1);
+		NewPlayer.PlayerColour = FColor::Blue;
+		Players.Add(NewPlayer);
+		Endi = i;
+	}
+	// Spawn AI
+	for (int j = 0; j < GenerationSettings.AINum; j++)
+	{
+		NewPlayer.PlayerController = SpawnAI();
+		NewPlayer.PlayerName = "Player" + FString::FromInt(Endi + 1 + j);
+		NewPlayer.PlayerColour = FColor::Red;
+		Players.Add(NewPlayer);
+	}
+	// Add new event dispatchers
 	for (FPlayerInfo Player : Players)
 	{
 		FOnTryProgressTurn TempProgressTurn;
@@ -45,7 +60,7 @@ void AMyGameManager::BeginPlay()
 		FOnRoundStart TempRoundStart;
 		OnRoundStart.Add(TempRoundStart);
 	}
-
+	// Create board
 	if (bGenerateTiles)
 	{
 		CreateGameBoard(Rows, Cols);
@@ -167,6 +182,14 @@ AMyTile* AMyGameManager::FindEmptyTile()
 	return(nullptr);
 }
 
+AMyAIPlayerController* AMyGameManager::SpawnAI()
+{
+	// Spawn AI
+	AMyAIPlayerController* NewAI;
+	// Assign event dispatcher
+	return(NewAI);
+}
+
 void AMyGameManager::SpawnBase(AMyTile* Tile, int PlayerIndex)
 {
 	if (Tile)
@@ -231,6 +254,24 @@ void AMyGameManager::CreatePath(TArray<AMyTile*> Path)
 
 void AMyGameManager::EndGame()
 {
+	/*
+	// Best option, doesn't work with -1 player
+	TArray<int> Winners;
+	int MostBases = 0;
+	for (int i = 0; i < Players.Num(); i++)
+	{
+		if (Players[i].OwningBases.Num() > MostBases)
+		{
+			MostBases = Players[i].OwningBases.Num();
+			Winners.Empty();
+			Winners.Add(i);
+		}
+		else if (Players[i].OwningBases.Num() == MostBases)
+		{
+			Winners.Add(i);
+		}
+	}
+	*/
 	// Calculate base owners
 	TMap<int, int> MostBasesPerPlayer;
 	for (AMyTurnObject* TurnObject : TurnObjects)

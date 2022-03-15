@@ -96,6 +96,7 @@ bool AMyBase::SpawnUnit()
 	SpawnedUnit->Setup();
 	SpawnedUnit->OnTile = OnTile;
 	OnTile->OccupyingUnit = SpawnedUnit;
+	GManager->Players[OwningPlayerIndex].OwningUnits.Add(SpawnedUnit);
 	SpawnedUnit->CurrentMovement = 0;
 	SpawnedUnit->bPerformedAction = true;
 	SpawnedUnit->bLocked = true;
@@ -108,7 +109,7 @@ void AMyBase::Reset()
 	// Heal Base
 	if (Health < MaxHealth)
 	{
-		Health = Health + (MaxHealth * 0.1);
+		Health = Health + (MaxHealth * 0.05);
 		if (Health > MaxHealth)
 		{
 			Health = MaxHealth;

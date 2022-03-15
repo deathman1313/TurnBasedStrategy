@@ -35,7 +35,7 @@ void AMyTurnObject::Setup()
 	{
 		GManager->OnTryProgressTurn[OwningPlayerIndex].AddUniqueDynamic(this, &AMyTurnObject::TurnAction);
 		GManager->OnRoundStart[OwningPlayerIndex].AddUniqueDynamic(this, &AMyTurnObject::Reset);
-		GManager->Players[OwningPlayerIndex].OwningObjects.Add(this);
+		//GManager->Players[OwningPlayerIndex].OwningObjects.Add(this);
 	}
 	GManager->TurnObjects.Add(this);
 
