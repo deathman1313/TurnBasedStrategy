@@ -39,16 +39,16 @@ void AMyGameManager::BeginPlay()
 	int Endi = 0;
 	for (int i = 0; i < GenerationSettings.HumanNum; i++)
 	{
-		NewPlayer.PlayerName = "Player" + FString::FromInt(i + 1);
+		NewPlayer.PlayerName = "Player " + FString::FromInt(i + 1);
 		NewPlayer.PlayerColour = FColor::Blue;
 		Players.Add(NewPlayer);
-		Endi = i;
+		Endi = i + 1;
 	}
 	// Spawn AI
 	for (int j = 0; j < GenerationSettings.AINum; j++)
 	{
-		NewPlayer.PlayerController = SpawnAI();
-		NewPlayer.PlayerName = "Player" + FString::FromInt(Endi + 1 + j);
+		NewPlayer.PlayerController = SpawnAI(Players.Num());
+		NewPlayer.PlayerName = "Player " + FString::FromInt(Endi + 1 + j);
 		NewPlayer.PlayerColour = FColor::Red;
 		Players.Add(NewPlayer);
 	}
@@ -59,6 +59,12 @@ void AMyGameManager::BeginPlay()
 		OnTryProgressTurn.Add(TempProgressTurn);
 		FOnRoundStart TempRoundStart;
 		OnRoundStart.Add(TempRoundStart);
+		AMyAIPlayerController* AIController = Cast<AMyAIPlayerController>(Player.PlayerController);
+		if (AIController)
+		{
+			// Assign event dispatcher
+			OnRoundStart.Last().AddUniqueDynamic(AIController, &AMyAIPlayerController::StartTurn);
+		}
 	}
 	// Create board
 	if (bGenerateTiles)
@@ -182,11 +188,10 @@ AMyTile* AMyGameManager::FindEmptyTile()
 	return(nullptr);
 }
 
-AMyAIPlayerController* AMyGameManager::SpawnAI()
+AMyAIPlayerController* AMyGameManager::SpawnAI(int PlayerID)
 {
 	// Spawn AI
-	AMyAIPlayerController* NewAI;
-	// Assign event dispatcher
+	AMyAIPlayerController* NewAI = GetWorld()->SpawnActor<AMyAIPlayerController>();
 	return(NewAI);
 }
 
@@ -254,7 +259,6 @@ void AMyGameManager::CreatePath(TArray<AMyTile*> Path)
 
 void AMyGameManager::EndGame()
 {
-	/*
 	// Best option, doesn't work with -1 player
 	TArray<int> Winners;
 	int MostBases = 0;
@@ -269,33 +273,6 @@ void AMyGameManager::EndGame()
 		else if (Players[i].OwningBases.Num() == MostBases)
 		{
 			Winners.Add(i);
-		}
-	}
-	*/
-	// Calculate base owners
-	TMap<int, int> MostBasesPerPlayer;
-	for (AMyTurnObject* TurnObject : TurnObjects)
-	{
-		if (Cast<AMyBase>(TurnObject))
-		{
-			MostBasesPerPlayer.FindOrAdd(TurnObject->OwningPlayerIndex, 0);
-			MostBasesPerPlayer[TurnObject->OwningPlayerIndex]++;
-		}
-	}
-	// Calculate who owns the most bases
-	TArray<int> Winners;
-	int MostBases = 0;
-	for (TPair<int, int> BaseInfo : MostBasesPerPlayer)
-	{
-		if (BaseInfo.Value > MostBases)
-		{
-			MostBases = BaseInfo.Value;
-			Winners.Empty();
-			Winners.Add(BaseInfo.Key);
-		}
-		else if (BaseInfo.Value == MostBases)
-		{
-			Winners.Add(BaseInfo.Key);
 		}
 	}
 	// These are the winners

@@ -106,6 +106,9 @@ public:
 		TArray<class AMyTurnObject*> TurnObjects;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class UBehaviorTree* AIBehaviorTree;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<class AMyTurnObject*> WaitingFor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -169,7 +172,7 @@ public:
 		AMyTile* FindEmptyTile();
 
 	UFUNCTION(BlueprintCallable)
-		class AMyAIPlayerController* SpawnAI();
+		class AMyAIPlayerController* SpawnAI(int PlayerID);
 
 	UFUNCTION(BlueprintCallable)
 		void SpawnBase(AMyTile* Tile, int PlayerIndex);

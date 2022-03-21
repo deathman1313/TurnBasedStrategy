@@ -2,6 +2,7 @@
 
 #include "MyAIPlayerController.h"
 #include "MyGameManager.h"
+#include "Kismet/GameplayStatics.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 AMyAIPlayerController::AMyAIPlayerController()
@@ -13,7 +14,11 @@ AMyAIPlayerController::AMyAIPlayerController()
 
 void AMyAIPlayerController::BeginPlay()
 {
+	// Get active GameManager
+	GameManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(this, AMyGameManager::StaticClass()));
 	GameManager->OnGameEnd.AddUniqueDynamic(this, &AMyAIPlayerController::GameEnded);
+	BehaviorTree = GameManager->AIBehaviorTree;
+	RunBehaviorTree(BehaviorTree);
 }
 
 void AMyAIPlayerController::Tick(float DeltaTime)
@@ -21,10 +26,10 @@ void AMyAIPlayerController::Tick(float DeltaTime)
 
 }
 
+// Probably unnecessary
 void AMyAIPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	RunBehaviorTree(BehaviorTree);
 }
 
 void AMyAIPlayerController::GameEnded(TArray<AController*> WinnerControllers)
@@ -35,4 +40,6 @@ void AMyAIPlayerController::GameEnded(TArray<AController*> WinnerControllers)
 void AMyAIPlayerController::StartTurn()
 {
 	GetBlackboardComponent()->SetValueAsBool(FName("CurrentTurn"), true);
+	UE_LOG(LogTemp, Warning, TEXT("AITurn"));
+	GameManager->NextTurn();
 }
