@@ -192,6 +192,7 @@ AMyAIPlayerController* AMyGameManager::SpawnAI(int PlayerID)
 {
 	// Spawn AI
 	AMyAIPlayerController* NewAI = GetWorld()->SpawnActor<AMyAIPlayerController>();
+	NewAI->PlayerIndex = PlayerID;
 	return(NewAI);
 }
 

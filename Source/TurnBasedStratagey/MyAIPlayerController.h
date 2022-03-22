@@ -23,6 +23,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyGameManager* GameManager;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int PlayerIndex;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TArray<class AMyTurnObject*> OwningObjects;
+
 	UFUNCTION(BlueprintCallable)
 		void GameEnded(TArray<AController*> WinnerControllers);
 
