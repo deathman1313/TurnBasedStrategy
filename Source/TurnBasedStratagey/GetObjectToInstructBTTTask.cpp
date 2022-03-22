@@ -15,7 +15,6 @@ EBTNodeResult::Type UGetObjectToInstructBTTTask::ExecuteTask(UBehaviorTreeCompon
 		if (CurrentUnit < 0)
 		{
 			CurrentUnit = 0;
-			UE_LOG(LogTemp, Warning, TEXT("Once"));
 		}
 		else
 		{
