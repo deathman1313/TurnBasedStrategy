@@ -15,21 +15,28 @@ EBTNodeResult::Type UInstructObjectBTTask::ExecuteTask(UBehaviorTreeComponent& O
 	if (AIPlayer && ObjectIndex >= 0)
 	{
 		AMyTurnObject* CommandingObject = AIPlayer->OwningObjects[ObjectIndex];
-		if (Cast<AMyBaseUnit>(CommandingObject))
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *CommandingObject->GetClass()->GetFName().ToString());
+		if (CommandingObject->GetClass() == TSubclassOf<AMyBaseUnit>())
 		{
 			AMyBaseUnit* CommandingUnit = Cast<AMyBaseUnit>(CommandingObject);
 
 		}
-		else if (Cast<AMyBase>(CommandingObject))
+		else if (CommandingObject->GetClass() == TSubclassOf<AMyBase>())
 		{
 			AMyBase* CommandingBase = Cast<AMyBase>(CommandingObject);
-
+			// If base has no construction
+			if (CommandingBase->CurrentConstruction < 0)
+			{
+				CommandingBase->CurrentConstruction = 1;
+			}
 		}
-		CommandingObject->DoNothing();
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("AIUnknownObject"));
+			// If unknown object do nothing
+			CommandingObject->DoNothing();
+		}
 		return EBTNodeResult::Succeeded;
 	}
 	return EBTNodeResult::Failed;
-
-
-	if (CommandingObject->GetClass() == TSubclassOf<AMyBaseUnit>())
 }

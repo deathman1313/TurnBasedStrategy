@@ -11,6 +11,7 @@ EBTNodeResult::Type UGetObjectToInstructBTTTask::ExecuteTask(UBehaviorTreeCompon
 	AMyAIPlayerController* AIPlayer = Cast<AMyAIPlayerController>(OwnerComp.GetOwner());
 	if (GameManager && AIPlayer)
 	{
+		// Increment commanding unit
 		int CurrentUnit = OwnerComp.GetBlackboardComponent()->GetValueAsInt(FName("CommandingObject"));
 		if (CurrentUnit < 0)
 		{
@@ -19,12 +20,13 @@ EBTNodeResult::Type UGetObjectToInstructBTTTask::ExecuteTask(UBehaviorTreeCompon
 		else
 		{
 			CurrentUnit++;
-			if (CurrentUnit >= AIPlayer->OwningObjects.Num())
-			{
-				CurrentUnit = -1;
-				OwnerComp.GetBlackboardComponent()->SetValueAsBool(FName("TurnFinished"), true);
-				UE_LOG(LogTemp, Warning, TEXT("AIEnd"));
-			}
+		}
+		// Validate commanding unit
+		if (CurrentUnit >= AIPlayer->OwningObjects.Num())
+		{
+			CurrentUnit = -1;
+			OwnerComp.GetBlackboardComponent()->SetValueAsBool(FName("TurnFinished"), true);
+			UE_LOG(LogTemp, Warning, TEXT("AIEnd"));
 		}
 		OwnerComp.GetBlackboardComponent()->SetValueAsInt(FName("CommandingObject"), CurrentUnit);
 		return EBTNodeResult::Succeeded;
