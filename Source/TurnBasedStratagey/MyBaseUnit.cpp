@@ -83,22 +83,27 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass)
 			// Check available movement
 			if (CurrentMovement > 0)
 			{
-				// Set location to move to
-				MovementLocation = MovementQueue[1]->GetActorLocation();
-				// Remove old tile position refs
-				MovementQueue[0]->OccupyingUnit = nullptr;
-				// And add new ones
-				MovementQueue[1]->OccupyingUnit = this;
-				OnTile = MovementQueue[1];
-				// Turn to face movement direction
-				SetActorRotation(UKismetMathLibrary::GetDirectionUnitVector(MovementQueue[0]->GetActorLocation(), MovementQueue[1]->GetActorLocation()).Rotation());
-				// Start Movement
-				CurrentMovement -= 1;
-				MovementQueue.RemoveAt(0);
-				// Attempt to take base
-				OnTile->TakeBase(OwningPlayerIndex);
-				bMoving = true;
-				return(true);
+				// Validate path
+				MovementQueue = GManager->Pathfinding->ValidatePath(MovementQueue, UnitLayer, OwningPlayerIndex);
+				if (MovementQueue.Num() > 0)
+				{
+					// Set location to move to
+					MovementLocation = MovementQueue[1]->GetActorLocation();
+					// Remove old tile position refs
+					MovementQueue[0]->OccupyingUnit = nullptr;
+					// And add new ones
+					MovementQueue[1]->OccupyingUnit = this;
+					OnTile = MovementQueue[1];
+					// Turn to face movement direction
+					SetActorRotation(UKismetMathLibrary::GetDirectionUnitVector(MovementQueue[0]->GetActorLocation(), MovementQueue[1]->GetActorLocation()).Rotation());
+					// Start Movement
+					CurrentMovement -= 1;
+					MovementQueue.RemoveAt(0);
+					// Attempt to take base
+					OnTile->TakeBase(OwningPlayerIndex);
+					bMoving = true;
+					return(true);
+				}
 			}
 		}
 	}

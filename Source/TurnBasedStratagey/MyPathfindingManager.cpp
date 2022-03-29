@@ -42,7 +42,7 @@ void AMyPathfindingManager::Setup(TMap<FVector, AMyTile*> Tiles)
 	}
 }
 
-TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, int UnitLayer = -1, int OwningPlayerIndex = -1)
+TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, int UnitLayer, int OwningPlayerIndex)
 {
 	TArray<AMyTile*> OpenSet;
 
@@ -91,7 +91,7 @@ TArray<AMyTile*> AMyPathfindingManager::FindPath(AMyTile* Start, AMyTile* End, i
 
 			for (AMyTile* Neighbour : Current->Neighbours)
 			{
-				if (Neighbour->bTraversable && !IsTileOccupied(Neighbour, UnitLayer) && !IsBlockingBase(End, OwningPlayerIndex))
+				if (Neighbour->bTraversable && !IsTileOccupied(Neighbour, UnitLayer) && !IsBlockingBase(Neighbour, OwningPlayerIndex))
 				{
 					float TempG = G[Current] + Neighbour->MoveCost;
 

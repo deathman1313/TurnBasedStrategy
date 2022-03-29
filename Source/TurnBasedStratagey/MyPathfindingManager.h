@@ -32,7 +32,7 @@ public:
 		void Setup(TMap<FVector, AMyTile*> Tiles);
 
 	UFUNCTION(BlueprintCallable)
-		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End, int UnitLayer, int OwningPlayerIndex);
+		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End, int UnitLayer = -1, int OwningPlayerIndex = -1);
 
 	UFUNCTION(BlueprintCallable)
 		TArray<AMyTile*> GetNeighbours(FVector TileKey);

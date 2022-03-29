@@ -3,6 +3,7 @@
 #include "ValidateEndTurnBTTask.h"
 #include "MyGameManager.h"
 #include "MyTurnObject.h"
+#include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 EBTNodeResult::Type UValidateEndTurnBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -10,14 +11,17 @@ EBTNodeResult::Type UValidateEndTurnBTTask::ExecuteTask(UBehaviorTreeComponent& 
 	AMyGameManager* GameManager = Cast<AMyGameManager>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("GameManager")));
 	if (GameManager)
 	{
-		if (GameManager->WaitingFor.Num() > 0)
+		if (Cast<AAIController>(GameManager->Players[GameManager->ActivePlayer].PlayerController) == OwnerComp.GetAIOwner())
 		{
-			UE_LOG(LogTemp, Error, TEXT("THIS SHOULD NOT BE APPEARING"));
-			for (AMyTurnObject* Object : GameManager->WaitingFor)
+			if (GameManager->WaitingFor.Num() > 0)
 			{
-				Object->DoNothing();
+				UE_LOG(LogTemp, Error, TEXT("THIS SHOULD NOT BE APPEARING"));
+				for (AMyTurnObject* Object : GameManager->WaitingFor)
+				{
+					Object->DoNothing();
+				}
+				GameManager->NextTurn();
 			}
-			GameManager->NextTurn();
 		}
 		return EBTNodeResult::Succeeded;
 	}
