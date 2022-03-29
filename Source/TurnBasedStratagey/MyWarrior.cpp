@@ -9,6 +9,9 @@ AMyWarrior::AMyWarrior()
 	//PrimaryActorTick.bCanEverTick = true;
 
 	Name = "Warrior";
+	MaxHealth = 50;
+	Health = 50;
+	AttackDamage = 10;
 }
 
 void AMyWarrior::BeginPlay()

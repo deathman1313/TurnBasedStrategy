@@ -247,7 +247,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 					}
 					else if (SelectedTile->OccupyingUnit)
 					{
-						SelectedTile->OccupyingUnit->ApplyDamage(SelectedBuilding->AttackDamage);
+						SelectedTile->OccupyingUnit->ApplyDamage(SelectedUnit->AttackDamage);
 					}
 					// Lock unit
 					SelectedUnit->bPerformedAction = true;

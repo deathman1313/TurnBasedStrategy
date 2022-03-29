@@ -20,6 +20,9 @@ AMyBuilding::AMyBuilding()
 	Mesh->SetWorldScale3D(FVector(10.f, 10.f, 10.f));
 	Mesh->SetMobility(EComponentMobility::Stationary);
 
+	UIInfoLocation = CreateDefaultSubobject<USceneComponent>(TEXT("UIInfoLocation"));
+	UIInfoLocation->SetupAttachment(Center);
+
 	Name = "Building";
 }
 

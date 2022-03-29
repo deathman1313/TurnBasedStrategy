@@ -22,6 +22,9 @@ public:
 		class USkeletalMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class USceneComponent* UIInfoLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int UnitLayer = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")

@@ -22,6 +22,9 @@ public:
 		class UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class USceneComponent* UIInfoLocation;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bBlocking = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

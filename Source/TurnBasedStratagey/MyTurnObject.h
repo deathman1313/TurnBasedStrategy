@@ -17,7 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	AMyTurnObject();
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyGameManager* GManager;
 
 	UPROPERTY(BlueprintAssignable)

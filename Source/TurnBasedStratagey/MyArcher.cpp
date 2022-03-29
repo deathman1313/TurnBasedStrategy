@@ -10,6 +10,9 @@ AMyArcher::AMyArcher()
 
 	Name = "Archer";
 	Range = 2;
+	MaxHealth = 35;
+	Health = 35;
+	AttackDamage = 8;
 }
 
 void AMyArcher::BeginPlay()

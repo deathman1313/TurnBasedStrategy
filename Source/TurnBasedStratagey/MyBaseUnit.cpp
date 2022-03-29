@@ -23,6 +23,9 @@ AMyBaseUnit::AMyBaseUnit()
 	Mesh->SetWorldScale3D(FVector(0.25f, 0.25f, 0.25f));
 	Mesh->SetWorldRotation(FRotator(0.f, -90.f, 0.f));
 
+	UIInfoLocation = CreateDefaultSubobject<USceneComponent>(TEXT("UIInfoLocation"));
+	UIInfoLocation->SetupAttachment(Capsule);
+
 	Name = "Base Unit";
 }
 
