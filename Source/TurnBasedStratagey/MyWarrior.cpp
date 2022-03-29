@@ -9,8 +9,8 @@ AMyWarrior::AMyWarrior()
 	//PrimaryActorTick.bCanEverTick = true;
 
 	Name = "Warrior";
-	MaxHealth = 50;
-	Health = 50;
+	MaxHealth = 40;
+	Health = 40;
 	AttackDamage = 10;
 }
 
