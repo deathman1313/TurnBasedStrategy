@@ -4,7 +4,6 @@
 #include "MyTile.h"
 #include "MyBase.h"
 #include "MyMountain.h"
-#include "MyPathfindingManager.h"
 #include "MyAIPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -100,6 +99,7 @@ void AMyGameManager::NextTurn()
 
 void AMyGameManager::CheckTurn(AMyTurnObject* TurnObject)
 {
+	// Change to take into account unit movement, easier that changing AI
 	// Check if all objects are ready to start next turn
 	WaitingFor.Remove(TurnObject);
 	if (WaitingFor.Num() <= 0)

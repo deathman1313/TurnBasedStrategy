@@ -43,7 +43,7 @@ public:
 		FVector MovementLocation;
 
 	UFUNCTION(BlueprintCallable)
-		bool ProcessMovement(bool bFirstPass);
+		bool ProcessMovement(bool bFirstPass = true);
 
 	UFUNCTION(BlueprintCallable)
 		TArray<class AMyTile*> FindTargets();

@@ -27,6 +27,9 @@ public:
 		void UpdateOwner(int NewOwnerIndex);
 
 	UFUNCTION(BlueprintCallable)
+		bool SetConstruction(int NewConstruction);
+
+	UFUNCTION(BlueprintCallable)
 		bool SpawnUnit();
 
 protected:

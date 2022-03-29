@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "MyPathfindingManager.h"
 #include "MyTile.h"
 #include "MyGameManager.generated.h"
 
@@ -115,7 +116,7 @@ public:
 		TArray<FPlayerInfo> Players;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class AMyPathfindingManager* Pathfinding;
+		AMyPathfindingManager* Pathfinding;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AMyTile* TileRef;

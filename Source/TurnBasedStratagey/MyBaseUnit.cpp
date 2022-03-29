@@ -6,6 +6,7 @@
 #include "MyTile.h"
 #include "MyBuilding.h"
 #include "MyGameManager.h"
+#include "MyTopDownCamera.h"
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
@@ -62,12 +63,18 @@ void AMyBaseUnit::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
-bool AMyBaseUnit::ProcessMovement(bool bFirstPass = true)
+bool AMyBaseUnit::ProcessMovement(bool bFirstPass)
 {
-	// Update location and path meshes
-	// May need to check if unit is still selected
-	GManager->CreatePath(MovementQueue);
-	GManager->CreateSelector(OnTile);
+	// Update location and path meshes if selected by player
+	AMyTopDownCamera* HumanPlayerCharacter = Cast<AMyTopDownCamera>(GManager->Players[OwningPlayerIndex].PlayerController->GetPawn());
+	if (HumanPlayerCharacter)
+	{
+		if (HumanPlayerCharacter->SelectedUnit == this)
+		{
+			GManager->CreatePath(MovementQueue);
+			GManager->CreateSelector(OnTile);
+		}
+	}
 	// Make sure path is valid
 	if (MovementQueue.Num() >= 2)
 	{

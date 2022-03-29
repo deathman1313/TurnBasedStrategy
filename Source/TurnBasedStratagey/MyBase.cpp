@@ -87,6 +87,20 @@ void AMyBase::TurnAction()
 	Super::TurnAction();
 }
 
+bool AMyBase::SetConstruction(int NewConstruction = -1)
+{
+	if (NewConstruction >= 0 && NewConstruction < GManager->PossibleConstrutions.Num())
+	{
+		CurrentConstruction = NewConstruction;
+		bPerformedAction = true;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 bool AMyBase::SpawnUnit()
 {
 	// Spawn new unit on tile
