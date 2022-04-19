@@ -62,6 +62,9 @@ void AMyGameManager::BeginPlay()
 			}
 			Players.Add(NewPlayer);
 		}
+		// Inherit grid size
+		Rows = GInst->Rows;
+		Cols = GInst->Cols;
 	}
 	// Add new event dispatchers
 	for (FPlayerInfo Player : Players)

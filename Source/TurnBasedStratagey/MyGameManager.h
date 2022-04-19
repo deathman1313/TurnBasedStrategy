@@ -62,6 +62,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int EmptyBaseNum;
 
+	// No longer used by the code
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int HumanNum;
 

@@ -23,4 +23,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FColor> PlayerColours;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Cols = 11;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int Rows = 11;
 };
