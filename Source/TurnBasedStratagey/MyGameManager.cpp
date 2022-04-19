@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyGameManager.h"
+#include "MyGameInstance.h"
 #include "MyTile.h"
 #include "MyBase.h"
 #include "MyMountain.h"
@@ -33,23 +34,34 @@ void AMyGameManager::BeginPlay()
 	Super::BeginPlay();
 
 	// Assign Players
+	UMyGameInstance* GInst = Cast<UMyGameInstance>(GetGameInstance());
 	FPlayerInfo NewPlayer;
-	NewPlayer.PlayerController = GetWorld()->GetFirstPlayerController();
-	int Endi = 0;
-	for (int i = 0; i < GenerationSettings.HumanNum; i++)
+	if (GInst)
 	{
-		NewPlayer.PlayerName = "Player " + FString::FromInt(i + 1);
-		NewPlayer.PlayerColour = FColor::Blue;
-		Players.Add(NewPlayer);
-		Endi = i + 1;
-	}
-	// Spawn AI
-	for (int j = 0; j < GenerationSettings.AINum; j++)
-	{
-		NewPlayer.PlayerController = SpawnAI(Players.Num());
-		NewPlayer.PlayerName = "Player " + FString::FromInt(Endi + 1 + j);
-		NewPlayer.PlayerColour = FColor::Red;
-		Players.Add(NewPlayer);
+		for (int i = 0; i < GInst->PlayersAreHuman.Num(); i++)
+		{
+			// Set/create controller
+			if (GInst->PlayersAreHuman[i])
+			{
+				NewPlayer.PlayerController = GetWorld()->GetFirstPlayerController();
+			}
+			else
+			{
+				NewPlayer.PlayerController = SpawnAI(Players.Num());
+			}
+			// Assign player colour
+			NewPlayer.PlayerColour = GInst->PlayerColours[i];
+			// Assign player name
+			if (GInst->PlayerNames[i] != "")
+			{
+				NewPlayer.PlayerName = GInst->PlayerNames[i];
+			}
+			else
+			{
+				NewPlayer.PlayerName = "Player " + FString::FromInt(i + 1);
+			}
+			Players.Add(NewPlayer);
+		}
 	}
 	// Add new event dispatchers
 	for (FPlayerInfo Player : Players)
@@ -73,8 +85,10 @@ void AMyGameManager::BeginPlay()
 
 	// Would make sense to have option here to locate tiles if none are provided or generated
 
-	// Show the mouse cursor
+	// Show the mouse cursor/set input mode
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
+	FInputModeGameAndUI InputModeStruct;
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetInputMode(InputModeStruct);
 
 	Pathfinding->Setup(Tiles);
 

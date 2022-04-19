@@ -8,6 +8,7 @@
 #include "MyBase.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+// Obsolete
 EBTNodeResult::Type UInstructObjectBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	UE_LOG(LogTemp, Warning, TEXT("AIAction"));
