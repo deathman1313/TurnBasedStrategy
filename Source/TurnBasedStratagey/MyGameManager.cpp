@@ -38,6 +38,19 @@ void AMyGameManager::BeginPlay()
 	FPlayerInfo NewPlayer;
 	if (GInst)
 	{
+		// For testing/bugcatching, not required
+		if (GInst->PlayersAreHuman.Num() < 2)
+		{
+			GInst->PlayersAreHuman.Add(true);
+			GInst->PlayersAreHuman.Add(false);
+			GInst->PlayersAreHuman.Add(false);
+			GInst->PlayerColours.Add(FColor::Blue);
+			GInst->PlayerColours.Add(FColor::Red);
+			GInst->PlayerColours.Add(FColor::Green);
+			GInst->PlayerNames.Add("You");
+			GInst->PlayerNames.Add("AI1");
+			GInst->PlayerNames.Add("AI2");
+		}
 		for (int i = 0; i < GInst->PlayersAreHuman.Num(); i++)
 		{
 			// Set/create controller
@@ -95,6 +108,8 @@ void AMyGameManager::BeginPlay()
 
 	Pathfinding->Setup(Tiles);
 
+	// Start first round
+	OnRoundStart[ActivePlayer].Broadcast();
 }
 
 // Called every frame
