@@ -203,7 +203,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 			{
 				if (SelectedTile->OccupyingUnit->OwningPlayerIndex > -1 && SelectedTile->OccupyingUnit->OwningPlayerIndex < GameManager->Players.Num())
 				{
-					if (GameManager->Players[SelectedTile->OccupyingUnit->OwningPlayerIndex].PlayerController == PlayerController)
+					if (GameManager->Players[SelectedTile->OccupyingUnit->OwningPlayerIndex].PlayerController == PlayerController && SelectedTile->OccupyingUnit->OwningPlayerIndex == GameManager->ActivePlayer)
 					{
 						SelectedUnit = SelectedTile->OccupyingUnit;
 						// Show MovementQueue for character
@@ -217,7 +217,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 			{
 				if (SelectedTile->Building->OwningPlayerIndex > -1 && SelectedTile->Building->OwningPlayerIndex < GameManager->Players.Num())
 				{
-					if (GameManager->Players[SelectedTile->Building->OwningPlayerIndex].PlayerController == PlayerController)
+					if (GameManager->Players[SelectedTile->Building->OwningPlayerIndex].PlayerController == PlayerController && SelectedTile->Building->OwningPlayerIndex == GameManager->ActivePlayer)
 					{
 						SelectedBuilding = SelectedTile->Building;
 					}

@@ -38,13 +38,7 @@ void AMyBase::UpdateOwner(int NewOwnerIndex)
 		GManager->Players[OwningPlayerIndex].OwningBases.Add(this);
 		GManager->OnTryProgressTurn[OwningPlayerIndex].AddUniqueDynamic(this, &AMyTurnObject::TurnAction);
 		GManager->OnRoundStart[OwningPlayerIndex].AddUniqueDynamic(this, &AMyTurnObject::Reset);
-		for (FPlayerInfo Player : GManager->Players)
-		{
-			if (Player.PlayerController == GManager->Players[NewOwnerIndex].PlayerController)
-			{
-				Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", Player.PlayerColour);
-			}
-		}
+		Mesh->CreateDynamicMaterialInstance(1)->SetVectorParameterValue("Colour", GManager->Players[NewOwnerIndex].PlayerColour);
 	}
 	// If no new owner
 	else
