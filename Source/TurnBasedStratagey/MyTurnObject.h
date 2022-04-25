@@ -30,6 +30,9 @@ public:
 		FString Name = "Turn Object";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString ObjectType = "None";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bLocked = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -24,6 +24,7 @@ AMyBuilding::AMyBuilding()
 	UIInfoLocation->SetupAttachment(Center);
 
 	Name = "Building";
+	ObjectType = "Building";
 }
 
 // Called when the game starts or when spawned

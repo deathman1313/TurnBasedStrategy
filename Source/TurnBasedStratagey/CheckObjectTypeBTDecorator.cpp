@@ -12,9 +12,11 @@ bool UCheckObjectTypeBTDecorator::CalculateRawConditionValue(UBehaviorTreeCompon
 	int ObjectIndex = OwnerComp.GetBlackboardComponent()->GetValueAsInt(FName("CommandingObject"));
 	if (AIPlayer && GameManager && ObjectIndex >= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AI Check Type"));
+		//UE_LOG(LogTemp, Warning, TEXT("AI Check Type"));
 		AMyTurnObject* CommandingObject = AIPlayer->OwningObjects[ObjectIndex];
-		return CommandingObject->IsA(CompareObject->StaticClass());
+		AMyTurnObject* CompareObjectDefault = Cast<AMyTurnObject>(CompareObject->GetDefaultObject());
+		return CommandingObject->ObjectType == CompareObjectDefault->ObjectType;
+		//return CommandingObject->IsA(CompareObject->StaticClass());
 	}
 	return false;
 }

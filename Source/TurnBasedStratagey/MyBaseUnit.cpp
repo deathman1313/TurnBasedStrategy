@@ -27,6 +27,7 @@ AMyBaseUnit::AMyBaseUnit()
 	UIInfoLocation->SetupAttachment(Capsule);
 
 	Name = "Base Unit";
+	ObjectType = "Unit";
 }
 
 // Called when the game starts or when spawned

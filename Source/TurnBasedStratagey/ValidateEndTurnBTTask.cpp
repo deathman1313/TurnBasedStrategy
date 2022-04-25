@@ -18,6 +18,7 @@ EBTNodeResult::Type UValidateEndTurnBTTask::ExecuteTask(UBehaviorTreeComponent& 
 				UE_LOG(LogTemp, Error, TEXT("THIS SHOULD NOT BE APPEARING"));
 				for (AMyTurnObject* Object : GameManager->WaitingFor)
 				{
+					UE_LOG(LogTemp, Error, TEXT("%s"), *Object->GetName());
 					Object->DoNothing();
 				}
 				GameManager->NextTurn();

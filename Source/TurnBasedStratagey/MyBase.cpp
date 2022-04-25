@@ -8,6 +8,7 @@ AMyBase::AMyBase()
 {
 	//PrimaryActorTick.bCanEverTick = true;
 	Name = "Base";
+	ObjectType = "Base";
 }
 
 void AMyBase::BeginPlay()
