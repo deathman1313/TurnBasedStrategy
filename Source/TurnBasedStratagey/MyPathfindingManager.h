@@ -49,6 +49,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		TArray<AMyTile*> ValidatePath(TArray<AMyTile*> Path, int UnitLayer, int OwningPlayerIndex);
 
+	UFUNCTION(BlueprintCallable)
+		TArray<AMyTile*> GetTilesInRange(AMyTile* Origin, int Range);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

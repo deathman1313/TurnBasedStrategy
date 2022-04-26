@@ -5,6 +5,7 @@
 #include "MyBaseUnit.h"
 #include "MyBase.h"
 #include "Algo/Reverse.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AMyPathfindingManager::AMyPathfindingManager()
@@ -200,7 +201,7 @@ TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int 
 	if (Path.Num() > 1)
 	{
 		bool bIsPathValid = true;
-		AMyTile* StartTile = Path[0];
+		const AMyTile* StartTile = Path[0];
 		for (AMyTile* Tile : Path)
 		{
 			if (Tile != StartTile)
@@ -224,7 +225,29 @@ TArray<AMyTile*> AMyPathfindingManager::ValidatePath(TArray<AMyTile*> Path, int 
 	}
 	else
 	{
-		TArray<AMyTile*> EmptyPath;
+		const TArray<AMyTile*> EmptyPath;
 		return(EmptyPath);
 	}
+}
+
+TArray<AMyTile*> AMyPathfindingManager::GetTilesInRange(AMyTile* Origin, int Range)
+{
+	TArray<AMyTile*> TilesInRange;
+	if (Grid.FindKey(Origin))
+	{
+		const FVector TileLocation = *Grid.FindKey(Origin);
+		for (int q = -Range; q <= Range; q++)
+		{
+			for (int r = UKismetMathLibrary::Max(-Range, q-Range); r <= UKismetMathLibrary::Min(Range, q+Range); r++)
+			{
+				const int s = r - q;
+				if (Grid.Contains(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s)))
+				{
+					AMyTile* Tile = *Grid.Find(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
+					TilesInRange.AddUnique(Tile);
+				}
+			}
+		}
+	}
+	return TilesInRange;
 }
