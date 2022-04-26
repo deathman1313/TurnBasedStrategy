@@ -241,17 +241,7 @@ void AMyTopDownCamera::SelectTile(APlayerController* PlayerController)
 				if (SelectedUnit->ValidTargets.Contains(SelectedTile))
 				{
 					// Attack selection
-					if (SelectedTile->Building)
-					{
-						SelectedTile->Building->ApplyDamage(SelectedUnit->AttackDamage);
-					}
-					else if (SelectedTile->OccupyingUnit)
-					{
-						SelectedTile->OccupyingUnit->ApplyDamage(SelectedUnit->AttackDamage);
-					}
-					// Lock unit
-					SelectedUnit->bPerformedAction = true;
-					SelectedUnit->bLocked = true;
+					SelectedUnit->AttackTarget(SelectedTile);
 					// Deselect unit
 					SelectedUnit = nullptr;
 					// Remove selector

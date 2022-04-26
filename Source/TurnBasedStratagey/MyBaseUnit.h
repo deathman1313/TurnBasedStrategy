@@ -51,6 +51,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		TArray<class AMyTile*> FindTargets();
 
+	UFUNCTION(BlueprintCallable)
+		bool AttackTarget(AMyTile* Target);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

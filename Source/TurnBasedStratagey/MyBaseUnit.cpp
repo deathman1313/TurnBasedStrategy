@@ -132,7 +132,7 @@ TArray<AMyTile*> AMyBaseUnit::FindTargets()
 	TArray<AMyTile*> Targets;
 	if (GManager->Tiles.FindKey(OnTile))
 	{
-		FVector TileLocation = *GManager->Tiles.FindKey(OnTile);
+		const FVector TileLocation = *GManager->Tiles.FindKey(OnTile);
 		for (int q = -Range; q <= Range; q++)
 		{
 			for (int r = UKismetMathLibrary::Max(-Range, q-Range); r <= UKismetMathLibrary::Min(Range, q+Range); r++)
@@ -161,6 +161,30 @@ TArray<AMyTile*> AMyBaseUnit::FindTargets()
 		}
 	}
 	return(Targets);
+}
+
+bool AMyBaseUnit::AttackTarget(AMyTile* Target)
+{
+	if (ValidTargets.Contains(Target))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("UnitAttack"));
+		// Attack selection
+		if (Target->Building)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UnitAttackBuilding"));
+			Target->Building->ApplyDamage(AttackDamage);
+		}
+		else if (Target->OccupyingUnit)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("UnitAttackUnit"));
+			Target->OccupyingUnit->ApplyDamage(AttackDamage);
+		}
+		// Lock unit
+		bPerformedAction = true;
+		bLocked = true;
+		return true;
+	}
+	return false;
 }
 
 void AMyBaseUnit::DestroySelf()

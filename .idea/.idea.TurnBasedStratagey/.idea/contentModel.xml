@@ -52497,6 +52497,8 @@
           <e p="TurnBasedStratagey.h" t="Include" />
           <e p="TurnBasedStratageyGameModeBase.cpp" t="Include" />
           <e p="TurnBasedStratageyGameModeBase.h" t="Include" />
+          <e p="UnitAttackBTTask.cpp" t="Include" />
+          <e p="UnitAttackBTTask.h" t="Include" />
           <e p="ValidateEndTurnBTTask.cpp" t="Include" />
           <e p="ValidateEndTurnBTTask.h" t="Include" />
         </e>

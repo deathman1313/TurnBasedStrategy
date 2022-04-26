@@ -19,12 +19,32 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 			AMyTile* MovementTile = nullptr;
 			bool Loop = true;
 			int Insurace = 0;
+			// Find current space value
+			int BestSpaceLocations = 0;
+			TArray<AMyTile*> TilesInRangeOfStart = GameManager->Pathfinding->GetTilesInRange(Unit->OnTile, Unit->Range);
+			for (AMyTile* CheckingTile : TilesInRangeOfStart)
+			{
+				if (CheckingTile->OccupyingUnit)
+				{
+					if (CheckingTile->OccupyingUnit->OwningPlayerIndex != Unit->OwningPlayerIndex)
+					{
+						BestSpaceLocations++;
+					}
+				}
+				else if (CheckingTile->Building)
+				{
+					if (CheckingTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile->Building->OwningPlayerIndex >= 0)
+					{
+						BestSpaceLocations++;
+					}
+				}
+			}
 			// Check for nearby objects
 			TArray<AMyTile*> TilesInRange = GameManager->Pathfinding->GetTilesInRange(Unit->OnTile, 5);
-			int BestSpaceLocations = 0;
 			for (AMyTile* CheckingTile : TilesInRange)
 			{
 				// If valid movement location
+				// Maybe change to find path?
 				if (CheckingTile->bTraversable && !CheckingTile->OccupyingUnit && !GameManager->Pathfinding->IsBlockingBase(CheckingTile, Unit->OwningPlayerIndex))
 				{
 					int NewSpaceLocations = 0;
@@ -69,32 +89,42 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 					}
 				}
 			}
-			while (Loop && Insurace < 200)
+			// Determine if current space is best
+			if (!MovementTile && BestSpaceLocations > 0)
 			{
-				// Ensure movement location
-				if (!MovementTile)
-				{
-					TArray<AMyTile*> Tiles;
-					GameManager->Tiles.GenerateValueArray(Tiles);
-					MovementTile = Tiles[FMath::RandRange(0, Tiles.Num() - 1)];
-				}
-				// Find path to location
-				Unit->MovementQueue = GameManager->Pathfinding->FindPath(Unit->OnTile, MovementTile, Unit->UnitLayer, Unit->OwningPlayerIndex);
-				if (Unit->MovementQueue.Num() > 0)
-				{
-					Loop = false;
-					Unit->ProcessMovement();
-				}
-				else
-				{
-					MovementTile = nullptr;
-					Insurace++;
-				}
+				//Unit->DoNothing();
 			}
-			// If no movement do nothing
-			if (Insurace >= 200)
+			else
 			{
-				Unit->DoNothing();
+				// Find path to location
+				while (Loop && Insurace < 200)
+				{
+					// Ensure movement location
+					if (!MovementTile)
+					{
+						TArray<AMyTile*> Tiles;
+						GameManager->Tiles.GenerateValueArray(Tiles);
+						MovementTile = Tiles[FMath::RandRange(0, Tiles.Num() - 1)];
+					}
+					// Find path to location
+					Unit->MovementQueue = GameManager->Pathfinding->FindPath(Unit->OnTile, MovementTile, Unit->UnitLayer, Unit->OwningPlayerIndex);
+					if (Unit->MovementQueue.Num() > 0)
+					{
+						Loop = false;
+						Unit->ProcessMovement();
+					}
+					else
+					{
+						// Failsafe
+						MovementTile = nullptr;
+						Insurace++;
+					}
+				}
+				// If no movement do nothing
+				if (Insurace >= 200)
+				{
+					//Unit->DoNothing();
+				}
 			}
 		}
 		return EBTNodeResult::Succeeded;
