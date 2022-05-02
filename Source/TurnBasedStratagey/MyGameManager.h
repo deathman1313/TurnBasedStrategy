@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "MyPathfindingManager.h"
 #include "MyTile.h"
+#include "MyBaseUnit.h"
 #include "MyGameManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTryProgressTurn);

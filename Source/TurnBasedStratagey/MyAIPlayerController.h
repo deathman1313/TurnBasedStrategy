@@ -6,9 +6,23 @@
 #include "AIController.h"
 #include "MyAIPlayerController.generated.h"
 
-/**
- * 
- */
+// WIP
+UENUM(BlueprintType)
+enum class EAIBehaviourTypes : uint8
+{
+	Default
+};
+
+USTRUCT(BlueprintType)
+struct FAIBehaviourTraits
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EAIBehaviourTypes Behaviour;
+};
+
 UCLASS()
 class TURNBASEDSTRATAGEY_API AMyAIPlayerController : public AAIController
 {

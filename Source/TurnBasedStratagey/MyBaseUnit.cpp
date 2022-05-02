@@ -151,7 +151,7 @@ TArray<AMyTile*> AMyBaseUnit::FindTargets()
 					}
 					if (Tile->Building)
 					{
-						if (Tile->Building->OwningPlayerIndex != OwningPlayerIndex)
+						if (Tile->Building->OwningPlayerIndex != OwningPlayerIndex && Tile->Building->Health > 0)
 						{
 							Targets.AddUnique(Tile);
 						}
@@ -171,18 +171,27 @@ bool AMyBaseUnit::AttackTarget(AMyTile* Target)
 		// Attack selection
 		if (Target->Building)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UnitAttackBuilding"));
-			Target->Building->ApplyDamage(AttackDamage);
+			if (Target->Building->Health > 0)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("UnitAttackBuilding"));
+				// Damage Building
+				Target->Building->ApplyDamage(AttackDamage);
+				// Lock unit
+				bPerformedAction = true;
+				bLocked = true;
+				return true;
+			}
 		}
-		else if (Target->OccupyingUnit)
+		if (Target->OccupyingUnit)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("UnitAttackUnit"));
+			// Damage Unit
 			Target->OccupyingUnit->ApplyDamage(AttackDamage);
+			// Lock unit
+			bPerformedAction = true;
+			bLocked = true;
+			return true;
 		}
-		// Lock unit
-		bPerformedAction = true;
-		bLocked = true;
-		return true;
 	}
 	return false;
 }
