@@ -1,6 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyBaseUnit.h"
+
+#include <exception>
+
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "MyTile.h"
@@ -130,36 +133,36 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass)
 TArray<AMyTile*> AMyBaseUnit::FindTargets()
 {
 	TArray<AMyTile*> Targets;
-	if (GManager->Tiles.FindKey(OnTile))
-	{
-		const FVector TileLocation = *GManager->Tiles.FindKey(OnTile);
-		for (int q = -Range; q <= Range; q++)
-		{
-			for (int r = UKismetMathLibrary::Max(-Range, q-Range); r <= UKismetMathLibrary::Min(Range, q+Range); r++)
-			{
-				int s = r - q;
-				if (GManager->Tiles.Contains(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s)))
-				{
-					AMyTile* Tile = *GManager->Tiles.Find(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
-					// Check if it has unit or building
-					if (Tile->OccupyingUnit)
-					{
-						if (Tile->OccupyingUnit->OwningPlayerIndex != OwningPlayerIndex)
-						{
-							Targets.AddUnique(Tile);
-						}
-					}
-					if (Tile->Building)
-					{
-						if (Tile->Building->OwningPlayerIndex != OwningPlayerIndex && Tile->Building->Health > 0)
-						{
-							Targets.AddUnique(Tile);
-						}
-					}
-				}
-			}
-		}
-	}
+    if (GManager->Tiles.FindKey(OnTile))
+    {
+        const FVector TileLocation = *GManager->Tiles.FindKey(OnTile);
+        for (int q = -Range; q <= Range; q++)
+        {
+            for (int r = UKismetMathLibrary::Max(-Range, q-Range); r <= UKismetMathLibrary::Min(Range, q+Range); r++)
+            {
+                const int s = r - q;
+                if (GManager->Tiles.Contains(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s)))
+                {
+                	AMyTile* Tile = *GManager->Tiles.Find(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
+                	// Check if it has unit or building
+                	if (Tile->OccupyingUnit)
+                	{
+                		if (Tile->OccupyingUnit->OwningPlayerIndex != OwningPlayerIndex)
+                		{
+                			Targets.AddUnique(Tile);
+                		}
+                	}
+                	if (Tile->Building)
+                	{
+                		if (Tile->Building->OwningPlayerIndex != OwningPlayerIndex && Tile->Building->Health > 0)
+                		{
+                			Targets.AddUnique(Tile);
+                		}
+                	}
+                }
+            }
+        }
+    }
 	return(Targets);
 }
 

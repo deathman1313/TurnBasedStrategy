@@ -10,7 +10,9 @@
 UENUM(BlueprintType)
 enum class EAIBehaviourTypes : uint8
 {
-	Default
+	Default,
+	Defensive,
+	Offensive
 };
 
 USTRUCT(BlueprintType)
@@ -21,6 +23,12 @@ struct FAIBehaviourTraits
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EAIBehaviourTypes Behaviour;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacking Unit Odds")
+		int WarriorChance = 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacking Unit Odds")
+		int RangerChance = 1;
 };
 
 UCLASS()
@@ -37,6 +45,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyGameManager* GameManager;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FAIBehaviourTraits AIBehaviour;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int PlayerIndex;
 

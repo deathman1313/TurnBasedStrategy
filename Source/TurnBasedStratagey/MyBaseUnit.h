@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "MyTurnObject.h"
+#include "MyAIPlayerController.h"
 #include "MyBaseUnit.generated.h"
 
 UCLASS()
@@ -24,6 +25,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class USceneComponent* UIInfoLocation;
 
+	// For AI controlled units only
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		EAIBehaviourTypes AIBehaviour;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int UnitLayer = 1;
 

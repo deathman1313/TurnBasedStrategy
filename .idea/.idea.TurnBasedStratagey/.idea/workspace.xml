@@ -6,14 +6,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2a488330-2518-4202-b998-1958e883f89a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TurnBasedStratagey/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TurnBasedStratagey/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TurnBasedStratagey/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TurnBasedStratagey/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Blueprints/AI/BT_PlayerAI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/AI/BT_PlayerAI.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/GI_Instance1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/GI_Instance1.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MoveUnitBTTask.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MoveUnitBTTask.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/WBP_TempHUD.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/WBP_TempHUD.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Test1.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Test1.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Test2.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Test2.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/Test3.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Test3.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Meshes/SM_Arrow2.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Meshes/SM_Circle.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTopDownCamera.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTopDownCamera.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,17 +28,23 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://C:/Program Files/Epic Games/UE_4.27/Engine/Source/Runtime/Core/Public/Containers/Map.h" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.h" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.cpp" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTile.h" />
-      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.h" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MoveUnitBTTask.cpp" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTopDownCamera.cpp" />
-      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.cpp" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/UnitAttackBTTask.cpp" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/UnitAttackBTTask.h" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.h" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.cpp" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.h" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.cpp" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyGameManager.h" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="28KPdYiZ6OJPKnRH2UoUn6BCQiF" />
@@ -42,6 +53,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -276,14 +288,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1650962397124</updated>
-      <workItem from="1650962402513" duration="17580000" />
+      <workItem from="1650962402513" duration="18371000" />
+      <workItem from="1651569077195" duration="7250000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />

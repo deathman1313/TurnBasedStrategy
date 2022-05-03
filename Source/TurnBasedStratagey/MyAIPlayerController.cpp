@@ -19,6 +19,21 @@ void AMyAIPlayerController::BeginPlay()
 	// Get active GameManager
 	GameManager = Cast<AMyGameManager>(UGameplayStatics::GetActorOfClass(this, AMyGameManager::StaticClass()));
 	GameManager->OnGameEnd.AddUniqueDynamic(this, &AMyAIPlayerController::GameEnded);
+	// Set AI Traits
+	switch (FMath::RandRange(0, 2))
+	{
+		case 1:
+			AIBehaviour.Behaviour = EAIBehaviourTypes::Defensive;
+			break;
+		case 2:
+			AIBehaviour.Behaviour = EAIBehaviourTypes::Offensive;
+			break;
+		default:
+			AIBehaviour.Behaviour = EAIBehaviourTypes::Default;
+	}
+	AIBehaviour.RangerChance = FMath::RandRange(1, 9);
+	AIBehaviour.WarriorChance = 10 - AIBehaviour.RangerChance;
+	// Run Behaviour Tree
 	BehaviorTree = GameManager->AIBehaviorTree;
 	RunBehaviorTree(BehaviorTree);
 	GetBlackboardComponent()->SetValueAsInt(FName("PlayerIndex"), PlayerIndex);
