@@ -6,19 +6,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2a488330-2518-4202-b998-1958e883f89a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TurnBasedStratagey/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TurnBasedStratagey/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TurnBasedStratagey/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TurnBasedStratagey/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Build/WindowsNoEditor/FileOpenOrder/CookerOpenOrder.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Build/WindowsNoEditor/FileOpenOrder/EditorOpenOrder.log" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/AI/BT_PlayerAI.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/AI/BT_PlayerAI.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/WBP_TempHUD.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/WBP_TempHUD.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Test1.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Test1.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Test2.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Test2.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Maps/Test3.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/Test3.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Meshes/SM_Arrow2.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Meshes/SM_Circle.uasset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/Menu/WBP_GameSetup.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/Menu/WBP_GameSetup.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Blueprints/UI/Menu/WBP_Menu.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Blueprints/UI/Menu/WBP_Menu.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Maps/MainMenu.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Maps/MainMenu.umap" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyGameManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyGameManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyGameManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyGameManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTile.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTile.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/TurnBasedStratagey/UnitAttackBTTask.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/TurnBasedStratagey/UnitAttackBTTask.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,22 +32,33 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://C:/Program Files/Epic Games/UE_4.27/Engine/Source/Runtime/Core/Private/Async/TaskGraph.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://C:/Program Files/Epic Games/UE_4.27/Engine/Source/Runtime/Core/Public/Containers/Map.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_4.27/Engine/Source/Runtime/Core/Public/Containers/Array.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TurnBasedStratagey/MyBuilding.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TurnBasedStratagey/MyTurnObject.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_4.27/Engine/Source/Runtime/Core/Public/Containers/Set.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TurnBasedStratagey/UnitAttackBTTask.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Source/TurnBasedStratagey/MyTile.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://C:/Program Files/Epic Games/UE_4.27/Engine/Source/Runtime/Core/Private/Async/Async.cpp" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.h" />
-      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.cpp" />
-      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTile.h" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MoveUnitBTTask.cpp" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTopDownCamera.cpp" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/UnitAttackBTTask.cpp" />
-      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/UnitAttackBTTask.h" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.h" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyAIPlayerController.cpp" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTurnObject.h" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/UnitAttackBTTask.h" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.h" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyBaseUnit.cpp" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.h" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyTile.h" />
       <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyGameManager.h" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyGameManager.cpp" />
+      <option value="$PROJECT_DIR$/Source/TurnBasedStratagey/MyPathfindingManager.cpp" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="28KPdYiZ6OJPKnRH2UoUn6BCQiF" />
@@ -289,7 +303,9 @@
       <option name="presentableId" value="Default" />
       <updated>1650962397124</updated>
       <workItem from="1650962402513" duration="18371000" />
-      <workItem from="1651569077195" duration="7250000" />
+      <workItem from="1651569077195" duration="13211000" />
+      <workItem from="1651584922406" duration="1028000" />
+      <workItem from="1651586808138" duration="3658000" />
     </task>
     <servers />
   </component>

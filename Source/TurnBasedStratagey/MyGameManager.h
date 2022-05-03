@@ -145,7 +145,7 @@ public:
 		FGenerationSettings GenerationSettings;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TMap<FVector, AMyTile*> Tiles;
+		TArray<AMyTile*> Tiles;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TArray<FConstructions> PossibleConstrutions;
@@ -165,6 +165,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 		FVector GridToWorld(FVector2D GridLocation);
 
+	UFUNCTION(BlueprintCallable)
+		AMyTile* FindTileFromLocation(FVector Location); 
+	
 	UFUNCTION(BlueprintCallable)
 		void CreateSelector(AMyTile* Tile);
 

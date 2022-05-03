@@ -52,6 +52,9 @@ public:
 		int J;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
+		FVector GridPos;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")
 		AMyTile* PreviousTile;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pathfinding")

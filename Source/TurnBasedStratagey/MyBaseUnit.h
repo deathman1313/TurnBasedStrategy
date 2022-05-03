@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "MyTurnObject.h"
+#include "MyTile.h"
 #include "MyAIPlayerController.h"
 #include "MyBaseUnit.generated.h"
 

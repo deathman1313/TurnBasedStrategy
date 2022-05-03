@@ -17,7 +17,7 @@ public:
 	AMyPathfindingManager();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TMap<FVector, AMyTile*> Grid;
+		TArray<AMyTile*> Grid;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Rows;
@@ -29,7 +29,7 @@ public:
 		int TilesInRow;
 
 	UFUNCTION(BlueprintCallable)
-		void Setup(TMap<FVector, AMyTile*> Tiles);
+		void Setup(TArray<AMyTile*> Tiles);
 
 	UFUNCTION(BlueprintCallable)
 		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End, int UnitLayer = -1, int OwningPlayerIndex = -1);

@@ -49,7 +49,7 @@ void AMyBaseUnit::Tick(float DeltaTime)
 	if (bMoving)
 	{
 		// Interp between start and end location and set location
-		FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), MovementLocation, DeltaTime, Speed);
+		const FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), MovementLocation, DeltaTime, Speed);
 		SetActorLocation(FVector(NewLocation.X, NewLocation.Y, GetActorLocation().Z));
 		// If close to final destination
 		if (GetActorLocation().Equals(FVector(MovementLocation.X, MovementLocation.Y, GetActorLocation().Z), 5.f))
@@ -133,15 +133,22 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass)
 TArray<AMyTile*> AMyBaseUnit::FindTargets()
 {
 	TArray<AMyTile*> Targets;
-    if (GManager->Tiles.FindKey(OnTile))
+    if (OnTile && !bMoving)
     {
-        const FVector TileLocation = *GManager->Tiles.FindKey(OnTile);
+    	FVector TileLocation  = OnTile->GridPos;
         for (int q = -Range; q <= Range; q++)
         {
             for (int r = UKismetMathLibrary::Max(-Range, q-Range); r <= UKismetMathLibrary::Min(Range, q+Range); r++)
             {
                 const int s = r - q;
-                if (GManager->Tiles.Contains(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s)))
+            	bool bContains = false;
+            	FString checkstring = FVector((int)TileLocation.X + q, (int)TileLocation.Y + r, (int)TileLocation.Z + s).ToString();
+            	try
+            	{
+            		bContains = GManager->Tiles.Contains(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
+            		if (!bContains) throw false;
+            	} catch(bool cont) { if (!cont) UE_LOG(LogTemp, Error, TEXT("Tiles does not contain %s"), *checkstring);}
+                if (bContains)
                 {
                 	AMyTile* Tile = *GManager->Tiles.Find(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
                 	// Check if it has unit or building
@@ -162,7 +169,7 @@ TArray<AMyTile*> AMyBaseUnit::FindTargets()
                 }
             }
         }
-    }
+    } else UE_LOG(LogTemp, Error, TEXT("No OnTime/Moving"));
 	return(Targets);
 }
 

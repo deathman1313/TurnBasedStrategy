@@ -173,6 +173,7 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 				int s = r - q;
 				AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(r, q)), FRotator(0.f, 90.f, 0.f));
 				Tiles.Add(FVector(q, r, s), NewTile);
+				NewTile->GridPos = FVector(q, r, s);
 			}
 		}
 		// Spawn player bases
@@ -191,6 +192,18 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 			SpawnMountain(FindEmptyTile());
 		}
 	}
+}
+
+AMyTile* AMyGameManager::FindTileFromLocation(FVector Location)
+{
+	for (AMyTile* Tile : Tiles)
+	{
+		if (Location == Tile->GridPos)
+		{
+			return(Tile);
+		}
+	}
+	return(nullptr);
 }
 
 FVector AMyGameManager::GridToWorld(FVector2D GridLocation)
