@@ -52,6 +52,19 @@ void AMyAIPlayerController::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 }
 
+EAIBehaviourTypes AMyAIPlayerController::GetObjectBehaviour()
+{
+	int RandBehav = FMath::RandRange(0, 4);
+	if (RandBehav != 0)
+	{
+		return(AIBehaviour.Behaviour);
+	}
+	else
+	{
+		return(EAIBehaviourTypes::Offensive);
+	}
+}
+
 void AMyAIPlayerController::GameEnded(TArray<AController*> WinnerControllers)
 {
 

@@ -29,14 +29,14 @@ void AMyPathfindingManager::Tick(float DeltaTime)
 
 }
 
-void AMyPathfindingManager::Setup(TArray<AMyTile*> Tiles)
+void AMyPathfindingManager::Setup(AMyGameManager* Manager)
 {
-	Grid = Tiles;
+	GameManager = Manager;
 
 	// Assign tile neighbors
-	for (int i = 0; i < Grid.Num(); i++)
+	for (int i = 0; i < GameManager->Tiles.Num(); i++)
 	{
-		Grid[i]->Neighbours = GetNeighbours(Grid[i]->GridPos);
+		GameManager->Tiles[i]->Neighbours = GetNeighbours(GameManager->Tiles[i]->GridPos);
 	}
 }
 
@@ -116,34 +116,34 @@ TArray<AMyTile*> AMyPathfindingManager::GetNeighbours(FVector TileKey)
 {
 	TArray<AMyTile*> Neighbors;
 	// Check for neighbour on right
-	if (Grid.Contains(TileKey + FVector(1, 0, -1)))
+	if (GameManager->FindTileFromLocation(TileKey + FVector(1, 0, -1)))
 	{
-		Neighbors.Add(GameManager.FindTileFromLocation(TileKey + FVector(1, 0, -1)));
+		Neighbors.Add(GameManager->FindTileFromLocation(TileKey + FVector(1, 0, -1)));
 	}
 	// Check for neighbour on bottom right
-	if (Grid.Contains(TileKey + FVector(0, -1, -1)))
+	if (GameManager->FindTileFromLocation(TileKey + FVector(0, -1, -1)))
 	{
-		Neighbors.Add(GameManager.FindTileFromLocation(TileKey + FVector(0, -1, -1)));
+		Neighbors.Add(GameManager->FindTileFromLocation(TileKey + FVector(0, -1, -1)));
 	}
 	// Check for neighbour on bottom left
-	if (Grid.Contains(TileKey + FVector(-1, -1, 0)))
+	if (GameManager->FindTileFromLocation(TileKey + FVector(-1, -1, 0)))
 	{
-		Neighbors.Add(GameManager.FindTileFromLocation(TileKey + FVector(-1, -1, 0)));
+		Neighbors.Add(GameManager->FindTileFromLocation(TileKey + FVector(-1, -1, 0)));
 	}
 	// Check for neighbour on left
-	if (Grid.Contains(TileKey + FVector(-1, 0, 1)))
+	if (GameManager->FindTileFromLocation(TileKey + FVector(-1, 0, 1)))
 	{
-		Neighbors.Add(GameManager.FindTileFromLocation(TileKey + FVector(-1, 0, 1)));
+		Neighbors.Add(GameManager->FindTileFromLocation(TileKey + FVector(-1, 0, 1)));
 	}
 	// Check for neighbour on top left
-	if (Grid.Contains(TileKey + FVector(0, 1, 1)))
+	if (GameManager->FindTileFromLocation(TileKey + FVector(0, 1, 1)))
 	{
-		Neighbors.Add(GameManager.FindTileFromLocation(TileKey + FVector(0, 1, 1)));
+		Neighbors.Add(GameManager->FindTileFromLocation(TileKey + FVector(0, 1, 1)));
 	}
 	// Check for neighbour on top right
-	if (Grid.Contains(TileKey + FVector(1, 1, 0)))
+	if (GameManager->FindTileFromLocation(TileKey + FVector(1, 1, 0)))
 	{
-		Neighbors.Add(GameManager.FindTileFromLocation(TileKey + FVector(1, 1, 0)));
+		Neighbors.Add(GameManager->FindTileFromLocation(TileKey + FVector(1, 1, 0)));
 	}
 
 	//UE_LOG(LogTemp, Warning, TEXT("%d"), Neighbors.Num());
@@ -235,12 +235,12 @@ TArray<AMyTile*> AMyPathfindingManager::GetTilesInRange(AMyTile* Origin, int Ran
 		const FVector TileLocation = Origin->GridPos;
 		for (int q = -Range; q <= Range; q++)
 		{
-			for (int r = UKismetMathLibrary::Max(-Range, q-Range); r <= UKismetMathLibrary::Min(Range, q+Range); r++)
+			for (int r = UKismetMathLibrary::Max(-Range, q - Range); r <= UKismetMathLibrary::Min(Range, q + Range); r++)
 			{
 				const int s = r - q;
-				if (Grid.Contains(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s)))
+				AMyTile* Tile = GameManager->FindTileFromLocation(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
+				if (Tile)
 				{
-					AMyTile* Tile = *Grid.Find(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
 					TilesInRange.AddUnique(Tile);
 				}
 			}

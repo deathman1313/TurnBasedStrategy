@@ -17,7 +17,7 @@ public:
 	AMyPathfindingManager();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TArray<AMyTile*> Grid;
+		AMyGameManager* GameManager;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Rows;
@@ -29,7 +29,7 @@ public:
 		int TilesInRow;
 
 	UFUNCTION(BlueprintCallable)
-		void Setup(TArray<AMyTile*> Tiles);
+		void Setup(AMyGameManager* Manager);
 
 	UFUNCTION(BlueprintCallable)
 		TArray<AMyTile*> FindPath(AMyTile* Start, AMyTile* End, int UnitLayer = -1, int OwningPlayerIndex = -1);

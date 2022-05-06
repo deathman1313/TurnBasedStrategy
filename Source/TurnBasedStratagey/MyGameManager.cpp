@@ -106,7 +106,7 @@ void AMyGameManager::BeginPlay()
 	FInputModeGameAndUI InputModeStruct;
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetInputMode(InputModeStruct);
 
-	Pathfinding->Setup(Tiles);
+	Pathfinding->Setup(this);
 
 	// Start first round
 	OnRoundStart[ActivePlayer].Broadcast();
@@ -172,7 +172,7 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 			{
 				int s = r - q;
 				AMyTile* NewTile = GetWorld()->SpawnActor<AMyTile>(TileClass, GridToWorld(FVector2D(r, q)), FRotator(0.f, 90.f, 0.f));
-				Tiles.Add(FVector(q, r, s), NewTile);
+				Tiles.Add(NewTile);
 				NewTile->GridPos = FVector(q, r, s);
 			}
 		}
@@ -196,7 +196,8 @@ void AMyGameManager::CreateGameBoard(int NewRows, int NewCols)
 
 AMyTile* AMyGameManager::FindTileFromLocation(FVector Location)
 {
-	for (AMyTile* Tile : Tiles)
+	TArray<AMyTile*> Temp = Tiles;
+	for (AMyTile* Tile : Temp)
 	{
 		if (Location == Tile->GridPos)
 		{
@@ -216,18 +217,14 @@ FVector AMyGameManager::GridToWorld(FVector2D GridLocation)
 
 AMyTile* AMyGameManager::FindEmptyTile()
 {
-	TArray<FVector> TileKeys;
-	TileKeys.Empty();
-	Tiles.GenerateKeyArray(TileKeys);
-
 	int RandTileIndex;
 	for (int Err = 0; Err < 50; Err++)
 	{
-		RandTileIndex = FMath::RandRange(0, TileKeys.Num() - 1);
-		if (!Tiles[TileKeys[RandTileIndex]]->Building)
+		RandTileIndex = FMath::RandRange(0, Tiles.Num() - 1);
+		if (!Tiles[RandTileIndex]->Building)
 		{
 			// Should check for valid paths here
-			return(Tiles[TileKeys[RandTileIndex]]);
+			return(Tiles[RandTileIndex]);
 		}
 	}
 	return(nullptr);

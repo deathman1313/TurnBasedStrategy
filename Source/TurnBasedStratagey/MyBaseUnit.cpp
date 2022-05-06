@@ -82,6 +82,8 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass)
 			GManager->CreateSelector(OnTile);
 		}
 	}
+	// Validate path
+	MovementQueue = GManager->Pathfinding->ValidatePath(MovementQueue, UnitLayer, OwningPlayerIndex);
 	// Make sure path is valid
 	if (MovementQueue.Num() >= 2)
 	{
@@ -90,27 +92,23 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass)
 			// Check available movement
 			if (CurrentMovement > 0)
 			{
-				// Validate path
-				MovementQueue = GManager->Pathfinding->ValidatePath(MovementQueue, UnitLayer, OwningPlayerIndex);
-				if (MovementQueue.Num() > 0)
-				{
-					// Set location to move to
-					MovementLocation = MovementQueue[1]->GetActorLocation();
-					// Remove old tile position refs
-					MovementQueue[0]->OccupyingUnit = nullptr;
-					// And add new ones
-					MovementQueue[1]->OccupyingUnit = this;
-					OnTile = MovementQueue[1];
-					// Turn to face movement direction
-					SetActorRotation(UKismetMathLibrary::GetDirectionUnitVector(MovementQueue[0]->GetActorLocation(), MovementQueue[1]->GetActorLocation()).Rotation());
-					// Start Movement
-					CurrentMovement -= 1;
-					MovementQueue.RemoveAt(0);
-					// Attempt to take base
-					OnTile->TakeBase(OwningPlayerIndex);
-					bMoving = true;
-					return(true);
-				}
+				// Set location to move to
+				MovementLocation = MovementQueue[1]->GetActorLocation();
+				// Remove old tile position refs
+				MovementQueue[0]->OccupyingUnit = nullptr;
+				// And add new ones
+				MovementQueue[1]->OccupyingUnit = this;
+				OnTile = MovementQueue[1];
+				UE_LOG(LogTemp, Warning, TEXT("OnTile = %s"), *OnTile->GetName());
+				// Turn to face movement direction
+				SetActorRotation(UKismetMathLibrary::GetDirectionUnitVector(MovementQueue[0]->GetActorLocation(), MovementQueue[1]->GetActorLocation()).Rotation());
+				// Start Movement
+				CurrentMovement -= 1;
+				MovementQueue.RemoveAt(0);
+				// Attempt to take base
+				OnTile->TakeBase(OwningPlayerIndex);
+				bMoving = true;
+				return(true);
 			}
 		}
 	}
@@ -133,57 +131,55 @@ bool AMyBaseUnit::ProcessMovement(bool bFirstPass)
 TArray<AMyTile*> AMyBaseUnit::FindTargets()
 {
 	TArray<AMyTile*> Targets;
-    if (OnTile && !bMoving)
+    if (OnTile)
     {
-    	FVector TileLocation  = OnTile->GridPos;
+		// This crashes sometimes, for no reason
+    	FVector TileLocation = OnTile->GridPos;
         for (int q = -Range; q <= Range; q++)
         {
             for (int r = UKismetMathLibrary::Max(-Range, q-Range); r <= UKismetMathLibrary::Min(Range, q+Range); r++)
             {
                 const int s = r - q;
-            	bool bContains = false;
-            	FString checkstring = FVector((int)TileLocation.X + q, (int)TileLocation.Y + r, (int)TileLocation.Z + s).ToString();
-            	try
-            	{
-            		bContains = GManager->Tiles.Contains(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
-            		if (!bContains) throw false;
-            	} catch(bool cont) { if (!cont) UE_LOG(LogTemp, Error, TEXT("Tiles does not contain %s"), *checkstring);}
-                if (bContains)
-                {
-                	AMyTile* Tile = *GManager->Tiles.Find(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
-                	// Check if it has unit or building
-                	if (Tile->OccupyingUnit)
-                	{
-                		if (Tile->OccupyingUnit->OwningPlayerIndex != OwningPlayerIndex)
-                		{
-                			Targets.AddUnique(Tile);
-                		}
-                	}
-                	if (Tile->Building)
-                	{
-                		if (Tile->Building->OwningPlayerIndex != OwningPlayerIndex && Tile->Building->Health > 0)
-                		{
-                			Targets.AddUnique(Tile);
-                		}
-                	}
-                }
+                AMyTile* Tile = GManager->FindTileFromLocation(FVector(TileLocation.X + q, TileLocation.Y + r, TileLocation.Z + s));
+				if (Tile)
+				{
+					// Check if it has unit or building
+					if (Tile->OccupyingUnit)
+					{
+						if (Tile->OccupyingUnit->OwningPlayerIndex != OwningPlayerIndex)
+						{
+							Targets.AddUnique(Tile);
+						}
+					}
+					if (Tile->Building)
+					{
+						if (Tile->Building->OwningPlayerIndex != OwningPlayerIndex && Tile->Building->Health > 0)
+						{
+							Targets.AddUnique(Tile);
+						}
+					}
+				}
             }
         }
-    } else UE_LOG(LogTemp, Error, TEXT("No OnTime/Moving"));
+    } else UE_LOG(LogTemp, Error, TEXT("No OnTile/Moving"));
 	return(Targets);
 }
 
 bool AMyBaseUnit::AttackTarget(AMyTile* Target)
 {
-	if (ValidTargets.Contains(Target))
+	if (ValidTargets.Contains(Target) && !bMoving)
 	{
+		// Turn to face target
+		SetActorRotation(UKismetMathLibrary::GetDirectionUnitVector(OnTile->GetActorLocation(), Target->GetActorLocation()).Rotation());
+		// Play Animation?
+
 		UE_LOG(LogTemp, Warning, TEXT("UnitAttack"));
 		// Attack selection
 		if (Target->Building)
 		{
-			if (Target->Building->Health > 0)
+			if (Target->Building->Health > 0 && Target->Building->OwningPlayerIndex != OwningPlayerIndex)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("UnitAttackBuilding"));
+				UE_LOG(LogTemp, Warning, TEXT("UnitAttackBuilding %s"), *Target->Building->GetName());
 				// Damage Building
 				Target->Building->ApplyDamage(AttackDamage);
 				// Lock unit
@@ -194,7 +190,7 @@ bool AMyBaseUnit::AttackTarget(AMyTile* Target)
 		}
 		if (Target->OccupyingUnit)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("UnitAttackUnit"));
+			UE_LOG(LogTemp, Warning, TEXT("UnitAttackUnit %s"), *Target->OccupyingUnit->GetName());
 			// Damage Unit
 			Target->OccupyingUnit->ApplyDamage(AttackDamage);
 			// Lock unit

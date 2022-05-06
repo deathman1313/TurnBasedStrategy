@@ -55,6 +55,9 @@ public:
 		TArray<class AMyTurnObject*> OwningObjects;
 
 	UFUNCTION(BlueprintCallable)
+		EAIBehaviourTypes GetObjectBehaviour();
+
+	UFUNCTION(BlueprintCallable)
 		void GameEnded(TArray<AController*> WinnerControllers);
 
 	UFUNCTION(BlueprintCallable)

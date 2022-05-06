@@ -8,12 +8,12 @@
 
 EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	const AMyGameManager* GameManager = Cast<AMyGameManager>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("GameManager")));
-	const AMyAIPlayerController* AIPlayer = Cast<AMyAIPlayerController>(OwnerComp.GetOwner());
+	GameManager = Cast<AMyGameManager>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("GameManager")));
+	AIPlayer = Cast<AMyAIPlayerController>(OwnerComp.GetOwner());
 	const int ObjectIndex = OwnerComp.GetBlackboardComponent()->GetValueAsInt(FName("CommandingObject"));
 	if (AIPlayer && GameManager && ObjectIndex >= 0)
 	{
-		AMyBaseUnit* Unit = Cast<AMyBaseUnit>(AIPlayer->OwningObjects[ObjectIndex]);
+		Unit = Cast<AMyBaseUnit>(AIPlayer->OwningObjects[ObjectIndex]);
 		if (Unit->MovementQueue.Num() == 0)
 		{
 			AMyTile* MovementTile = nullptr;
@@ -102,9 +102,7 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 					// Ensure movement location
 					if (!MovementTile)
 					{
-						TArray<AMyTile*> Tiles;
-						GameManager->Tiles.GenerateValueArray(Tiles);
-						MovementTile = Tiles[FMath::RandRange(0, Tiles.Num() - 1)];
+						MovementTile = GameManager->Tiles[FMath::RandRange(0, GameManager->Tiles.Num() - 1)];
 					}
 					// Find path to location
 					Unit->MovementQueue = GameManager->Pathfinding->FindPath(Unit->OnTile, MovementTile, Unit->UnitLayer, Unit->OwningPlayerIndex);
@@ -130,4 +128,28 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 		return EBTNodeResult::Succeeded;
 	}
 	return EBTNodeResult::Failed;
+}
+
+int UMoveUnitBTTask::EvaluateTile(AMyTile* CheckingTile, int Range)
+{
+	int NewSpaceLocations = 0;
+	TArray<AMyTile*> TilesInRange = GameManager->Pathfinding->GetTilesInRange(Unit->OnTile, Range);
+	for (AMyTile* CheckingTile : TilesInRange)
+	{
+		if (CheckingTile->OccupyingUnit)
+		{
+			if (CheckingTile->OccupyingUnit->OwningPlayerIndex != Unit->OwningPlayerIndex)
+			{
+				NewSpaceLocations++;
+			}
+		}
+		else if (CheckingTile->Building)
+		{
+			if (CheckingTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile->Building->OwningPlayerIndex >= 0)
+			{
+				NewSpaceLocations++;
+			}
+		}
+	}
+	return NewSpaceLocations;
 }

@@ -109,6 +109,12 @@ bool AMyBase::SpawnUnit()
 	SpawnedUnit->CurrentMovement = 0;
 	SpawnedUnit->bPerformedAction = true;
 	SpawnedUnit->bLocked = true;
+	// Setup AI control
+	AMyAIPlayerController* AIController = Cast<AMyAIPlayerController>(GManager->Players[OwningPlayerIndex].PlayerController);
+	if (AIController)
+	{
+		SpawnedUnit->AIBehaviour = AIController->GetObjectBehaviour();
+	}
 	return(true);
 }
 

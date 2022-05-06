@@ -25,12 +25,10 @@ EBTNodeResult::Type UInstructObjectBTTask::ExecuteTask(UBehaviorTreeComponent& O
 			{
 				// Get random tile, for testing only should be replaced
 				AMyTile* SelectedTile = nullptr;
-				TArray<AMyTile*> Tiles;
-				GameManager->Tiles.GenerateValueArray(Tiles);
 				bool Loop = true;
 				while (Loop)
 				{
-					SelectedTile = Tiles[FMath::RandRange(0, Tiles.Num() - 1)];
+					SelectedTile = GameManager->Tiles[FMath::RandRange(0, GameManager->Tiles.Num() - 1)];
 					CommandingUnit->MovementQueue = GameManager->Pathfinding->FindPath(CommandingUnit->OnTile, SelectedTile, CommandingUnit->UnitLayer, CommandingUnit->OwningPlayerIndex);
 					if (CommandingUnit->MovementQueue.Num() > 0)
 					{
