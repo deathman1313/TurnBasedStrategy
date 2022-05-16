@@ -67,7 +67,7 @@ EAIBehaviourTypes AMyAIPlayerController::GetObjectBehaviour()
 
 void AMyAIPlayerController::GameEnded(TArray<AController*> WinnerControllers)
 {
-
+	GetBlackboardComponent()->SetValueAsBool(FName("CurrentTurn"), false);
 }
 
 void AMyAIPlayerController::StartTurn()
@@ -77,5 +77,4 @@ void AMyAIPlayerController::StartTurn()
 	OwningObjects.Append(GameManager->Players[PlayerIndex].OwningBuildings);
 	GetBlackboardComponent()->SetValueAsBool(FName("CurrentTurn"), true);
 	UE_LOG(LogTemp, Warning, TEXT("AITurn"));
-	//GameManager->NextTurn();
 }

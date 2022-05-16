@@ -100,7 +100,7 @@ void AMyGameManager::BeginPlay()
 	}
 
 	// Would make sense to have option here to locate tiles if none are provided or generated
-
+	
 	// Show the mouse cursor/set input mode
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
 	FInputModeGameAndUI InputModeStruct;
