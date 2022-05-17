@@ -79,6 +79,7 @@ void AMyGameManager::BeginPlay()
 		// Inherit grid size
 		Rows = GInst->Rows;
 		Cols = GInst->Cols;
+		GenerationSettings = GInst->GenerationSettings;
 	}
 	// Add new event dispatchers
 	for (FPlayerInfo Player : Players)

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "MyGameManager.h"
 #include "MyGameInstance.generated.h"
 
 /**
@@ -29,4 +30,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Rows = 11;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FGenerationSettings GenerationSettings;
 };
