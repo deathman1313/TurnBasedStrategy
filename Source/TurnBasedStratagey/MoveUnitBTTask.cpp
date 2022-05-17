@@ -14,31 +14,13 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	if (AIPlayer && GameManager && ObjectIndex >= 0)
 	{
 		Unit = Cast<AMyBaseUnit>(AIPlayer->OwningObjects[ObjectIndex]);
-		if (Unit->MovementQueue.Num() == 0)
+		if (Unit->MovementQueue.Num() == 0 || FMath::RandRange(0, 4) == 0)
 		{
 			AMyTile* MovementTile = nullptr;
 			bool Loop = true;
 			int Insurace = 0;
 			// Find current space value
-			int BestSpaceLocations = 0;
-			TArray<AMyTile*> TilesInRangeOfStart = GameManager->Pathfinding->GetTilesInRange(Unit->OnTile, Unit->Range);
-			for (AMyTile* CheckingTile : TilesInRangeOfStart)
-			{
-				if (CheckingTile->OccupyingUnit)
-				{
-					if (CheckingTile->OccupyingUnit->OwningPlayerIndex != Unit->OwningPlayerIndex)
-					{
-						BestSpaceLocations++;
-					}
-				}
-				else if (CheckingTile->Building)
-				{
-					if (CheckingTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile->Building->OwningPlayerIndex >= 0)
-					{
-						BestSpaceLocations++;
-					}
-				}
-			}
+			int BestSpaceLocations = EvaluateTile(Unit->OnTile, Unit->Range);
 			// Check for nearby objects
 			TArray<AMyTile*> TilesInRange = GameManager->Pathfinding->GetTilesInRange(Unit->OnTile, 5);
 			for (AMyTile* CheckingTile : TilesInRange)
@@ -47,41 +29,12 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 				// Maybe change to find path?
 				if (CheckingTile->bTraversable && !CheckingTile->OccupyingUnit && !GameManager->Pathfinding->IsBlockingBase(CheckingTile, Unit->OwningPlayerIndex))
 				{
-					int NewSpaceLocations = 0;
-					// If Base can be taken
-					if (CheckingTile->Building)
-					{
-						if (CheckingTile->Building->ObjectType == "Base")
-						{
-							if (CheckingTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile->Building->Health <= 0)
-							{
-								NewSpaceLocations = NewSpaceLocations + 10;
-							}
-						}
-					}
-					// If lots of targets in range
-					TArray<AMyTile*> TilesInRangeOfTile = GameManager->Pathfinding->GetTilesInRange(CheckingTile, Unit->Range);
-					for (AMyTile* CheckingTile2 : TilesInRangeOfTile)
-					{
-						if (CheckingTile2->OccupyingUnit)
-						{
-							if (CheckingTile2->OccupyingUnit->OwningPlayerIndex != Unit->OwningPlayerIndex)
-							{
-								NewSpaceLocations++;
-							}
-						}
-						else if (CheckingTile2->Building)
-						{
-							if (CheckingTile2->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile2->Building->OwningPlayerIndex >= 0)
-							{
-								NewSpaceLocations++;
-							}
-						}
-					}
+					// Determine value of new space
+					int NewSpaceLocations = EvaluateTile(CheckingTile, Unit->Range);
 					// Assign better movement tile
-					if (NewSpaceLocations >= BestSpaceLocations)
+					if (NewSpaceLocations > BestSpaceLocations)
 					{
-						if (BestSpaceLocations == 0 || FMath::RandRange(0, 9) != 0)
+						if (BestSpaceLocations <= 0 || FMath::RandRange(0, 9) != 0)
 						{
 							MovementTile = CheckingTile;
 							BestSpaceLocations = NewSpaceLocations;
@@ -97,7 +50,7 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 			else
 			{
 				// Find path to location
-				while (Loop && Insurace < 200)
+				while (Loop && Insurace < 100)
 				{
 					// Ensure movement location
 					if (!MovementTile)
@@ -118,11 +71,6 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 						Insurace++;
 					}
 				}
-				// If no movement do nothing
-				if (Insurace >= 200)
-				{
-					//Unit->DoNothing();
-				}
 			}
 		}
 		return EBTNodeResult::Succeeded;
@@ -133,21 +81,66 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 int UMoveUnitBTTask::EvaluateTile(AMyTile* CheckingTile, int Range)
 {
 	int NewSpaceLocations = 0;
+	// If Base can be taken, prioritise space, if own base, try to move
+	if (CheckingTile->Building)
+	{
+		if (CheckingTile->Building->ObjectType == "Base")
+		{
+			if (CheckingTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile->Building->Health <= 0)
+			{
+				NewSpaceLocations += 10;
+			}
+			else if (CheckingTile->Building->OwningPlayerIndex == Unit->OwningPlayerIndex)
+			{
+				NewSpaceLocations -= 3;
+			}
+		}
+	}
 	TArray<AMyTile*> TilesInRange = GameManager->Pathfinding->GetTilesInRange(Unit->OnTile, Range);
 	for (AMyTile* CheckingTile : TilesInRange)
 	{
-		if (CheckingTile->OccupyingUnit)
+		switch (Unit->AIBehaviour)
 		{
-			if (CheckingTile->OccupyingUnit->OwningPlayerIndex != Unit->OwningPlayerIndex)
+		case EAIBehaviourTypes::Defensive:
+			// Prioritise own bases
+			if (CheckingTile->OccupyingUnit)
 			{
-				NewSpaceLocations++;
+				if (CheckingTile->OccupyingUnit->OwningPlayerIndex == Unit->OwningPlayerIndex)
+				{
+					NewSpaceLocations++;
+				}
+				else
+				{
+					NewSpaceLocations += 2;
+				}
 			}
-		}
-		else if (CheckingTile->Building)
-		{
-			if (CheckingTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile->Building->OwningPlayerIndex >= 0)
+			else if (CheckingTile->Building)
 			{
-				NewSpaceLocations++;
+				if (CheckingTile->Building->OwningPlayerIndex == Unit->OwningPlayerIndex)
+				{
+					NewSpaceLocations += 5;
+				}
+			}
+			break;
+		default:
+			// Prioritise enemy units
+			if (CheckingTile->OccupyingUnit)
+			{
+				if (CheckingTile->OccupyingUnit->OwningPlayerIndex != Unit->OwningPlayerIndex)
+				{
+					NewSpaceLocations += 2;
+				}
+				else
+				{
+					NewSpaceLocations++;
+				}
+			}
+			else if (CheckingTile->Building)
+			{
+				if (CheckingTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile->Building->OwningPlayerIndex >= 0)
+				{
+					NewSpaceLocations++;
+				}
 			}
 		}
 	}
