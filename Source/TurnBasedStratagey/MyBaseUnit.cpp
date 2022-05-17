@@ -172,7 +172,7 @@ bool AMyBaseUnit::AttackTarget(AMyTile* Target)
 		// Turn to face target
 		SetActorRotation(UKismetMathLibrary::GetDirectionUnitVector(OnTile->GetActorLocation(), Target->GetActorLocation()).Rotation());
 		// Play Animation?
-
+		bAttacking = true;
 		UE_LOG(LogTemp, Warning, TEXT("UnitAttack"));
 		// Attack selection
 		if (Target->Building)

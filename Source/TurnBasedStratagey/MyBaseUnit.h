@@ -48,6 +48,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		bool bMoving = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bAttacking = false;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 		FVector MovementLocation;
 
