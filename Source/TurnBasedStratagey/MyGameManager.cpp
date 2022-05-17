@@ -6,6 +6,7 @@
 #include "MyBase.h"
 #include "MyMountain.h"
 #include "MyAIPlayerController.h"
+#include "MyTopDownCamera.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -98,9 +99,12 @@ void AMyGameManager::BeginPlay()
 	{
 		CreateGameBoard(Rows, Cols);
 	}
-
 	// Would make sense to have option here to locate tiles if none are provided or generated
 	
+	// Set Player boundaries
+	AMyTopDownCamera* PlayerCamera = Cast<AMyTopDownCamera>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	PlayerCamera->Boundary1 = Tiles[0]->GetActorLocation();
+	PlayerCamera->Boundary2 = Tiles.Last()->GetActorLocation();
 	// Show the mouse cursor/set input mode
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
 	FInputModeGameAndUI InputModeStruct;

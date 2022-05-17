@@ -49,6 +49,7 @@ void AMyTopDownCamera::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Dragging camera
 	if (bDraggingCam && WorldStartDragPoint != FVector::ZeroVector)
 	{
 		// Get current mouse position
@@ -83,6 +84,23 @@ void AMyTopDownCamera::Tick(float DeltaTime)
 		{
 			PreviousLocations.RemoveAt(i);
 		}
+	}
+	// Constrain to boundaries
+	if (GetActorLocation().X > Boundary2.X)
+	{
+		SetActorLocation(FVector(Boundary2.X, GetActorLocation().Y, GetActorLocation().Z));
+	}
+	else if (GetActorLocation().X < Boundary1.X)
+	{
+		SetActorLocation(FVector(Boundary1.X, GetActorLocation().Y, GetActorLocation().Z));
+	}
+	if (GetActorLocation().Y > Boundary2.Y)
+	{
+		SetActorLocation(FVector(GetActorLocation().X, Boundary2.Y, GetActorLocation().Z));
+	}
+	else if (GetActorLocation().Y < Boundary1.Y)
+	{
+		SetActorLocation(FVector(GetActorLocation().X, Boundary1.Y, GetActorLocation().Z));
 	}
 }
 

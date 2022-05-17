@@ -44,6 +44,12 @@ public:
 		float MinArmLength = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector Boundary1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FVector Boundary2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyGameManager* GameManager;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
