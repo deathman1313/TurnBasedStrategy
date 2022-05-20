@@ -10,7 +10,7 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 {
 	GameManager = Cast<AMyGameManager>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("GameManager")));
 	AIPlayer = Cast<AMyAIPlayerController>(OwnerComp.GetOwner());
-	const int ObjectIndex = OwnerComp.GetBlackboardComponent()->GetValueAsInt(FName("CommandingObject"));
+	int ObjectIndex = OwnerComp.GetBlackboardComponent()->GetValueAsInt(FName("CommandingObject"));
 	if (AIPlayer && GameManager && ObjectIndex >= 0)
 	{
 		Unit = Cast<AMyBaseUnit>(AIPlayer->OwningObjects[ObjectIndex]);

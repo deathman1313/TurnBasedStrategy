@@ -9,12 +9,12 @@
 
 EBTNodeResult::Type UUnitAttackBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	const AMyGameManager* GameManager = Cast<AMyGameManager>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("GameManager")));
-	const AMyAIPlayerController* AIPlayer = Cast<AMyAIPlayerController>(OwnerComp.GetOwner());
-	const int ObjectIndex = OwnerComp.GetBlackboardComponent()->GetValueAsInt(FName("CommandingObject"));
+	AMyGameManager* GameManager = Cast<AMyGameManager>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("GameManager")));
+	AMyAIPlayerController* AIPlayer = Cast<AMyAIPlayerController>(OwnerComp.GetOwner());
+	int ObjectIndex = OwnerComp.GetBlackboardComponent()->GetValueAsInt(FName("CommandingObject"));
 	if (AIPlayer && GameManager && ObjectIndex >= 0)
 	{
-		static AMyBaseUnit* Unit = Cast<AMyBaseUnit>(AIPlayer->OwningObjects[ObjectIndex]);
+		AMyBaseUnit* Unit = Cast<AMyBaseUnit>(AIPlayer->OwningObjects[ObjectIndex]);
 		TArray<AMyTile*> Targets = Unit->FindTargets();
 		Unit->ValidTargets = Targets;
 		if (Targets.Num() > 0)
