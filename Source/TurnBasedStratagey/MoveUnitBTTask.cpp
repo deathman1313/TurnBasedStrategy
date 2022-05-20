@@ -78,25 +78,25 @@ EBTNodeResult::Type UMoveUnitBTTask::ExecuteTask(UBehaviorTreeComponent& OwnerCo
 	return EBTNodeResult::Failed;
 }
 
-int UMoveUnitBTTask::EvaluateTile(AMyTile* CheckingTile, int Range)
+int UMoveUnitBTTask::EvaluateTile(AMyTile* EvaluationTile, int Range)
 {
 	int NewSpaceLocations = 0;
 	// If Base can be taken, prioritise space, if own base, try to move
-	if (CheckingTile->Building)
+	if (EvaluationTile->Building)
 	{
-		if (CheckingTile->Building->ObjectType == "Base")
+		if (EvaluationTile->Building->ObjectType == "Base")
 		{
-			if (CheckingTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && CheckingTile->Building->Health <= 0)
+			if (EvaluationTile->Building->OwningPlayerIndex != Unit->OwningPlayerIndex && EvaluationTile->Building->Health <= 0)
 			{
 				NewSpaceLocations += 10;
 			}
-			else if (CheckingTile->Building->OwningPlayerIndex == Unit->OwningPlayerIndex)
+			else if (EvaluationTile->Building->OwningPlayerIndex == Unit->OwningPlayerIndex)
 			{
 				NewSpaceLocations -= 3;
 			}
 		}
 	}
-	TArray<AMyTile*> TilesInRange = GameManager->Pathfinding->GetTilesInRange(Unit->OnTile, Range);
+	TArray<AMyTile*> TilesInRange = GameManager->Pathfinding->GetTilesInRange(EvaluationTile, Range);
 	for (AMyTile* CheckingTile : TilesInRange)
 	{
 		switch (Unit->AIBehaviour)
@@ -146,3 +146,4 @@ int UMoveUnitBTTask::EvaluateTile(AMyTile* CheckingTile, int Range)
 	}
 	return NewSpaceLocations;
 }
+
